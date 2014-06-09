@@ -51,7 +51,7 @@ languages = \
 		"expxls": "Export to Excel",
 		"curfile": "Current Database File",
 		"browse": "Browse",
-		"browsephoto": "Browse Photo",
+		"browsephoto": "Select Picture",
 		"filepath": "File Path",
 		"Back": "Back",
 		"Next": "Next",
@@ -60,7 +60,7 @@ languages = \
 		"choosedb": "Choose Database",
 		"changelanguage": "中文语言显示",
 		"awardclass": "Award Classes",
-		"awardoneclass": "Award One Class",
+		"awardoneclass": "Single (+1)",
 		"awardaddclass": "Award Additional Classes",
 		"addstudent": "Add Student to Database",
 		"Add Students": "Add Students", #students* for buttons

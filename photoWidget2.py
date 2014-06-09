@@ -53,7 +53,7 @@ class Photo(Widget):
 		self.image = ImageTk.PhotoImage(self.picture)
 
 		self.label = Label(self.parent, image=self.image, bd=1, bg='black')
-		self.label.grid(row=self.row, column=self.column)
+		self.label.grid(row=self.row, column=self.column, pady=5)
 
 
 	def getData(self):

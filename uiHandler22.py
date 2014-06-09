@@ -10,6 +10,7 @@ class AppFrame(Frame):
 
 		self.curRow = 0
 		self.curColumn = 0
+		#self.config(bg='grey')
 
 		#widgets
 		self.widgets = {}
@@ -57,7 +58,7 @@ class AppWindow(Frame):
 
 		self.frames[frameName].grid(
 			row=gridRow, column=gridColumn,
-			padx=self.framePadding[0], pady=self.framePadding[1])
+			padx=self.framePadding[0], pady=self.framePadding[1], sticky=N)
 
 
 	def collect(self, relevant):
@@ -100,7 +101,7 @@ class Window(Tk):
 		#self.title(title)
 		#self.geometry(geometry)
 		#self.attributes('-alpha', 0.9)
-		self.config(bg="#575765", bd=2)
+		self.config(bg="grey", bd=2)
 		self.attributes('-fullscreen', True)
 
 		self.oframe = Frame(self)
@@ -108,7 +109,7 @@ class Window(Tk):
 		self.oframe.pack(fill="both", expand=True, padx=20, pady=20)
 		self.mainFrame.place(in_=self.oframe, anchor="c", relx=.5, rely=.5)
 
-		self.oframe.config(bg="#404056")
+		self.oframe.config(bg="#FFF5EE")
 
 		#
 		self.update_idletasks()

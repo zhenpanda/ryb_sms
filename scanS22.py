@@ -20,73 +20,83 @@ def main(t, lang, d):
 	w.attinfo.clast = '#FF99FF'
 
 #frame initialization
-	w.newFrame("First Frame", (1, 0))
-	w.newFrame("Second Frame", (2, 0))
+	w.newFrame("First Frame", (1, 1))
+	w.newFrame("Second Frame", (1, 2))
 	w.newFrame("Third Frame", (2, 1))
-	w.newFrame("Fourth Frame", (0, 2))
-	w.newFrame("Fifth Frame", (3, 0))
+	w.newFrame("Fourth Frame", (2, 2))
+	w.newFrame("Fifth Frame", (5, 0))
+	w.newFrame("Sixth Frame", (4, 2))
+	w.newFrame("Seventh Frame", (1, 0))
+	w.newFrame("Eigth Frame", (3, 1))
+	w.newFrame("Ninth Frame", (3, 2))
+	w.newFrame("Tenth Frame", (0, 1))
+	w.newFrame("Eleventh Frame", (1, 3))
+
+	w.frames["Fifth Frame"].grid(columnspan=5, sticky=S)
+	w.frames["Seventh Frame"].grid(rowspan=2)
+	w.frames["Ninth Frame"].grid(rowspan=2, sticky=E)
+	w.frames["Tenth Frame"].grid(columnspan=5)
+	#w.frames["First Frame"].grid(columnspan=5)
+	#w.frames["Sixth Frame"].grid(rowspan=2, sticky=N)
+
 
 #add widget to search for students
-	w.frames["First Frame"].addWidget(sby, (0, 0))
+	w.frames["Tenth Frame"].addWidget(sby, (0, 0))
 
-#basic info widgets
-	w.frames["Second Frame"].addWidget(firstName, (0, 0))
-	w.frames["Second Frame"].addWidget(lastName, (1, 0))
-	w.frames["Second Frame"].addWidget(chineseName, (2, 0))
-	w.frames["Second Frame"].addWidget(parentName, (3, 0))
-	w.frames["Second Frame"].addWidget(pup, (4, 0))
+#student info widgets
+	Label(w.frames["First Frame"], text='Student information').grid(row=0, columnspan=2, sticky=E+W)
+	w.frames["First Frame"].addWidget(firstName, (1, 0))
+	w.frames["First Frame"].addWidget(lastName, (2, 0))
+	w.frames["First Frame"].addWidget(chineseName, (3, 0))
+	w.frames["First Frame"].addWidget(dob, (4, 0))
+	w.frames["First Frame"].addWidget(age, (5, 0))
+	w.frames["First Frame"].addWidget(parentName, (6, 0))
 
-	w.frames["Second Frame"].addWidget(sepr, (5, 0))
+#address widgets
+	Label(w.frames["Second Frame"], text='Address information').grid(row=0, columnspan=2, sticky=E+W)
+	w.frames["Second Frame"].addWidget(addr, (3, 0))
+	w.frames["Second Frame"].addWidget(city, (4, 0))
+	w.frames["Second Frame"].addWidget(state, (5, 0))
+	w.frames["Second Frame"].addWidget(zip, (6, 0))
+	w.frames["Second Frame"].addWidget(email, (7, 0))
 
-	#w.frames["Second Frame"].addWidget(bCode, (6, 0))
-	w.frames["Second Frame"].addWidget(sid, (7, 0))
+#contact widgets
+	Label(w.frames["Third Frame"], text='Contact information').grid(row=0, columnspan=2, sticky=E+W)
+	w.frames["Third Frame"].addWidget(pup, (1, 0))
+	w.frames["Third Frame"].addWidget(hPhone, (2, 0))
+	w.frames["Third Frame"].addWidget(cPhone, (3, 0))
+	w.frames["Third Frame"].addWidget(cPhone2, (4, 0))
 
+#database info widgets
+	Label(w.frames["Fourth Frame"], text='Class information').grid(row=0, columnspan=2, sticky=E+W)
+#payment widgets
+	w.frames["Fourth Frame"].addWidget(tpd, (3, 0))
+	w.frames["Fourth Frame"].addWidget(tpa, (4, 0))
+	w.frames["Fourth Frame"].addWidget(tpo, (5, 0))
 
+#class widget
+	w.frames["Fourth Frame"].addWidget(sType, (6, 0))
+	w.frames["Fourth Frame"].addWidget(cAwarded, (7, 0))
+	w.frames["Fourth Frame"].addWidget(cRemaining, (8, 0))
 
-	w.frames["Second Frame"].addWidget(dob, (10, 0))
-	w.frames["Second Frame"].addWidget(age, (11, 0))
-
-	w.frames["Second Frame"].addWidget(sepr, (12, 0))
-
-
-	#
-	w.frames["Second Frame"].addWidget(addr, (0, 2))
-	w.frames["Second Frame"].addWidget(city, (1, 2))
-	w.frames["Second Frame"].addWidget(state, (2, 2))
-	w.frames["Second Frame"].addWidget(zip, (3, 2))
-	w.frames["Second Frame"].addWidget(email, (4, 2))
-
-
-	w.frames["Second Frame"].addWidget(hPhone, (6, 2))
-	w.frames["Second Frame"].addWidget(cPhone, (7, 2))
-	w.frames["Second Frame"].addWidget(cPhone2, (8, 2))
-
-#award class widgets
-	w.frames["Second Frame"].addWidget(sType, (16, 0))
-	w.frames["Second Frame"].addWidget(cAwarded, (17, 0))
-	w.frames["Second Frame"].addWidget(cRemaining, (16, 2))
-	w.frames["Second Frame"].addWidget(tpa, (17, 2))
-	w.frames["Second Frame"].addWidget(tpo, (18, 2))
-
-	w.frames["Second Frame"].addWidget(sepr, (19, 0))
+#notes widget
+	Label(w.frames["Ninth Frame"], text='Notes').grid(row=0, columnspan=2, sticky=E+W)
+	w.frames["Ninth Frame"].addWidget(notes, (1, 0))
+	notes.label.grid_forget()
+	notes.config(height=10, width=32)
 
 #special
 	spec = Labelbox(text='spec', lang=w.lang, repr='spec')
-	w.frames["Second Frame"].addWidget(spec, (20, 0))
+	w.frames["Eigth Frame"].addWidget(spec, (20, 0))
 	spec.label.config(font=('Verdana', 15))
 	spec.label.grid(columnspan=2)
 
 	w.portr = portr = Photo(repr='portr', path='monet_sm.jpg')
 	w.frames["Third Frame"].addWidget(w.portr, (0, 0))
 	w.portr.hide()
-	w.frames["Third Frame"].addWidget(notes, (1, 0))
 
-	notes.config(height=20, width=30)
-	notes.label.grid(row=0, sticky=N)
-	notes.sentry.grid(row=1, column=0)
-
-	w.frames["Fourth Frame"].addWidget(w.attinfo, (0, 0))
-	w.frames["Fourth Frame"].grid(rowspan=100, sticky=W)
+	w.frames["Eleventh Frame"].addWidget(w.attinfo, (0, 0))
+	w.frames["Eleventh Frame"].grid(rowspan=100, sticky=W)
 
 	w.attinfo.editwidget=False
 	w.attinfo.canvas.config(width=500, height=500)
@@ -131,12 +141,12 @@ def main(t, lang, d):
 			spec.setData("")
 
 			#temp workaround while table is fixed
-			for child in w.frames["Fourth Frame"].winfo_children():
+			for child in w.frames["Eleventh Frame"].winfo_children():
 				child.destroy()
 
 			w.attinfo.build(headers=w.attinfoh, data=[[]])
-			w.frames["Fourth Frame"].addWidget(w.attinfo, (0, 0))
-			w.frames["Fourth Frame"].grid(rowspan=100, sticky=W)
+			w.frames["Eleventh Frame"].addWidget(w.attinfo, (0, 0))
+			w.frames["Eleventh Frame"].grid(rowspan=100, sticky=W)
 
 			w.attinfo.editwidget=False
 			w.attinfo.canvas.config(width=500, height=500)
@@ -185,7 +195,7 @@ def main(t, lang, d):
 		#update cRemaining
 		cRemaining.setData(str(cRem))
 
-		w.frames['Fourth Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
+		w.frames['Eleventh Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
 		w2.frames['Third Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
 
 		#auto scroll to last position
@@ -207,9 +217,9 @@ def main(t, lang, d):
 
 		print(sby.getData())
 
-	w.frames["First Frame"].widgets['sby'].entry.bind("<Return>", lambda x: s())
+	w.frames["Tenth Frame"].widgets['sby'].entry.bind("<Return>", lambda x: s())
 
-	w.frames["First Frame"].addWidget(bsearch, (1, 0))
+	w.frames["Tenth Frame"].addWidget(bsearch, (1, 0))
 	bsearch.button.config(width=20)
 	bsearch.config(cmd=s)
 

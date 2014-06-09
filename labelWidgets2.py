@@ -56,8 +56,8 @@ class Textbox(Widget):
 
 		#self.textvar = StringVar()
 		#self.textvar.set(self.text)
-		self.label = Label(self.parent, text=self.lang[self.text], width=20, anchor=E)
-		self.entry = Entry(self.parent, relief=GROOVE)
+		self.label = Label(self.parent, text=self.lang[self.text], width=15, anchor=E)
+		self.entry = Entry(self.parent, relief=SOLID)
 
 		self.label.grid(row=self.row, column=self.column)
 		self.entry.grid(row=self.row, column=self.column+1)
@@ -139,26 +139,26 @@ class Datebox(IntTextbox):
 			print("widget could not be placed")
 
 		self.selfframe = Frame(self.parent)
-		self.label = Label(self.parent, text=self.text, width=20, anchor=E)
+		self.label = Label(self.parent, text=self.text, width=15, anchor=E)
 		self.mLabel = Label(self.selfframe, text='MM')
 		self.dLabel = Label(self.selfframe, text='DD')
 		self.yLable = Label(self.selfframe, text='YY')
 
-		self.mEntry = Entry(self.selfframe, relief=GROOVE, width=4)
-		self.dEntry = Entry(self.selfframe, relief=GROOVE, width=4)
-		self.yEntry = Entry(self.selfframe, relief=GROOVE, width=4)
+		self.mEntry = Entry(self.selfframe, relief=SOLID, width=3)
+		self.dEntry = Entry(self.selfframe, relief=SOLID, width=3)
+		self.yEntry = Entry(self.selfframe, relief=SOLID, width=5)
 
 
 		self.selfframe.grid(row=self.row, column=self.column+1)
 
 		self.label.grid(row=self.row, column=self.column)
-		self.mLabel.grid(row=0, column=1)
-		self.dLabel.grid(row=0, column=2)
-		self.yLable.grid(row=0, column=3)
+		self.mLabel.grid(row=1, column=0)
+		self.dLabel.grid(row=1, column=2)
+		self.yLable.grid(row=1, column=4)
 
 		self.mEntry.grid(row=1, column=1)
-		self.dEntry.grid(row=1, column=2)
-		self.yEntry.grid(row=1, column=3)
+		self.dEntry.grid(row=1, column=3)
+		self.yEntry.grid(row=1, column=5)
 
 		self.bind()
 
@@ -276,7 +276,7 @@ class Picker(Textbox):
 
 		self.selfframe = Frame(self.parent)
 		self.label = Label(self.selfframe, text=self.text)
-		self.entry = Entry(self.selfframe, relief=GROOVE)
+		self.entry = Entry(self.selfframe, relief=SOLID)
 
 		self.b, r = StringVar(), []
 		self.b.set(self.rads[0][1])
@@ -342,10 +342,10 @@ class LongTextbox(Textbox):
 			print("widget could not be placed")
 
 		self.label = Label(self.parent, text=self.lang[self.text])
-		self.sentry = ScrolledText(self.parent, relief=GROOVE)
+		self.sentry = ScrolledText(self.parent, relief=SOLID)
 
 		self.label.grid(row=self.row, column=self.column)
-		self.sentry.grid(row=self.row, column=self.column+1, sticky=W+E, columnspan=100)
+		self.sentry.grid(row=self.row, column=self.column+1, sticky=E)
 
 
 	def getData(self):
@@ -402,7 +402,7 @@ class Labelbox(Textbox):
 		self.label.grid()
 
 
-class Buttonbox(Textbox):
+class Buttonbox2(Textbox):
 
 	def __init__(self, **kwargs):
 		try:			
@@ -446,7 +446,7 @@ class Buttonbox(Textbox):
 		self.button.grid(row=self.row, column=self.column)
 
 
-class Buttonbox2(Textbox):
+class Buttonbox(Textbox):
 
 	def __init__(self, **kwargs):
 		try:
@@ -475,6 +475,12 @@ class Buttonbox2(Textbox):
 				self.button.bind('<ButtonRelease-1>', self.cmd)	
 			else:
 				self.button.bind('<ButtonRelease-1>', lambda e: self.cmd())
+		except:
+			pass
+
+		try:
+			self.width = kwargs['width']
+			self.button.config(width=self.width)
 		except:
 			pass
 

@@ -17,7 +17,7 @@ class Cell(Widget):
 		
 		self.bgcolor = 'white'
 		self.bd = 1
-		self.relief = SUNKEN
+		self.relief = SOLID
 
 	
 	def config(self, **kwargs):

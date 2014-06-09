@@ -5,7 +5,7 @@ from languages import *
 from labelWidgets2 import *
 from photoWidget2 import *
 from preBuilts2 import ret
-import addS22
+import addS3
 import scanS22
 import sDb22
 import tools2
@@ -28,7 +28,7 @@ def main():
 	t.con = False
 
 	def showWindow(f):
-		if (f.__doc__) == 'addS22': t.con = True
+		if (f.__doc__) == 'addS3': t.con = True
 		else: t.con = False
 		w.frames["First Frame"].grid_forget()
 		w.t = f(w.frames["Second Frame"], w.lang, w.d)
@@ -94,7 +94,7 @@ def main():
 	w.frames["First Frame"].addWidget(bclang, (4, 0))
 	w.frames["First Frame"].addWidget(w.p, (0, 1))
 	
-	bsadd.config(cmd=lambda: showWindow(addS22.main))
+	bsadd.config(cmd=lambda: showWindow(addS3.main))
 	bsscan.config(cmd=lambda: showWindow(scanS22.main))
 	bssdb.config(cmd=lambda: showWindow(sDb22.main))
 	bstools.config(cmd=lambda: showWindow(tools2.main))
