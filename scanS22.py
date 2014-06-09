@@ -36,7 +36,9 @@ def main(t, lang, d):
 	w.frames["Seventh Frame"].grid(rowspan=2)
 	w.frames["Ninth Frame"].grid(rowspan=2, sticky=E)
 	w.frames["Tenth Frame"].grid(columnspan=5)
-	#w.frames["Tenth Frame"].columnconfigure(0, weight=5, minsize=1600)
+	w.frames["Eleventh Frame"].grid(sticky=N)
+	w.frames["Eigth Frame"].grid(sticky=N)
+	w.frames["Eleventh Frame"].columnconfigure(0, weight=5, minsize=520)
 	#w.frames["First Frame"].grid(columnspan=5)
 	#w.frames["Sixth Frame"].grid(rowspan=2, sticky=N)
 
@@ -88,7 +90,7 @@ def main(t, lang, d):
 
 #special
 	spec = Labelbox(text='spec', lang=w.lang, repr='spec')
-	w.frames["Eigth Frame"].addWidget(spec, (20, 0))
+	w.frames["Eigth Frame"].addWidget(spec, (1, 0))
 	spec.label.config(font=('Verdana', 15), wraplength=200, justify=LEFT)
 	spec.label.grid(columnspan=2)
 
@@ -97,10 +99,10 @@ def main(t, lang, d):
 	w.portr.hide()
 
 	w.frames["Eleventh Frame"].addWidget(w.attinfo, (0, 0))
-	w.frames["Eleventh Frame"].grid(rowspan=100, sticky=W)
+	w.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
 
 	w.attinfo.editwidget=False
-	w.attinfo.canvas.config(width=500, height=500)
+	w.attinfo.canvas.config(width=500, height=555)
 
 	sby.rads=[('Barcode', 'bCode'), ('First Name', 'firstName'), ('Last Name', 'lastName'), ('Chinese Name', 'chineseName')]
 
@@ -147,10 +149,10 @@ def main(t, lang, d):
 
 			w.attinfo.build(headers=w.attinfoh, data=[[]])
 			w.frames["Eleventh Frame"].addWidget(w.attinfo, (0, 0))
-			w.frames["Eleventh Frame"].grid(rowspan=100, sticky=W)
+			w.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
 
 			w.attinfo.editwidget=False
-			w.attinfo.canvas.config(width=500, height=500)
+			w.attinfo.canvas.config(width=500, height=555)
 			#
 
 			#temp workaround while table is fixed
@@ -241,6 +243,11 @@ def main(t, lang, d):
 	bcheck = Buttonbox(text='cinstudent', lang=language, repr='bcheck')
 	w.frames["Fifth Frame"].addWidget(bcheck, (0, 1))
 	bcheck.config(cmd=z)
+
+
+
+
+
 
 #t2 window
 	t2 = Window(top=True)

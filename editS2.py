@@ -19,78 +19,111 @@ def main(lang, d, top=False, i=0):
 	w.lang = lang
 
 #frame initialization
-	w.newFrame("L Frame", (0, 0))
-	w.newFrame("First Frame", (1, 0))
-	w.newFrame("Second Frame", (1, 1))
-	w.newFrame("Third Frame", (3, 0))
-	w.newFrame("Fourth Frame", (2, 0))
-	w.newFrame("Fifth Frame", (0, 2))
+	w.newFrame("First Frame", (1, 1))
+	w.newFrame("Second Frame", (1, 2))
+	w.newFrame("Third Frame", (2, 1))
+	w.newFrame("Fourth Frame", (2, 2))
+	w.newFrame("Fifth Frame", (5, 0))
+	w.newFrame("Sixth Frame", (4, 2))
+	w.newFrame("Seventh Frame", (1, 0))
+	w.newFrame("Eigth Frame", (3, 2))
+	w.newFrame("Ninth Frame", (3, 1))
+	w.newFrame("Tenth Frame", (0, 1))
+	w.newFrame("Eleventh Frame", (1, 3))
 
-	w.frames["Fourth Frame"].grid(sticky=W)
-	w.frames["Third Frame"].grid(columnspan=3)
+	w.frames["Fifth Frame"].grid(columnspan=5, sticky=S)
+	w.frames["Seventh Frame"].grid(rowspan=2)
+	w.frames["Ninth Frame"].grid(rowspan=2, sticky=E)
+	w.frames["Tenth Frame"].grid(columnspan=5)
+	w.frames["Eleventh Frame"].grid(sticky=N)
+	w.frames["Eigth Frame"].grid(sticky=N)
+	w.frames["Eleventh Frame"].columnconfigure(0, weight=5, minsize=520)
+	#w.frames["First Frame"].grid(columnspan=5)
+	#w.frames["Sixth Frame"].grid(rowspan=2, sticky=N)
 
-#basic info widgets
-	w.frames["First Frame"].addWidget(firstName, (0, 0))
-	w.frames["First Frame"].addWidget(lastName, (1, 0))
-	w.frames["First Frame"].addWidget(chineseName, (2, 0))
-	w.frames["First Frame"].addWidget(parentName, (3, 0))
-	w.frames["First Frame"].addWidget(pup, (4, 0))
+#student info widgets
+	Label(w.frames["First Frame"], text='Student information').grid(row=0, columnspan=2, sticky=E+W)
+	w.frames["First Frame"].addWidget(firstName, (1, 0))
+	w.frames["First Frame"].addWidget(lastName, (2, 0))
+	w.frames["First Frame"].addWidget(chineseName, (3, 0))
+	w.frames["First Frame"].addWidget(dob, (4, 0))
+	w.frames["First Frame"].addWidget(age, (5, 0))
+	w.frames["First Frame"].addWidget(parentName, (6, 0))
 
-	w.frames["First Frame"].addWidget(sepr, (5, 0))
+#address widgets
+	Label(w.frames["Second Frame"], text='Address information').grid(row=0, columnspan=2, sticky=E+W)
+	w.frames["Second Frame"].addWidget(addr, (3, 0))
+	w.frames["Second Frame"].addWidget(city, (4, 0))
+	w.frames["Second Frame"].addWidget(state, (5, 0))
+	w.frames["Second Frame"].addWidget(zip, (6, 0))
+	w.frames["Second Frame"].addWidget(email, (7, 0))
 
-	w.frames["First Frame"].addWidget(bCode, (6, 0))
-	w.frames["First Frame"].addWidget(sid, (7, 0))
+#contact widgets
+	Label(w.frames["Third Frame"], text='Contact information').grid(row=0, columnspan=2, sticky=E+W)
+	w.frames["Third Frame"].addWidget(pup, (1, 0))
+	w.frames["Third Frame"].addWidget(hPhone, (2, 0))
+	w.frames["Third Frame"].addWidget(cPhone, (3, 0))
+	w.frames["Third Frame"].addWidget(cPhone2, (4, 0))
+
+#database info widgets
+	Label(w.frames["Fourth Frame"], text='Class information').grid(row=0, columnspan=2, sticky=E+W)
+	w.frames["Fourth Frame"].addWidget(bCode, (1, 0))
+	w.frames["Fourth Frame"].addWidget(sid, (2, 0))
+#payment widgets
+	w.frames["Fourth Frame"].addWidget(tpd, (6, 0))
+	w.frames["Fourth Frame"].addWidget(tpa, (7, 0))
+	w.frames["Fourth Frame"].addWidget(tpo, (8, 0))
+
+#class widget
+	w.frames["Sixth Frame"].addWidget(sType, (4, 0))
+	w.frames["Sixth Frame"].addWidget(cAwarded, (5, 0))
+	w.frames["Sixth Frame"].addWidget(cRemaining, (6, 0))
+
+#notes widget
+	Label(w.frames["Ninth Frame"], text='Notes').grid(row=0, columnspan=2, sticky=E+W)
+	w.frames["Ninth Frame"].addWidget(notes, (1, 0))
+	notes.label.grid_forget()
+	notes.config(height=10, width=32)
 
 
 
-	w.frames["First Frame"].addWidget(dob, (10, 0))
-	w.frames["First Frame"].addWidget(age, (11, 0))
-
-	w.frames["First Frame"].addWidget(sepr, (12, 0))
-
-	w.frames["First Frame"].addWidget(notes, (14, 0))
-
-	notes.config(height=5, width=10)
-
-	w.frames["First Frame"].addWidget(sepr, (15, 0))
-
-#award class widgets
-	w.frames["First Frame"].addWidget(sType, (16, 0))
-	w.frames["First Frame"].addWidget(cAwarded, (17, 0))
-	w.frames["First Frame"].addWidget(cRemaining, (18, 0))
-	w.frames["First Frame"].addWidget(tpd, (16, 2))
-	w.frames["First Frame"].addWidget(tpa, (17, 2))
-	w.frames["First Frame"].addWidget(tpo, (18, 2))
 
 
+	baclass = Buttonbox(text='awardclass', lang=w.lang, repr='aclass')
 	baoclass = Buttonbox(text='awardoneclass', lang=w.lang, repr='aoclass')
 	baac = Buttonbox(text='awardaddclass', lang=w.lang, repr='baaclasses')
+	bgold = Buttonbox(text='gold60', lang=lang, repr='bgold')
+	bbasic = Buttonbox(text='basic15', lang=lang, repr='bbasic')
 
-	w.frames["Fourth Frame"].addWidget(baoclass, (1, 0))
-	w.frames["Fourth Frame"].addWidget(baac, (2, 0))
+	w.frames["Eigth Frame"].addWidget(bgold, (1, 0))
+	w.frames["Eigth Frame"].addWidget(bbasic, (1, 1))
+	w.frames["Eigth Frame"].addWidget(baoclass, (1, 2))
 
-	baoclass.config(cmd=caddone)
-	baac.config(cmd=lambda: cadd(w.lang))
+	baoclass.config(cmd=caddone, width=12)
+	bgold.config(cmd=lambda: caddmorex(60), width=12)
+	bbasic.config(cmd=lambda: caddmorex(15), width=12)
 
-	#
-	w.frames["First Frame"].addWidget(addr, (0, 2))
-	w.frames["First Frame"].addWidget(city, (1, 2))
-	w.frames["First Frame"].addWidget(state, (2, 2))
-	w.frames["First Frame"].addWidget(zip, (3, 2))
-	w.frames["First Frame"].addWidget(email, (4, 2))
+	baoclass.selfframe.grid(padx=2)
+	bgold.selfframe.grid(padx=2)
+	bbasic.selfframe.grid(padx=2)
+	
+	
+	#w.frames["Sixth Frame"].addWidget(baclass, (0, 0))
+	#w.frames["Sixth Frame"].addWidget(baac, (2, 0))
+	#baclass.config(cmd=lambda: cpicker(w.lang))
+	#baac.config(cmd=cadd)
 
 
-	w.frames["First Frame"].addWidget(hPhone, (6, 2))
-	w.frames["First Frame"].addWidget(cPhone, (7, 2))
-	w.frames["First Frame"].addWidget(cPhone2, (8, 2))
 
 
-	w.frames["Second Frame"].addWidget(portr, (0, 0))
+
+
+	w.frames["Seventh Frame"].addWidget(portr, (0, 0))
 
 	w.attinfo = attinfo
 	#w.attinfo.deleteAll()
-	w.frames["Fifth Frame"].addWidget(w.attinfo, (0, 0))
-	w.frames["Fifth Frame"].grid(rowspan=100, sticky=W)
+	w.frames["Eleventh Frame"].addWidget(w.attinfo, (0, 0))
+	w.frames["Eleventh Frame"].grid(rowspan=100, sticky=W)
 
 	w.attinfo.editwidget=True
 	w.attinfo.canvas.config(width=500, height=500)
@@ -115,14 +148,14 @@ def main(lang, d, top=False, i=0):
 
 
 	sstudent = Buttonbox(text='savestudent', lang=w.lang, repr='sstudent')
-	w.frames["Third Frame"].addWidget(sstudent, (0, 0))
+	w.frames["Fifth Frame"].addWidget(sstudent, (0, 0))
 	sstudent.config(cmd=collect)
 
 	bclose = Buttonbox(text='close', lang=w.lang, repr='bclose')
-	w.frames["Third Frame"].addWidget(bclose, (0, 1))
+	w.frames["Fifth Frame"].addWidget(bclose, (0, 1))
 	bclose.config(cmd=t.destroy)
 
-	w.frames["Second Frame"].addWidget(brwp, (1, 0))
+	w.frames["Seventh Frame"].addWidget(brwp, (1, 0))
 	brwp.config(cmd=ppicker)
 
 	#set starting lang

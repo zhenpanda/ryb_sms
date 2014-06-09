@@ -218,6 +218,11 @@ def caddx(x):
 	cRemaining.setData(x)
 	sstype()
 
+def caddmorex(x):
+	cAwarded.setData(cAwarded.getData() + x)
+	cRemaining.setData(cRemaining.getData() + x)
+	sstype()
+
 
 #longtexts
 #findSchool = LongTextbox(text="How did you hear about the school?", lang=language, repr='findSchool')
