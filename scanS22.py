@@ -36,6 +36,7 @@ def main(t, lang, d):
 	w.frames["Seventh Frame"].grid(rowspan=2)
 	w.frames["Ninth Frame"].grid(rowspan=2, sticky=E)
 	w.frames["Tenth Frame"].grid(columnspan=5)
+	#w.frames["Tenth Frame"].columnconfigure(0, weight=5, minsize=1600)
 	#w.frames["First Frame"].grid(columnspan=5)
 	#w.frames["Sixth Frame"].grid(rowspan=2, sticky=N)
 
@@ -88,7 +89,7 @@ def main(t, lang, d):
 #special
 	spec = Labelbox(text='spec', lang=w.lang, repr='spec')
 	w.frames["Eigth Frame"].addWidget(spec, (20, 0))
-	spec.label.config(font=('Verdana', 15))
+	spec.label.config(font=('Verdana', 15), wraplength=200, justify=LEFT)
 	spec.label.grid(columnspan=2)
 
 	w.portr = portr = Photo(repr='portr', path='monet_sm.jpg')
