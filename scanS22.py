@@ -175,6 +175,8 @@ def main(t, lang, d):
 			if dp['tpa'] < dp['tpo']: tpo.entry.config(bg='red')
 			else: tpo.entry.config(bg='white')
 
+			sby.entry.delete(0, END)
+
 			if cs(d.studentList[w.s].datapoints['firstName'], w.lang): ss()
 		except:
 			nos(w.lang)
