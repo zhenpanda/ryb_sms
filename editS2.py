@@ -42,7 +42,8 @@ def main(lang, d, top=False, i=0):
 	#w.frames["Sixth Frame"].grid(rowspan=2, sticky=N)
 
 #student info widgets
-	Label(w.frames["First Frame"], text='Student information').grid(row=0, columnspan=2, sticky=E+W)
+	w.frames["First Frame"].addWidget(sinfo, (0, 0))
+	sinfo.label.grid(columnspan=2, sticky=E+W)
 	w.frames["First Frame"].addWidget(firstName, (1, 0))
 	w.frames["First Frame"].addWidget(lastName, (2, 0))
 	w.frames["First Frame"].addWidget(chineseName, (3, 0))
@@ -51,22 +52,24 @@ def main(lang, d, top=False, i=0):
 	w.frames["First Frame"].addWidget(parentName, (6, 0))
 
 #address widgets
-	Label(w.frames["Second Frame"], text='Address information').grid(row=0, columnspan=2, sticky=E+W)
-	w.frames["Second Frame"].addWidget(addr, (3, 0))
+	w.frames["Second Frame"].addWidget(ainfo, (0, 0))
+	ainfo.label.grid(columnspan=2, sticky=E+W)
 	w.frames["Second Frame"].addWidget(city, (4, 0))
 	w.frames["Second Frame"].addWidget(state, (5, 0))
 	w.frames["Second Frame"].addWidget(zip, (6, 0))
 	w.frames["Second Frame"].addWidget(email, (7, 0))
 
 #contact widgets
-	Label(w.frames["Third Frame"], text='Contact information').grid(row=0, columnspan=2, sticky=E+W)
+	w.frames["Third Frame"].addWidget(cinfo, (0, 0))
+	cinfo.label.grid(columnspan=2, sticky=E+W)
 	w.frames["Third Frame"].addWidget(pup, (1, 0))
 	w.frames["Third Frame"].addWidget(hPhone, (2, 0))
 	w.frames["Third Frame"].addWidget(cPhone, (3, 0))
 	w.frames["Third Frame"].addWidget(cPhone2, (4, 0))
 
 #database info widgets
-	Label(w.frames["Fourth Frame"], text='Class information').grid(row=0, columnspan=2, sticky=E+W)
+	w.frames["Fourth Frame"].addWidget(pinfo, (0, 0))
+	pinfo.label.grid(columnspan=2, sticky=E+W)
 	w.frames["Fourth Frame"].addWidget(bCode, (1, 0))
 	w.frames["Fourth Frame"].addWidget(sid, (2, 0))
 #payment widgets
@@ -78,6 +81,7 @@ def main(lang, d, top=False, i=0):
 	w.frames["Sixth Frame"].addWidget(sType, (4, 0))
 	w.frames["Sixth Frame"].addWidget(cAwarded, (5, 0))
 	w.frames["Sixth Frame"].addWidget(cRemaining, (6, 0))
+	w.frames["Sixth Frame"].addWidget(ctime, (7, 0))
 
 #notes widget
 	Label(w.frames["Ninth Frame"], text='Notes').grid(row=0, columnspan=2, sticky=E+W)
@@ -136,15 +140,46 @@ def main(lang, d, top=False, i=0):
 	print(s.datapoints['notes'])
 	w.populate(s.datapoints)
 
+	tdp = dict(w.collect(s.datapoints))
+
 	#if amount owed is larger than amount paid, color amount owed in red
 	if s.datapoints['tpa'] < s.datapoints['tpo']: tpo.entry.config(bg='red')
 
 	def collect():
+		if not changed():
+			t.destroy()
+			return
 		if not conS(s.datapoints['firstName'] + ' ' + s.datapoints['lastName'], w.lang): return
+
+		cbcode = dict(w.collect(s.datapoints))['bCode']
+		if s.datapoints['bCode'] != cbcode:
+			if not ase(d.studentList[cbcode].datapoints['firstName'], w.lang):
+				return
+			else:
+				dbcode = s.datapoints['bCode']
+				d.studentList[cbcode] = s
+				del d.studentList[dbcode]
+
 		s.datapoints = dict(list(s.datapoints.items()) + list(w.collect(s.datapoints).items()))
 		d.saveData()
 
 		t.destroy()
+
+
+	def changed():
+		ctdp = dict(w.collect(s.datapoints))
+		#print(ctdp)
+		for key in tdp.keys():
+			if ctdp[key] != tdp[key]:
+				return True
+		return False
+
+
+	def quit():
+		if not changed():
+			t.destroy()
+		elif ret('a', w.lang):
+			t.destroy()
 
 
 	sstudent = Buttonbox(text='savestudent', lang=w.lang, repr='sstudent')
@@ -153,7 +188,7 @@ def main(lang, d, top=False, i=0):
 
 	bclose = Buttonbox(text='close', lang=w.lang, repr='bclose')
 	w.frames["Fifth Frame"].addWidget(bclose, (0, 1))
-	bclose.config(cmd=t.destroy)
+	bclose.config(cmd=quit)
 
 	w.frames["Seventh Frame"].addWidget(brwp, (1, 0))
 	brwp.config(cmd=ppicker)

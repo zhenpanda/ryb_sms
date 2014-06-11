@@ -127,7 +127,7 @@ def main(t, lang, d):
 				for s in d.studentList:
 					if d.studentList[s].datapoints[sty] == sdp:
 						dp = d.studentList[s].datapoints
-						sl.append([dp['bCode'], dp['firstName'], dp['lastName'], dp['dob']])
+						sl.append([dp['bCode'], dp['firstName'], dp['lastName'], dp['chineseName']])
 
 
 				if len(sl) == 0:

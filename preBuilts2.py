@@ -23,6 +23,7 @@ addr = Textbox(text="Address", lang=language, repr='addr')
 state = Textbox(text="State", lang=language, repr='state')
 city = Textbox(text="City", lang=language, repr='city')
 wkdwknd = Textbox(text="Weekday/Weekend", lang=language, repr='wkdwknd')
+ctime = Textbox(text="Class time", lang=language, repr='ctime')
 email = Textbox(text="E-mail", lang=language, repr='email')
 sType = Textbox(text="Service Type", lang=language, repr='sType')
 hPhone = Textbox(text="Home Phone", lang=language, repr='hPhone')
@@ -88,6 +89,13 @@ sby = Picker(repr='sby', text=language['Search By'], rads=[(language['Barcode'],
 	(language['First Name'], 'firstName'), \
 	(language['Last Name'], 'lastName'), \
 	(language['Chinese Name'], 'chineseName')])
+
+
+#info titles
+sinfo = Labelbox(text='Student information', lang=language, repr='sinfo')
+ainfo = Labelbox(text='Address information', lang=language, repr='ainfo')
+cinfo = Labelbox(text='Contact information', lang=language, repr='cinfo')
+pinfo = Labelbox(text='Payment information', lang=language, repr='pinfo')
 
 
 #spicker

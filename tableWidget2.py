@@ -340,6 +340,7 @@ class Table(Widget):
 
 
 	def getData(self):
+		#should return table
 		return self.headers, self.data
 
 

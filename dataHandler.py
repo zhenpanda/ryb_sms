@@ -86,7 +86,8 @@ class StudentInfo:
             "findSchool": '',
             "notes": '',
             "attinfo": [['Date', 'Check-In Time', 'Class Time'], []],
-            "portr": ''
+            "portr": '',
+            "ctime": ''
             }
 
         self.dpalias = {
@@ -173,6 +174,9 @@ class StudentDB:
 
         #
         self.fcell = {1: lambda y: str(y), 2: lambda y: int(y), 3: lambda y: (datetime.strptime('1/1/1900', "%m/%d/%Y") + timedelta(days=y-2)).strftime("%m/%d/%y")}
+        self.setLast()
+
+       
 
         #try:
         #self.loadData()
@@ -181,8 +185,26 @@ class StudentDB:
         #    self.saveData()
         #    print("database could not be loaded, new database created")
         
-        
+    
+    def setLast(self):
+        try:
+            t = sorted(self.studentList.keys())[-1]
+            self.pre = t[:3]
+            self.last = int(t[4:7] + t[8:]) + 1
+            #print(self.pre, self.last)
+        except:
+            self.pre = 'UNK'
+            self.last = 0
+            pass  
 
+
+    def formatCode(self):
+        t = str(self.last)
+        while len(t) < 6:
+            t = '0' + t
+        t = self.pre + '-' + t[:3] + '-' + t[3:]
+
+        return t
 
 
     def checkDate(self, barcode):
@@ -238,6 +260,7 @@ class StudentDB:
 
     def addStudent(self, barcode, student):
         self.studentList[barcode] = student
+        self.last += 1
 
     #def edit_student(self, barcode, student_attr):
         #self.studentList[barcode].student_attr = student_attr
@@ -249,6 +272,7 @@ class StudentDB:
 
     def loadData(self):
         self.studentList = pickle.load(open(self.file, "rb"))
+        self.setLast()
 
 
     def format(self, ctype, value):

@@ -47,7 +47,8 @@ def main(t, lang, d):
 	w.frames["Tenth Frame"].addWidget(sby, (0, 0))
 
 #student info widgets
-	Label(w.frames["First Frame"], text='Student information').grid(row=0, columnspan=2, sticky=E+W)
+	w.frames["First Frame"].addWidget(sinfo, (0, 0))
+	sinfo.label.grid(columnspan=2, sticky=E+W)
 	w.frames["First Frame"].addWidget(firstName, (1, 0))
 	w.frames["First Frame"].addWidget(lastName, (2, 0))
 	w.frames["First Frame"].addWidget(chineseName, (3, 0))
@@ -56,7 +57,8 @@ def main(t, lang, d):
 	w.frames["First Frame"].addWidget(parentName, (6, 0))
 
 #address widgets
-	Label(w.frames["Second Frame"], text='Address information').grid(row=0, columnspan=2, sticky=E+W)
+	w.frames["Second Frame"].addWidget(ainfo, (0, 0))
+	ainfo.label.grid(columnspan=2, sticky=E+W)
 	w.frames["Second Frame"].addWidget(addr, (3, 0))
 	w.frames["Second Frame"].addWidget(city, (4, 0))
 	w.frames["Second Frame"].addWidget(state, (5, 0))
@@ -64,14 +66,16 @@ def main(t, lang, d):
 	w.frames["Second Frame"].addWidget(email, (7, 0))
 
 #contact widgets
-	Label(w.frames["Third Frame"], text='Contact information').grid(row=0, columnspan=2, sticky=E+W)
+	w.frames["Third Frame"].addWidget(cinfo, (0, 0))
+	cinfo.label.grid(columnspan=2, sticky=E+W)
 	w.frames["Third Frame"].addWidget(pup, (1, 0))
 	w.frames["Third Frame"].addWidget(hPhone, (2, 0))
 	w.frames["Third Frame"].addWidget(cPhone, (3, 0))
 	w.frames["Third Frame"].addWidget(cPhone2, (4, 0))
 
 #database info widgets
-	Label(w.frames["Fourth Frame"], text='Class information').grid(row=0, columnspan=2, sticky=E+W)
+	w.frames["Fourth Frame"].addWidget(pinfo, (0, 0))
+	pinfo.label.grid(columnspan=2, sticky=E+W)
 #payment widgets
 	w.frames["Fourth Frame"].addWidget(tpd, (3, 0))
 	w.frames["Fourth Frame"].addWidget(tpa, (4, 0))
@@ -81,6 +85,7 @@ def main(t, lang, d):
 	w.frames["Fourth Frame"].addWidget(sType, (6, 0))
 	w.frames["Fourth Frame"].addWidget(cAwarded, (7, 0))
 	w.frames["Fourth Frame"].addWidget(cRemaining, (8, 0))
+	w.frames["Fourth Frame"].addWidget(ctime, (9, 0))
 
 #notes widget
 	Label(w.frames["Ninth Frame"], text='Notes').grid(row=0, columnspan=2, sticky=E+W)
@@ -123,7 +128,7 @@ def main(t, lang, d):
 				for s in d.studentList:
 					if d.studentList[s].datapoints[sty] == sdp:
 						dp = d.studentList[s].datapoints
-						sl.append([dp['bCode'], dp['firstName'], dp['lastName'], dp['dob']])
+						sl.append([dp['bCode'], dp['firstName'], dp['lastName'], dp['chineseName']])
 
 
 				if len(sl) == 0:
