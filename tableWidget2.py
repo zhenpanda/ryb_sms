@@ -96,6 +96,7 @@ class Table(Widget):
 	def config(self, **kwargs):
 		pass
 
+
 	def edit(self, pos):
 
 		if not self.editwidget: return
@@ -324,6 +325,8 @@ class Table(Widget):
 		self.parent.bind("<Configure>", self.makeScroll)
 		self.resize()
 
+		if len(self.cells) == 1 and (1, 0) in self.cells:
+			self.cells[(1, 0)].label.grid_forget()
 		#try:
 		#	for cell in self.cells.values():
 		#		cell.config(bind=('<Double-Button-1>', self.edit))

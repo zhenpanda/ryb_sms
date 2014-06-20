@@ -1,0 +1,7 @@
+To fix
+
+1. if student barcode changes
+	and student barcode does not exist in database
+	save student
+
+2. 

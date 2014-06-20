@@ -2,19 +2,22 @@ from uiHandler22 import *
 from dataHandler import *
 from preBuilts2 import *
 import importwiz
+import os
 
 
 def main(t, lang, d):
 
 	def cdb():
 		try:
-			p = filedialog.askopenfile(mode='r').name.split('/')[-1]
+			p = filedialog.askopenfile(mode='r').name
+			y = os.path.abspath(p)
+			p = p.split('/')[-1]
 			if p[p.rfind('.'):]!= '.db':
 				print("invalid file")
 				return
 			else:
-				curdb.config(text=p)
-				d.file = p
+				curdb.config(text=y)
+				d.file = y
 				#d.loadData()
 		except:
 			print("error opening file.")
@@ -57,28 +60,36 @@ def main(t, lang, d):
 	w.lang = lang
 
 #frame initialization
+	w.newFrame("Title Frame", (0, 0))
 	w.newFrame("First Frame", (1, 0))
 	w.newFrame("Fifth Frame", (2, 0))
 	w.newFrame("Second Frame", (3, 0))
 	w.newFrame("Third Frame", (1, 1))
 	w.newFrame("Fourth Frame", (4, 1))
 
+	w.frames["Third Frame"].grid(rowspan=3)
+
+#title
+	w.frames["Title Frame"].grid(columnspan=4, sticky=E+W)
+	Label(w.frames["Title Frame"], text='Database Management', bg='#3B5C8D', fg='white', \
+		height=3, font=('Jumbo', '12', 'bold')).pack(fill='both', expand=True)
+
 #import export widgets
 	w.frames["First Frame"].addWidget(imp, (0, 0))
-	w.frames["First Frame"].addWidget(sepr, (1, 0))
+	#w.frames["First Frame"].addWidget(sepr, (1, 0))
 	w.frames["First Frame"].addWidget(bimp, (2, 0))
 
 	w.frames["Fifth Frame"].addWidget(impt, (0, 0))
-	w.frames["Fifth Frame"].addWidget(sepr, (1, 0))
+	#w.frames["Fifth Frame"].addWidget(sepr, (1, 0))
 	w.frames["Fifth Frame"].addWidget(bimpt, (2, 0))
 
 	w.frames["Second Frame"].addWidget(exp, (0, 0))
-	w.frames["Second Frame"].addWidget(sepr, (1, 0))
+	#w.frames["Second Frame"].addWidget(sepr, (1, 0))
 	w.frames["Second Frame"].addWidget(bexp, (2, 0))
 
-	curdb = Label(w.frames['Third Frame'], text=d.file)
+	curdb = Label(w.frames['Third Frame'], text=d.file, wraplength=200)
 	w.frames["Third Frame"].addWidget(curfile, (0, 0))
-	curdb.grid(row=1, column=0)
+	curdb.grid(row=1, column=0, pady=10)
 
 	w.frames["Third Frame"].addWidget(bcdb, (2, 0))
 

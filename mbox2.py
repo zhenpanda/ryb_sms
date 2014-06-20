@@ -26,7 +26,7 @@ class Mbox(AppWindow):
 		self.root.geometry('+' + str(w) + '+' + str(h))
 		self.root.config(bg="#9FB6CD")
 
-		self.mainFrame = Frame(self.root, bg='grey', bd=10)
+		self.mainFrame = Frame(self.root)#, bg='grey', bd=10)
 		self.mainFrame.pack(fill=Y, expand=1, anchor=S)
 
 

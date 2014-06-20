@@ -3,60 +3,13 @@ import keeper
 import pickle
 import xlrd
 
-#log all changes
-
-
-
-
-
-
-#colorCode = {5: {time(10, 59): "#ff00ff",
-#                 time(12, 29): "#9900ff",
-#                 time(14, 29): "#073763",
-#                 time(15, 59): "#0000ff",
-#                 time(17, 29): "#4a86e8",
-#                 time(23, 59): "#000000"},
-#             
-#             6: {time(10, 59): "#ff0000",
-#                 time(12, 29): "#980000",
-#                 time(14, 29): "#783f04",
-#                 time(15, 59): "#274e13",
-#                 time(17, 29): "#6aa84f",
-#                 time(23, 59): "#000000"},
-#
-#             0: {time(23, 59): "#000000"},
-#             1: {time(23, 59): "#000000"},
-#             2: {time(23, 59): "#000000"},
-#             3: {time(23, 59): "#000000"},
-#             4: {time(23, 59): "#000000"}}
-#
-#sortedColorCode = {key: [t for t in value] for (key, value) in colorCode.items()}
-#for v in sortedColorCode.values(): v.sort()
-
-
-
+#sched feature to add: log all changes
 
 class StudentInfo:
 
-    '''
-
-    Class info: Handles information of students.
-
-    student_attr:
-        DICTIONARY of student attributes.
-        Correlates to "fields".
-
-    attendance:
-        LIST of attendance dates and times.
-
-    add_attendance():
-        Appends to "attendance" as a 2D array,
-        current date and time.
-
-    '''
-
     def __init__(self):
         self.datapoints = {
+            #datapoints to of each student
             "lastName": '',
             "firstName": '',
             "chineseName": '',
@@ -79,6 +32,7 @@ class StudentInfo:
             "tpd": '1/1/1900',
             "tpa": 0,
             "tpo": 0,
+            "tp": 0,
             "email": '',
             "sType": '',
             "cAwarded": 0,
@@ -87,10 +41,13 @@ class StudentInfo:
             "notes": '',
             "attinfo": [['Date', 'Check-In Time', 'Class Time'], []],
             "portr": '',
-            "ctime": ''
+            "ctime": '',
+            "expire": 'N/A',
+            "cp": "N"
             }
 
         self.dpalias = {
+            #import aliases
             "Last Name": "lastName",
             "First Name": "firstName",
             "Chinese Name": "chineseName",
@@ -119,86 +76,46 @@ class StudentInfo:
             "Classes Awarded": "cAwarded",
             "Classes Remaining": "cRemaining",
             "How did you hear about the school?": "findSchool",
-            "Notes": "notes"
-        }
+            "Notes": "notes",
+            "Already Paid": "tp",
+            "Card Printed": "cp"
+            }
 
 
 class StudentDB:
 
-    '''
-
-    Class info: Handles student database.
-
-    studentList:
-        DICTIONARY item of students.
-        Key = barcode
-        Value = StudentInfo
-
-    scan_student:
-        Scans the students by calling the
-        "add_attendance()" function of StudentInfo.
-
-    add_student:
-        Adds a new student to the "studentList".
-
-        ##needs fix, should ask for confirmation in UI
-        If the barcode already exists, it will
-        overwrite the existing student.
-
-    pickle_list:
-        Pickles "studentList" for storage into a file.
-
-    unpickle_list:
-        Unpickles filename and stores it in "studentList".
-
-    export:
-        Exports the list into an Excel(xls) file.
-
-    import:
-        ##not implemented yet
-        Imports an Excel (xls) file.
-
-    '''
-
     def __init__(self, **kwargs):
         self.file = kwargs['file']
-        self.cfile = kwargs['cfile']
         
         try:
+            #load data on call from self.file
             self.loadData()
         except:
+            #create the file in the directory of self.file when not in databse
             self.studentList = {}
             self.saveData()
             print(self.file + " file not found, new file was created")
    
-
-        #
+        #cell modifier code for import
         self.fcell = {1: lambda y: str(y), 2: lambda y: int(y), 3: lambda y: (datetime.strptime('1/1/1900', "%m/%d/%Y") + timedelta(days=y-2)).strftime("%m/%d/%y")}
         self.setLast()
-
-       
-
-        #try:
-        #self.loadData()
-        #    print("database loaded")
-        #except:
-        #    self.saveData()
-        #    print("database could not be loaded, new database created")
         
     
     def setLast(self):
+        #set the last barcode
         try:
             t = sorted(self.studentList.keys())[-1]
             self.pre = t[:3]
             self.last = int(t[4:7] + t[8:]) + 1
-            #print(self.pre, self.last)
         except:
+            #if barcode could not be parsed, use UNK (unknown)
             self.pre = 'UNK'
             self.last = 0
             pass  
 
 
     def formatCode(self):
+        #format the new last code
         t = str(self.last)
         while len(t) < 6:
             t = '0' + t
@@ -208,6 +125,8 @@ class StudentDB:
 
 
     def checkDate(self, barcode):
+        #check if student was checked in today
+        #currently not in use
         checkedInToday = 0
 
         today = '{:%m/%d/%Y}'.format(datetime.now())
@@ -222,6 +141,7 @@ class StudentDB:
 
 
     def findTimeSlot(self, time):
+        #find the time slot for the student according to scan in time
         h, m, p = '{:%I}'.format(time), '{:%M}'.format(time), '{:%p}'.format(time)
         m = int(m)
 
@@ -236,34 +156,65 @@ class StudentDB:
         return h + ':' + m + ' ' + p
 
 
+    def calcAge(self, dob):
+        #calculate the age using the birthdate
+        try:
+            age = datetime.now() - datetime.strptime(dob, "%m/%d/%Y")
+        except:
+            age = datetime.now() - datetime.strptime(dob, "%m/%d/%y")
+        return int(age.total_seconds() / 60 / 60 / 24 / 365)
+
+
+    def calcExpir(self, start, rem):
+        #calculate expiration of classes
+        #currently, each class can be completed with 14 days
+        return start + timedelta(days=rem*14)
+
+
     def scanStudent(self, barcode, xtra=False):
-        #try:
-        cdt = datetime.now()
+        try:
+            #scan the current student in
+            cdt = datetime.now()
 
-        timeslot = self.findTimeSlot(cdt)
-        time = '{:%I:%M %p}'.format(cdt)
-        date = '{:%m/%d/%Y}'.format(cdt)
+            timeslot = self.findTimeSlot(cdt)
+            time = '{:%I:%M %p}'.format(cdt)
+            date = '{:%m/%d/%Y}'.format(cdt)
 
-        data = [date, time, timeslot]
-        if xtra: data.append(xtra)
+            data = [date, time, timeslot]
+            if xtra: data.append(xtra)
 
-        s = self.studentList[barcode].datapoints
-        s['attinfo'][1].append(data)
-        s['cRemaining'] -= 1
-        if s['cRemaining'] < 0: s['cRemaining'] = 0
-        #except:
-            #return print("Student doesn't exist")
+            s = self.studentList[barcode].datapoints
+            s['attinfo'][1].append(data)
+            s['cRemaining'] -= 1
+            if s['cRemaining'] < 0: s['cRemaining'] = 0
+        except:
+            return print("Student doesn't exist")
 
 
     def checkCode(self, barcode):
+        #check if barcode exists
+        ##bugfix 1
         return barcode in self.studentList
 
     def addStudent(self, barcode, student):
+        #add a student to the database by the barcode
         self.studentList[barcode] = student
-        self.last += 1
+        dp = self.studentList[barcode].datapoints
+        
+        try:
+            #calculate the age
+            dp['age'] = self.calcAge(dp['dob'])
+        except:
+            dp['age'] = 0
+        
+        try:
+            #calculate the expiration
+            dp['expire'] = self.calcExpir(datetime.now().date(), dp['cAwarded'])
+        except:
+            pass
 
-    #def edit_student(self, barcode, student_attr):
-        #self.studentList[barcode].student_attr = student_attr
+        #increment the last barcode
+        self.last += 1
 
 
     def saveData(self):
@@ -276,6 +227,7 @@ class StudentDB:
 
 
     def format(self, ctype, value):
+        #format cell for import
         try:
             return self.fcell[ctype](value)
         except:
@@ -290,7 +242,7 @@ class StudentDB:
 
 
     def importxlsx(self, filename):        
-
+        #import database from xlsx or xls file
         workbook = xlrd.open_workbook(filename)
         worksheet = workbook.sheet_by_index(0)
 
@@ -299,6 +251,7 @@ class StudentDB:
             repr[headers.index(h)] = StudentInfo().dpalias[h]
 
 
+        #raw cell data and formatted cell data
         sraw = [worksheet.row(rx) for rx in range(1, worksheet.nrows)]
         sinfo = [[self.format(cell.ctype, cell.value) for cell in row] for row in sraw]
 
@@ -307,19 +260,21 @@ class StudentDB:
             for dp in info:
                 newS.datapoints[repr[info.index(dp)]] = dp
             newS.datapoints['attinfo'][0] = ['Date', 'Time', 'Check-In Time']
+            print(newS.datapoints['dob'])
+            try:
+                newS.datapoints['age'] = self.calcAge(newS.datapoints['dob'])
+            except:
+                newS.datapoints['age'] = 0
+
+            #error-zone: set for school code
             if newS.datapoints['bCode'][:3] != 'FLU': continue
             self.addStudent(newS.datapoints['bCode'], newS)
 
-
-        #print(repr, headers, sinfo)
-
         self.saveData()
-
-        return
 
 
     def importtimexlsx(self, filename):
-
+        #import time data from xlsx or xls
         workbook = xlrd.open_workbook(filename)
         worksheet = workbook.sheet_by_index(0)
 
@@ -355,7 +310,6 @@ class StudentDB:
 
                 ftdata.append([date, '', time])
 
-            #print(bCode, ftdata)
             dp = self.studentList[bCode].datapoints
             
             dp['cAwarded'] = cAward
@@ -366,36 +320,26 @@ class StudentDB:
             dp['attinfo'] = []
             dp['attinfo'].append(['Date', 'Check-In Time', 'Class Time'])
             dp['attinfo'].append(ftdata)
+            try:
+                if len(ftdata) >= 0:
+                    dp['expire'] = self.calcExpir(datetime.strptime(ftdata[0][0], "%m/%d/%y"), cAward)
+                else:
+                    dp['expire'] = self.calcExpir(datetime.strptime(dp['tpd'], "%m/%d/%Y"), cAward)
+            except:
+                pass
+
+            print(dp['expire'])
 
             ns += 1
             nt += len(ftdata)
 
-            #print(self.studentList[bCode].datapoints['attinfo'])
-            #for data in ftdata:
-                
-
-
-            #for dp in info:
-             #   newS.datapoints[repr[info.index(dp)]] = dp
-           #self.addStudent(newS.datapoints['bCode'], newS)
-
-
-        #print(repr, headers, sinfo)
-
         self.saveData()
 
+        #return the amount of students and amount time data added
         return ns, nt
 
 
-
-    #def modData(self):
-    #    self.loadData()
-    #    self.saveData()
-    #    self.loadData()
-        
-
-
-
+#testing zone
 #Pull settings.
 #settings = Settings()
 

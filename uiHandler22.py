@@ -1,4 +1,6 @@
 from tkinter import *
+import os.path
+from PIL import Image, ImageTk
 
 
 
@@ -10,7 +12,7 @@ class AppFrame(Frame):
 
 		self.curRow = 0
 		self.curColumn = 0
-		#self.config(bg='grey')
+		#self.config(bg='grey') #debugger
 
 		#widgets
 		self.widgets = {}
@@ -27,7 +29,7 @@ class AppWindow(Frame):
 		self.parent = parent
 
 		self.oframe = Frame(self)
-		self.mainFrame = Frame(self.oframe, bd=20)
+		self.mainFrame = Frame(self.oframe)#, bd=20)
 		self.oframe.pack(fill="both", expand=True)
 		self.mainFrame.place(in_=self.oframe, anchor="c", relx=.5, rely=.5)
 
@@ -101,12 +103,34 @@ class Window(Tk):
 		#self.title(title)
 		#self.geometry(geometry)
 		#self.attributes('-alpha', 0.9)
-		self.config(bg="grey", bd=2)
+		#self.config(bg="black")#, bd=25)
 		self.attributes('-fullscreen', True)
 
+		self.pic = Image.open('bigbl.jpg')
+		self.img = ImageTk.PhotoImage(self.pic)
+
+
 		self.oframe = Frame(self)
-		self.mainFrame = Frame(self.oframe)
-		self.oframe.pack(fill="both", expand=True, padx=20, pady=20)
+
+		#bg
+		Label(self.oframe, image=self.img).place(x=-5, y=-5, in_=self.oframe)
+
+		self.mainFrame = Frame(self.oframe)#, bd=1, bg='lightgrey')
+
+#title frame and x button START
+		self.titleFrame = Frame(self.mainFrame, bg="#FFFFFF", height=60)
+		self.titleFrame.pack(fill=X)
+
+		#self.winName = Label(self.titleFrame, bg='#142C5C', font=('Verdana', 11), fg='white')
+		#self.winName.place(in_=self.titleFrame, anchor='c', relx=.5, rely=.5)
+		#self.exit = Label(self.titleFrame, bg='#B20000', fg='white', text='  ×  ', font=('Arial', 12, 'bold'))
+		#self.exit.place(in_=self.titleFrame, anchor='c', relx=.987, rely=.48)
+
+		#self.exit.bind('<Enter>', lambda e: self.exit.config(bg='red'))
+		#self.exit.bind('<Leave>', lambda e: self.exit.config(bg='#B20000'))
+#title frame and x button END
+
+		self.oframe.pack(fill="both", expand=True)#, padx=20, pady=20)
 		self.mainFrame.place(in_=self.oframe, anchor="c", relx=.5, rely=.5)
 
 		self.oframe.config(bg="#FFF5EE")
@@ -125,8 +149,3 @@ if __name__ == "__main__":
 	w = Window()
 
 	w.mainloop()
-
-
-
-
-

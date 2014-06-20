@@ -33,12 +33,15 @@ def main(t, lang, d):
 		except:
 			print("cells could not be bound")
 
-#
-	w.newFrame("First Frame", (0, 0))
-	w.newFrame("Second Frame", (1, 0))
-	w.newFrame("Third Frame", (1, 1))
-	w.newFrame("Fourth Frame", (3, 1))
-	w.newFrame("Fifth Frame", (2, 0))
+#frame initialization
+	w.newFrame("First Frame", (1, 0))
+	w.newFrame("Second Frame", (2, 0))
+	w.newFrame("Third Frame", (2, 1))
+	w.newFrame("Fourth Frame", (4, 1))
+	w.newFrame("Fifth Frame", (3, 0))
+
+	w.frames["Second Frame"].rowconfigure(0, weight=5, minsize=570)
+	w.frames["Second Frame"].columnconfigure(0, weight=5, minsize=730)
 
 #
 	w.frames["Fifth Frame"].grid(columnspan=3)
@@ -50,13 +53,25 @@ def main(t, lang, d):
 #buttons for scrolling db
 	fward = Buttonbox(text='>> Next 30 >>', lang=w.lang, repr='>>')
 	bward = Buttonbox(text='<< Previous 30 <<', lang=w.lang, repr='<<')
+	blast = Buttonbox(text='>>> Last Page >>>', lang=w.lang, repr='>>>')
 	w.frames["Fifth Frame"].addWidget(fward, (1, 1))
 	w.frames["Fifth Frame"].addWidget(bward, (1, 0))
+	w.frames["Fifth Frame"].addWidget(blast, (1, 2))
 
+	fward.config(width=17)
+	bward.config(width=17)
+	blast.config(width=17)
+
+	fward.selfframe.grid(padx=2)
+	bward.selfframe.grid(padx=2)
+	blast.selfframe.grid(padx=2)
 
 	w.frames["Second Frame"].addWidget(w.sT, (2, 0))
+	w.sT.canvas.config(width=700, height=580)
 
-	sby.rads=[('Barcode', 'bCode'), ('First Name', 'firstName'), ('Last Name', 'lastName'), ('Chinese Name', 'chineseName')]
+	#sby.rads=[('Barcode', 'bCode'), ('First Name', 'firstName'), \
+	#	('Last Name', 'lastName'), ('Chinese Name', 'chineseName'), \
+	#	('Phone Number', 'phoneNumber')]
 
 	sL = [[]]
 	for s in d.studentList.values():
@@ -86,7 +101,7 @@ def main(t, lang, d):
 
 		w.sT.build(headers=stableh, data=sL[p])
 		w.frames["Second Frame"].addWidget(w.sT, (2, 0))
-		w.sT.canvas.config(width=700, height=700)
+		w.sT.canvas.config(width=700, height=550)
 		sTbind(lambda i: editS2.main(w.lang, top=True, i=i, d=d))
 		
 		#w.sT.setData((stableh, sL[p]))
@@ -102,12 +117,16 @@ def main(t, lang, d):
 		if w.pNum == 1: return
 		toPage(w.pNum - 1)
 		w.pNum = w.pNum - 1
-		
+
+	def l():
+		w.pNum = len(sL) - 1
+		toPage(w.pNum)	
 
 	if len(sL[0]) > 30:
 		toPage(1)
 		fward.config(cmd=f)
 		bward.config(cmd=b)
+		blast.config(cmd=l)
 	else:
 		toPage(0)
 #
@@ -125,8 +144,17 @@ def main(t, lang, d):
 				sl = []
 
 				for s in d.studentList:
-					if d.studentList[s].datapoints[sty] == sdp:
+					dp = False
+					if sty == 'phoneNumber':
+						if d.studentList[s].datapoints['hPhone'] == sdp or \
+							d.studentList[s].datapoints['cPhone'] == sdp or \
+							d.studentList[s].datapoints['cPhone2'] == sdp:
+							dp = d.studentList[s].datapoints
+
+					elif d.studentList[s].datapoints[sty] == sdp:
 						dp = d.studentList[s].datapoints
+					
+					if dp:
 						sl.append([dp['bCode'], dp['firstName'], dp['lastName'], dp['chineseName']])
 
 

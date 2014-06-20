@@ -54,8 +54,6 @@ class Textbox(Widget):
 		except:
 			print("widget could not be placed")
 
-		#self.textvar = StringVar()
-		#self.textvar.set(self.text)
 		self.label = Label(self.parent, text=self.lang[self.text], width=15, anchor=E)
 		self.entry = Entry(self.parent, relief=SOLID)
 
@@ -102,10 +100,6 @@ class IntTextbox(Textbox):
 			return int(e)
 		except:
 			return 0
-
-	#def bind(self):
-	#	vcmd = (self.parent.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
-	#	self.entry.config(validate="all", validatecommand=vcmd)
 
 
 class Datebox(IntTextbox):
@@ -355,12 +349,7 @@ class LongTextbox(Textbox):
 	def setData(self, data):
 		self.sentry.delete('1.0', END)
 		self.config(text=data)
-
-	#def setData(self, data):
-		#self.sentry.delete('1.0', END)
-		#self.sentry.insert(END, self.text)
-		#self.config(text=data)
-
+		
 
 class Labelbox(Textbox):
 
@@ -472,9 +461,13 @@ class Buttonbox(Textbox):
 			self.args = inspect.getargspec(kwargs['cmd']).args
 			#print(inspect.getargspec(kwargs['cmd']).args)
 			if len(self.args) > 0 and self.args[0] != 'self':
-				self.button.bind('<ButtonRelease-1>', self.cmd)	
+				self.button.bind('<ButtonRelease-1>', self.cmd)
+				self.button.bind('<Return>', self.cmd)
+				self.button.bind('<space>', self.cmd)
 			else:
 				self.button.bind('<ButtonRelease-1>', lambda e: self.cmd())
+				self.button.bind('<Return>', lambda e: self.cmd())
+				self.button.bind('<space>', lambda e: self.cmd())
 		except:
 			pass
 

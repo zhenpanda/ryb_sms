@@ -59,7 +59,8 @@ def main(lang, d):
 			pass
 
 	def sav():
-		f = fpath2.getData().split('/')[-1] + '.db'
+		#f = fpath2.getData().split('/')[-1] + '.db'
+		f = fpath2.getData() + '.db'
 		nd = StudentDB(file=f, cfile='')
 		
 		if f == '.db':
@@ -106,7 +107,7 @@ def main(lang, d):
 	w.frames["Sixth Frame"].grid_forget()
 
 
-	Label(w.frames["First Frame"], text="Welcome to the Import wizard.\n\n\nPlease select the xls or xlsx file below.\nThen click Next.", justify=LEFT).grid()
+	Label(w.frames["First Frame"], text="Welcome to the Import wizard.\n\n1. Please select the xls or xlsx file below.\n2. Then click Next.", justify=LEFT).grid()
 
 	w.fpath = fpath
 
@@ -114,20 +115,21 @@ def main(lang, d):
 	w.bsav = bsav
 
 	w.frames["Second Frame"].addWidget(w.fpath, (0, 0))
-	w.frames["Second Frame"].addWidget(brw, (0, 3))
+	#w.frames["Second Frame"].addWidget(sepr, (2, 0))
+	w.frames["Second Frame"].addWidget(brw, (0, 2))
 	w.frames["Third Frame"].addWidget(nxt, (0, 1))
 	w.frames["Fourth Frame"].addWidget(w.stable, (0, 0))
 	w.frames["Fifth Frame"].addWidget(fpath2, (0, 0))
 	w.frames["Fifth Frame"].addWidget(brw2, (0, 3))
-	w.frames["Fifth Frame"].addWidget(sepr, (1, 0))
-	w.frames["Sixth Frame"].addWidget(bk, (2, 0))
-	w.frames["Sixth Frame"].addWidget(w.bsav, (2, 1))
+	w.frames["Fifth Frame"].addWidget(sepr, (2, 0))
+	w.frames["Sixth Frame"].addWidget(bk, (3, 0))
+	w.frames["Sixth Frame"].addWidget(w.bsav, (3, 1))
 
 	bcancel1 = Buttonbox(text='Cancel', lang=w.lang, repr='cancel')
 	bcancel2 = Buttonbox(text='Cancel', lang=w.lang, repr='cancel')
 
 	w.frames["Third Frame"].addWidget(bcancel1, (0, 2))
-	w.frames["Sixth Frame"].addWidget(bcancel2, (2, 2))
+	w.frames["Sixth Frame"].addWidget(bcancel2, (3, 2))
 
 	brw.config(cmd=odb)
 	brw2.config(cmd=pdb)
@@ -137,20 +139,21 @@ def main(lang, d):
 	bcancel1.config(cmd=t.destroy)
 	bcancel2.config(cmd=t.destroy)
 
-	brw.button.config(width=12)
-	brw.button.grid(padx=10)
-	brw2.button.config(width=12)
-	brw2.button.grid(padx=10)
+	w.fpath.label.config(anchor=N)
+	brw.button.config(width=12, pady=1)
+	brw.selfframe.grid(padx=10, columnspan=2)
+	brw2.button.config(width=12, pady=1)
+	brw2.selfframe.grid(padx=10)
 	bk.button.config(width=10)
-	bk.button.grid(padx=10)
+	bk.selfframe.grid(padx=10)
 	nxt.button.config(width=10)
-	nxt.button.grid(padx=10)
+	nxt.selfframe.grid(padx=10)
 	w.bsav.button.config(width=10)
-	w.bsav.button.grid(padx=10)
+	w.bsav.selfframe.grid(padx=10)
 	bcancel1.button.config(width=10)
-	bcancel1.button.grid(padx=10)
+	bcancel1.selfframe.grid(padx=10)
 	bcancel2.button.config(width=10)
-	bcancel2.button.grid(padx=10)
+	bcancel2.selfframe.grid(padx=10)
 
 #set starting lang
 	for frame in w.frames.values():
