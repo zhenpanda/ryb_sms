@@ -2,6 +2,7 @@ from datetime import datetime, time, timedelta
 import keeper
 import pickle
 import xlrd
+import xlsxwriter
 
 #sched feature to add: log all changes
 
@@ -81,6 +82,15 @@ class StudentInfo:
             "Card Printed": "cp"
             }
 
+        self.ordereddp = ['bCode', 'sid', 'firstName', 'lastName', 'chineseName', 'parentName', 'pup', 'gender', 'dob', 'addr', 'state', 'city',\
+            'zip', 'cPhone', 'cPhone2', 'hPhone', 'tpd', 'tpa', 'email', 'findSchool', 'cp']
+
+        self.revdpalias = {}
+        for key, value in self.dpalias.items():
+            self.revdpalias[value] = key
+
+        self.ordereddpalias = [self.revdpalias[key] for key in self.ordereddp]
+
 
 class StudentDB:
 
@@ -97,7 +107,7 @@ class StudentDB:
             print(self.file + " file not found, new file was created")
    
         #cell modifier code for import
-        self.fcell = {1: lambda y: str(y), 2: lambda y: int(y), 3: lambda y: (datetime.strptime('1/1/1900', "%m/%d/%Y") + timedelta(days=y-2)).strftime("%m/%d/%y")}
+        self.fcell = {1: lambda y: str(y), 2: lambda y: int(y), 3: lambda y: (datetime.strptime('1/1/1900', "%m/%d/%Y") + timedelta(days=y-2)).strftime("%m/%d/%Y")}
         self.setLast()
         
     
@@ -196,6 +206,7 @@ class StudentDB:
         ##bugfix 1
         return barcode in self.studentList
 
+
     def addStudent(self, barcode, student):
         #add a student to the database by the barcode
         self.studentList[barcode] = student
@@ -237,8 +248,66 @@ class StudentDB:
 
 
     def exportxlsx(self, filename):
-        #to excel file
-        return
+        if len(self.studentList) == 0: return
+
+        workbook = xlsxwriter.Workbook(filename)
+        worksheet = workbook.add_worksheet()
+
+        c = 0
+
+        ss = StudentInfo()
+        for dpalias in ss.ordereddpalias:
+            worksheet.write(0, c, dpalias)
+            c += 1
+
+        r = 1
+        for student in self.studentList.values():
+            c = 0
+            for dp in student.ordereddp:
+                worksheet.write(r, c, student.datapoints[dp])
+                c += 1
+            r += 1
+
+        workbook.close()
+
+
+    def exporttxlsx(self, filename):
+        if len(self.studentList) == 0: return
+
+        workbook = xlsxwriter.Workbook(filename)
+        worksheet = workbook.add_worksheet()
+
+        ss = StudentInfo()
+        dptd = ['bCode', 'firstName', 'lastName', 'cAwarded']
+
+        c = 0
+        for dp in dptd:
+            worksheet.write(0, c, ss.revdpalias[dp])
+            c += 1
+
+        for i in range(1, 100):
+            worksheet.write(0, c, i)
+            c += 1
+
+        r = 1
+        for student in self.studentList.values():
+            c = 0
+            for dp in dptd:
+                worksheet.write(r, c, student.datapoints[dp])
+                c += 1
+
+            #print(student.datapoints['attinfo'])
+            if len(student.datapoints['attinfo']) == 2 and student.datapoints['attinfo'][1] == []:
+                r += 1
+                continue
+            
+            for att in student.datapoints['attinfo'][1]:
+                worksheet.write(r, c, att[0] + ' ' + att[2])
+                c += 1
+
+            r += 1
+
+        workbook.close()
 
 
     def importxlsx(self, filename):        
@@ -265,6 +334,11 @@ class StudentDB:
                 newS.datapoints['age'] = self.calcAge(newS.datapoints['dob'])
             except:
                 newS.datapoints['age'] = 0
+
+            try:
+                newS.datapoints['tp'] = newS.datapoints['tpa']
+            except:
+                newS.datapoints['tp'] = 0
 
             #error-zone: set for school code
             if newS.datapoints['bCode'][:3] != 'FLU': continue

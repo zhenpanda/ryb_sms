@@ -15,8 +15,8 @@ def main(t, lang, d):
 
 #sT
 	w.sT = Table(repr='stable', edit=False)
-	stableh = [language['Barcode'], language['First Name'], \
-	language['Last Name'], language['Chinese Name'], language['Date of Birth']]
+	stableh = [w.lang['Barcode'], w.lang['First Name'], \
+	w.lang['Last Name'], w.lang['Chinese Name'], w.lang['Date of Birth']]
 	w.sT.build(headers=stableh, data=[[]])
 
 	def sTbind(f):
@@ -43,11 +43,17 @@ def main(t, lang, d):
 	w.frames["Second Frame"].rowconfigure(0, weight=5, minsize=570)
 	w.frames["Second Frame"].columnconfigure(0, weight=5, minsize=730)
 
-#
 	w.frames["Fifth Frame"].grid(columnspan=3)
 
 #widget for scan
-	w.frames["First Frame"].addWidget(sby, (0, 0))
+	w.sby = Picker(repr='sby', text=w.lang['Search By'], rads=[(w.lang['Barcode'], 'bCode'), \
+		(w.lang['First Name'], 'firstName'), \
+		(w.lang['Last Name'], 'lastName'), \
+		(w.lang['Chinese Name'], 'chineseName'), \
+		(w.lang['Phone Number'], 'phoneNumber'), \
+		(w.lang['Date of Birth'], 'dob')])
+
+	w.frames["First Frame"].addWidget(w.sby, (0, 0))
 	w.frames["First Frame"].addWidget(bsearch, (1, 0))
 	
 #buttons for scrolling db
@@ -132,14 +138,14 @@ def main(t, lang, d):
 #
 	def s():
 		try:
-			w.s = sby.getData()[1]
+			w.s = w.sby.getData()[1]
 
-			print(sby.getData())
+			print(w.sby.getData())
 
 
-			if sby.getData()[0] != 'bCode':
-				sty = sby.getData()[0]
-				sdp = sby.getData()[1]
+			if w.sby.getData()[0] != 'bCode':
+				sty = w.sby.getData()[0]
+				sdp = w.sby.getData()[1]
 
 				sl = []
 
@@ -182,14 +188,3 @@ def main(t, lang, d):
 
 	#button for scan
 	#Button(w.frames["First Frame"], text="try", command=s).grid()
-
-
-
-
-if __name__ == '__main__':
-	t = Window()
-	main(t, language)
-
-	t.mainloop()
-
-

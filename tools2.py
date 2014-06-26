@@ -1,6 +1,7 @@
 from uiHandler22 import *
 from dataHandler import *
 from preBuilts2 import *
+from datetime import datetime
 import importwiz
 import os
 
@@ -46,6 +47,18 @@ def main(t, lang, d):
 		dbs(w.lang)
 
 
+	def expf():
+		try:
+			p = filedialog.askdirectory()
+			d.exportxlsx(p + '/student_list_.xlsx')
+			d.exporttxlsx(p + '/student_att_.xlsx')
+			print(p)
+		except:
+			return
+
+
+
+
 		
 
 
@@ -60,19 +73,20 @@ def main(t, lang, d):
 	w.lang = lang
 
 #frame initialization
-	w.newFrame("Title Frame", (0, 0))
+	#w.newFrame("Title Frame", (0, 0))
 	w.newFrame("First Frame", (1, 0))
 	w.newFrame("Fifth Frame", (2, 0))
 	w.newFrame("Second Frame", (3, 0))
 	w.newFrame("Third Frame", (1, 1))
 	w.newFrame("Fourth Frame", (4, 1))
 
+	w.frames["Third Frame"].config(bg='#DBDBDB')
 	w.frames["Third Frame"].grid(rowspan=3)
 
 #title
-	w.frames["Title Frame"].grid(columnspan=4, sticky=E+W)
-	Label(w.frames["Title Frame"], text='Database Management', bg='#3B5C8D', fg='white', \
-		height=3, font=('Jumbo', '12', 'bold')).pack(fill='both', expand=True)
+	#w.frames["Title Frame"].grid(columnspan=4, sticky=E+W)
+	#Label(w.frames["Title Frame"], text='Database Management', bg='#3B5C8D', fg='white', \
+	#	height=3, font=('Jumbo', '12', 'bold')).pack(fill='both', expand=True)
 
 #import export widgets
 	w.frames["First Frame"].addWidget(imp, (0, 0))
@@ -87,11 +101,12 @@ def main(t, lang, d):
 	#w.frames["Second Frame"].addWidget(sepr, (1, 0))
 	w.frames["Second Frame"].addWidget(bexp, (2, 0))
 
-	curdb = Label(w.frames['Third Frame'], text=d.file, wraplength=200)
+	curdb = Label(w.frames['Third Frame'], text=d.file, wraplength=200, bg='#DBDBDB')
 	w.frames["Third Frame"].addWidget(curfile, (0, 0))
-	curdb.grid(row=1, column=0, pady=10)
+	curfile.label.config(bg='#DBDBDB')
+	curdb.grid(row=2, column=0, pady=10)
 
-	w.frames["Third Frame"].addWidget(bcdb, (2, 0))
+	w.frames["Third Frame"].addWidget(bcdb, (1, 0))
 
 
 	#w.frames['Fourth Frame'].addWidget(bsav, (0, 0))
@@ -100,6 +115,7 @@ def main(t, lang, d):
 	bimp.config(cmd=lambda: importwiz.main(w.lang, d))
 	bcdb.config(cmd=cdb)
 	bimpt.config(cmd=ctdb)
+	bexp.config(cmd=expf)
 	#curdb.config(text=s.config['dbFile'])
 	#exp.config(cmd=importwiz.main)
 

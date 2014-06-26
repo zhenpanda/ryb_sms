@@ -6,6 +6,9 @@ from preBuilts2 import *
 def main(t, lang, d, sM):
 	'''addS3'''
 
+	#title
+	#t.wintitle.config(text=w.lang['RYB Student Management'])
+
 	d.loadData()
 
 	w = AppWindow(t)
@@ -39,7 +42,7 @@ def main(t, lang, d, sM):
 
 #student info widgets
 	w.frames["First Frame"].addWidget(sinfo, (0, 0))
-	sinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
+	sinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'), text=w.lang['Student information'])
 	sinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	w.frames["First Frame"].addWidget(firstName, (1, 0))
 	w.frames["First Frame"].addWidget(lastName, (2, 0))
@@ -96,7 +99,7 @@ def main(t, lang, d, sM):
 	ninfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	w.frames["Ninth Frame"].addWidget(notes, (1, 0))
 	notes.label.grid_forget()
-	notes.config(height=10, width=32)
+	notes.config(height=8, width=32)
 
 
 
@@ -176,7 +179,11 @@ def main(t, lang, d, sM):
 #set starting lang
 	for frame in w.frames.values():
 		for widget in frame.widgets.values():
+			#print(widget.repr)
 			widget.config(lang=w.lang)
+
+	w.frames['Title Frame'].grid_forget()
+
 
 if __name__ == '__main__':
 	t = Tk()

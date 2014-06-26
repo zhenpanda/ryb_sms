@@ -92,7 +92,8 @@ sby = Picker(repr='sby', text=language['Search By'], rads=[(language['Barcode'],
 	(language['First Name'], 'firstName'), \
 	(language['Last Name'], 'lastName'), \
 	(language['Chinese Name'], 'chineseName'), \
-	(language['Phone Number'], 'phoneNumber')])
+	(language['Phone Number'], 'phoneNumber'), \
+	(language['Date of Birth'], 'dob')])
 
 
 #info titles
@@ -115,20 +116,21 @@ def spicker(d):
 		t.destroy()
 
 	t = Toplevel()
-	frame = Frame(t)
+	frame = Frame(t, padx=10, pady=10)
 	frame.pack()
 	t.grab_set()
 	t.focus_set()
 	t.protocol('WM_DELETE_WINDOW', destroy)
+	t.geometry('570x440')
 
 
 	stable.build(headers=stableh, data=d)
 	stable.place(parent=frame, row=0, column=0)
-	stable.canvas.config(widt=500, height=600)
+	stable.canvas.config(widt=530, height=400)
 
 	sbind(lambda i: sets(i=i))
 
-	#t.resizable(0, 0)
+	t.resizable(0, 0)
 
 	t.wait_window()
 
@@ -249,8 +251,11 @@ notes = LongTextbox(text="Notes", lang=language, repr='notes')
 
 #ppicker
 def ppicker():
-	p = filedialog.askopenfile().name
-	portr.config(path=p)
+	try:
+		p = filedialog.askopenfile().name
+		portr.config(path=p)
+	except:
+		return
 
 
 #title bg
@@ -278,10 +283,10 @@ bno.width = 10
 
 
 #importexp
-imp = Labelbox(text='impdb', lang=language, repr='imp')
-impt = Labelbox(text='impt', lang=language, repr='impt')
-exp = Labelbox(text='expdb', lang=language, repr='exp')
-curfile = Labelbox(text='curfile', lang=language, repr='curfile')
+imp = Labelbox(text='impdb', lang=language, repr='imp', bold=True)
+impt = Labelbox(text='impt', lang=language, repr='impt', bold=True)
+exp = Labelbox(text='expdb', lang=language, repr='exp', bold=True)
+curfile = Labelbox(text='curfile', lang=language, repr='curfile', bold=True)
 curdbs = Labelbox(text='', lang=language, repr='curdb')
 saveto = Labelbox(text='saveto', lang=language, repr='saveto')
 
@@ -315,6 +320,23 @@ def nos(lang):
 
 	t.frames["First Frame"].addWidget(ws, (0, 0))
 	t.frames["First Frame"].addWidget(nostext, (1, 0))
+	t.frames["Second Frame"].addWidget(bok, (2, 0))
+	
+	bok.config(cmd=t.dw, lang=lang)
+
+	t.root.wait_window()
+
+def noc(lang):
+
+	t = Mbox()
+	
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	noctext = Labelbox(text='No classes', lang=lang, repr='noctext')
+
+	t.frames["First Frame"].addWidget(ws, (0, 0))
+	t.frames["First Frame"].addWidget(noctext, (1, 0))
 	t.frames["Second Frame"].addWidget(bok, (2, 0))
 	
 	bok.config(cmd=t.dw, lang=lang)

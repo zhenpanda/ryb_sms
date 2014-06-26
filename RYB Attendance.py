@@ -31,7 +31,7 @@ def main():
 #show and hide sub-windows
 	def showWindow(f):
 		try:
-			w.frames["Title Frame"].grid_forget()
+			#w.frames["Title Frame"].grid_forget()
 			w.frames["First Frame"].grid_forget()
 			if (f.__doc__) == 'addS3':
 				t.con = True
@@ -50,7 +50,6 @@ def main():
 			if not ret('a', w.lang): return
 
 		w.frames['Second Frame'].grid_forget()
-		print('called')
 		try:
 			#to destroy the extra window in scan student
 			w.t.destroy()
@@ -67,7 +66,7 @@ def main():
 		w.frames["First Frame"].grid(row=1)
 		w.frames['Third Frame'].grid_forget()
 
-		w.frames["Title Frame"].grid(row=0, columnspan=4, sticky=E+W, pady=20)
+		#w.frames["Title Frame"].grid(row=0, columnspan=4, sticky=E+W, pady=20)
 
 		w.k.files['cfilepath'] = w.d.file
 		w.k.save()
@@ -77,12 +76,16 @@ def main():
 	w = AppWindow(t.mainFrame)
 	w.lang = languages['chinese']
 
+#title
+	t.wintitle.config(text=w.lang['RYB Student Management'])
+
+
 #load current database
 	w.k = keeper.Keeper('keeper.db')
 	w.d = StudentDB(file=w.k.files['cfilepath'], cfile=w.k.fname)
 
 #frame creation and positions
-	w.newFrame("Title Frame", (0, 0))
+	#w.newFrame("Title Frame", (0, 0))
 	w.newFrame("First Frame", (1, 0))
 	w.newFrame("Second Frame", (2, 0))
 	w.newFrame("Third Frame", (3, 0))
@@ -92,9 +95,9 @@ def main():
 	#current limitation: frame scaling according to window size change
 	#title
 	#titleImg = ImageTk.PhotoImage(titlePic)
-	w.frames["Title Frame"].grid(columnspan=4, sticky=E+W)
-	Label(w.frames["Title Frame"], text=w.lang['RYB Student Management'], bg='#3B5C8D', fg='white', \
-		height=3, font=('Jumbo', '12', 'bold')).pack(fill='both', expand=True)
+	#w.frames["Title Frame"].grid(columnspan=4, sticky=E+W)
+	#Label(w.frames["Title Frame"], text=w.lang['RYB Student Management'], bg='#3B5C8D', fg='white', \
+		#height=3, font=('Jumbo', '12', 'bold')).pack(fill='both', expand=True)
 
 #hide sub-frames
 	w.frames['Second Frame'].grid_forget()
@@ -137,6 +140,45 @@ def main():
 
 	w.p.label.grid(rowspan=100, sticky=E)
 
+	
+	bsbmm.idlebg = '#AEC2FF'
+	bsbmm.idlefg = 'black'
+	bsbmm.fg = 'black'
+	bsbmm.hoverfg = 'white'
+	bsbmm.button.config(bg=bsbmm.idlebg, fg=bsbmm.idlefg)
+
+	bsadd.idlebg = '#AEC2FF'
+	bsadd.idlefg = 'black'
+	bsadd.fg = 'black'
+	bsadd.hoverfg = 'white'
+	bsadd.button.config(bg=bsadd.idlebg, fg=bsadd.idlefg)
+
+	bsscan.idlebg = '#AEC2FF'
+	bsscan.idlefg = 'black'
+	bsscan.fg = 'black'
+	bsscan.hoverfg = 'white'
+	bsscan.button.config(bg=bsscan.idlebg, fg=bsscan.idlefg)
+
+	bssdb.idlebg = '#AEC2FF'
+	bssdb.idlefg = 'black'
+	bssdb.fg = 'black'
+	bssdb.hoverfg = 'white'
+	bssdb.button.config(bg=bssdb.idlebg, fg=bssdb.idlefg)
+
+	bclang.idlebg = '#AEC2FF'
+	bclang.idlefg = 'black'
+	bclang.fg = 'black'
+	bclang.hoverfg = 'white'
+	bclang.button.config(bg=bclang.idlebg, fg=bclang.idlefg)
+
+	bsexit.idlebg = '#AEC2FF'
+	bsexit.idlefg = 'black'
+	bsexit.fg = 'black'
+	bsexit.hoverfg = 'white'
+	bsexit.button.config(bg=bsexit.idlebg, fg=bsexit.idlefg)
+
+
+
 #experimental button
 	#custom X button
 	#t.exit.bind('<ButtonRelease-1>', lambda e: t.destroy())
@@ -144,10 +186,11 @@ def main():
 	#showWindow(tools2.main)
 	#showMain(False)
 
-	w.frames['Title Frame'].grid_forget()
+	#w.frames['Title Frame'].grid_forget()
 
+	t.iconbitmap('RYB_Attendance.ico')
 	t.mainloop()
 
 
 if __name__ == '__main__':
-	main()	
+	main()

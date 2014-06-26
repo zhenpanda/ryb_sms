@@ -31,7 +31,7 @@ class Textbox(Widget):
 
 		try:
 			self.lang = kwargs['lang']
-			self.label.config(text=self.lang[self.text])
+			self.label.config(text=self.lang[self.text].strip())
 		except:
 			pass
 
@@ -54,7 +54,7 @@ class Textbox(Widget):
 		except:
 			print("widget could not be placed")
 
-		self.label = Label(self.parent, text=self.lang[self.text], width=15, anchor=E)
+		self.label = Label(self.parent, text=self.lang[self.text].strip(), width=15, anchor=E)
 		self.entry = Entry(self.parent, relief=SOLID)
 
 		self.label.grid(row=self.row, column=self.column)
@@ -258,6 +258,7 @@ class Picker(Textbox):
 				rad.config(text=self.lang[self.rads[i][0]])
 				i += 1
 		except:
+			print('error translating', self.repr)
 			pass
 
 
@@ -276,7 +277,7 @@ class Picker(Textbox):
 		self.b.set(self.rads[0][1])
 		for rad in self.rads:
 			r.append(Radiobutton(self.selfframe, text=rad[0], variable=self.b, \
-				value=rad[1], indicatoron=0, width=15))
+				value=rad[1], indicatoron=1, offrelief=RIDGE, overrelief=SOLID, bd=1))
 
 		self.brads = r
 
@@ -353,6 +354,16 @@ class LongTextbox(Textbox):
 
 class Labelbox(Textbox):
 
+	def __init__(self, **kwargs):
+
+		Textbox.__init__(self, **kwargs)
+
+		self.bold = False
+		try:
+			self.bold = kwargs['bold']
+		except:
+			pass
+
 	def config(self, **kwargs):
 
 		try:
@@ -365,6 +376,7 @@ class Labelbox(Textbox):
 			self.lang = kwargs['lang']
 			self.label.config(text=self.lang[self.text])
 		except:
+			print('error translating', self.repr)
 			pass
 
 
@@ -381,6 +393,9 @@ class Labelbox(Textbox):
 
 		self.label = Label(self.parent, text=self.lang[self.text])
 		self.label.grid(row=self.row, column=self.column)
+
+		if self.bold:
+			self.label.config(font=('Verdana', 11, 'bold'))
 
 
 	def hide(self):
@@ -446,6 +461,12 @@ class Buttonbox(Textbox):
 			print("widget could not be loaded")
 
 		self.width = 30
+		self.idlebg = '#7D9DFF'
+		self.hoverbg = '#405DB2'
+		self.idleborder = '#CBD8FF'
+		self.hoverborder = '#6C91FF'
+		self.fg = 'white'
+		self.hoverfg = 'white'
 
 
 	def config(self, **kwargs):
@@ -462,6 +483,7 @@ class Buttonbox(Textbox):
 			#print(inspect.getargspec(kwargs['cmd']).args)
 			if len(self.args) > 0 and self.args[0] != 'self':
 				self.button.bind('<ButtonRelease-1>', self.cmd)
+				self.button.bind('<Button-1>', self.button.config(bg='#195CBF'))
 				self.button.bind('<Return>', self.cmd)
 				self.button.bind('<space>', self.cmd)
 			else:
@@ -481,8 +503,8 @@ class Buttonbox(Textbox):
 	def enter(self, event):
 
 		try:
-			self.button.config(bg='#5C85FF', fg='white')
-			self.selfframe.config(bg='#195CBF')
+			self.button.config(bg=self.hoverbg, fg=self.hoverfg)
+			self.selfframe.config(bg=self.hoverborder)
 		except:
 			pass
 
@@ -490,8 +512,8 @@ class Buttonbox(Textbox):
 	def leave(self, event):
 
 		try:
-			self.button.config(bg='white', fg='black')
-			self.selfframe.config(bg='#CCE0FF')
+			self.button.config(bg=self.idlebg, fg=self.fg)
+			self.selfframe.config(bg=self.idleborder)
 		except:
 			pass
 
@@ -502,14 +524,16 @@ class Buttonbox(Textbox):
 
 	def place(self, **kwargs):
 
+		#5C85FF
+
 		try:
 			self.trytoplace(**kwargs)
 		except:
 			print("widget could not be placed")
 
-		self.selfframe = Frame(self.parent, bg='#CCE0FF', bd=1)
-		self.button = Label(self.selfframe, text=self.lang[self.text], width=self.width, bg='white', \
-			font=('Verdana', 11), pady=10)
+		self.selfframe = Frame(self.parent, bg=self.idleborder, bd=2)
+		self.button = Label(self.selfframe, text=self.lang[self.text], width=self.width, bg=self.idlebg, fg=self.fg, \
+			font=('Verdana', 11), pady=5)
 
 		self.button.bind('<Enter>', self.enter)
 		self.button.bind('<Leave>', self.leave)

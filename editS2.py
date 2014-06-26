@@ -9,7 +9,7 @@ def main(lang, d, top=False, i=0):
 
 	t = Window(top=top)
 	t.attributes('-fullscreen', False)
-	t.geometry('1900x900')
+	t.geometry('1600x700')
 	#t.resizable(0, 0)
 	t.grab_set()
 	t.focus_set()
@@ -98,7 +98,7 @@ def main(lang, d, top=False, i=0):
 	ninfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	w.frames["Ninth Frame"].addWidget(notes, (1, 0))
 	notes.label.grid_forget()
-	notes.config(height=10, width=32)
+	notes.config(height=8, width=32)
 
 
 
@@ -217,6 +217,7 @@ def main(lang, d, top=False, i=0):
 	sstudent = Buttonbox(text='savestudent', lang=w.lang, repr='sstudent')
 	w.frames["Fifth Frame"].addWidget(sstudent, (0, 0))
 	sstudent.config(cmd=collect)
+	sstudent.selfframe.grid(padx=5)
 
 	bclose = Buttonbox(text='close', lang=w.lang, repr='bclose')
 	w.frames["Fifth Frame"].addWidget(bclose, (0, 1))

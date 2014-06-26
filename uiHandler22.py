@@ -29,7 +29,7 @@ class AppWindow(Frame):
 		self.parent = parent
 
 		self.oframe = Frame(self)
-		self.mainFrame = Frame(self.oframe)#, bd=20)
+		self.mainFrame = Frame(self.oframe, bd=10)
 		self.oframe.pack(fill="both", expand=True)
 		self.mainFrame.place(in_=self.oframe, anchor="c", relx=.5, rely=.5)
 
@@ -41,7 +41,7 @@ class AppWindow(Frame):
 
 		#frames
 		self.frames = {}
-		self.framePadding = (20, 10)
+		self.framePadding = (10, 2)
 
 		#
 		#self.update_idletasks()
@@ -113,16 +113,17 @@ class Window(Tk):
 		self.oframe = Frame(self)
 
 		#bg
-		Label(self.oframe, image=self.img).place(x=-5, y=-5, in_=self.oframe)
+		Label(self.oframe, image=self.img).place(x=-2, y=-5, in_=self.oframe)
 
 		self.mainFrame = Frame(self.oframe)#, bd=1, bg='lightgrey')
 
 #title frame and x button START
-		self.titleFrame = Frame(self.mainFrame, bg="#FFFFFF", height=60)
+		self.titleFrame = Frame(self.mainFrame, bg="#4D4D4D", height=60)
 		self.titleFrame.pack(fill=X)
 
-		#self.winName = Label(self.titleFrame, bg='#142C5C', font=('Verdana', 11), fg='white')
-		#self.winName.place(in_=self.titleFrame, anchor='c', relx=.5, rely=.5)
+		self.wintitle = Label(self.titleFrame, bg='#4D4D4D', fg='white', font=('Jumbo', 15, 'bold'))
+		self.wintitle.place(in_=self.titleFrame, anchor="c", relx=.5, rely=.5)
+
 		#self.exit = Label(self.titleFrame, bg='#B20000', fg='white', text='  ×  ', font=('Arial', 12, 'bold'))
 		#self.exit.place(in_=self.titleFrame, anchor='c', relx=.987, rely=.48)
 

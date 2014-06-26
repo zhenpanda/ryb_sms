@@ -39,7 +39,7 @@ def main(t, lang, d):
 	w.frames["Eleventh Frame"].grid(sticky=N)
 	w.frames["Eigth Frame"].grid(sticky=S, rowspan=2)
 	w.frames["Eleventh Frame"].columnconfigure(0, weight=5, minsize=520)
-	w.frames["Eigth Frame"].rowconfigure(0, weight=5, minsize=165)
+	w.frames["Eigth Frame"].rowconfigure(0, weight=5, minsize=20)
 	#w.frames["First Frame"].grid(columnspan=5)
 	#w.frames["Sixth Frame"].grid(rowspan=2, sticky=N)
 
@@ -48,7 +48,7 @@ def main(t, lang, d):
 
 #student info widgets
 	w.frames["First Frame"].addWidget(sinfo, (0, 0))
-	sinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
+	sinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'), text=w.lang['Student information'])
 	sinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	w.frames["First Frame"].addWidget(firstName, (1, 0))
 	w.frames["First Frame"].addWidget(lastName, (2, 0))
@@ -100,7 +100,7 @@ def main(t, lang, d):
 	ninfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	w.frames["Ninth Frame"].addWidget(notes, (1, 0))
 	notes.label.grid_forget()
-	notes.config(height=10, width=32)
+	notes.config(height=8, width=32)
 
 #special
 	spec = Labelbox(text='spec', lang=w.lang, repr='spec')
@@ -129,6 +129,7 @@ def main(t, lang, d):
 		dp['cAwarded'] = dp['cAwarded'] + r
 		dp['expire'] = d.calcExpir(datetime.now().date(), r)
 		spec.setData("")
+		w2.spec2.setData("")
 		cRemaining.setData(dp['cRemaining'])
 		cAwarded.setData(dp['cAwarded'])
 		tpa.setData(0)
@@ -145,96 +146,122 @@ def main(t, lang, d):
 
 	sby.rads=[('Barcode', 'bCode'), ('First Name', 'firstName'), \
 		('Last Name', 'lastName'), ('Chinese Name', 'chineseName'), \
-		('Phone Number', 'phoneNumber')]
+		('Phone Number', 'phoneNumber'), ('Date of Birth', 'dob')]
 
+	w.tdp = dict()
 
 	def s():
-		try:
-			w.s = sby.getData()[1]
+		#try:
+		w.s = sby.getData()[1]
 
-			print(sby.getData())
+		w.tdp = dict()
+
+		print(sby.getData())
 
 
-			if sby.getData()[0] != 'bCode':
-				sty = sby.getData()[0]
-				sdp = sby.getData()[1]
+		if sby.getData()[0] != 'bCode':
+			sty = sby.getData()[0]
+			sdp = sby.getData()[1]
 
-				sl = []
+			sl = []
 
-				for s in d.studentList:
-					dp = False
-					if sty == 'phoneNumber':
-						if d.studentList[s].datapoints['hPhone'] == sdp or \
-							d.studentList[s].datapoints['cPhone'] == sdp or \
-							d.studentList[s].datapoints['cPhone2'] == sdp:
-							dp = d.studentList[s].datapoints
-
-					elif d.studentList[s].datapoints[sty] == sdp:
+			for s in d.studentList:
+				dp = False
+				if sty == 'phoneNumber':
+					if d.studentList[s].datapoints['hPhone'] == sdp or \
+						d.studentList[s].datapoints['cPhone'] == sdp or \
+						d.studentList[s].datapoints['cPhone2'] == sdp:
 						dp = d.studentList[s].datapoints
-					
-					if dp:
-						sl.append([dp['bCode'], dp['firstName'], dp['lastName'], dp['chineseName']])
+
+				elif d.studentList[s].datapoints[sty] == sdp:
+					dp = d.studentList[s].datapoints
+				
+				if dp:
+					sl.append([dp['bCode'], dp['firstName'], dp['lastName'], dp['chineseName']])
 
 
-				if len(sl) == 0:
-					nos(w.lang)
-					return
+			if len(sl) == 0:
+				nos(w.lang)
+				return
 
-				w.s = sl[0][0]
-				if len(sl) > 1:
-					sl.sort()
-					w.s = spicker(sl)
-					if not w.s: return
+			w.s = sl[0][0]
+			if len(sl) > 1:
+				sl.sort()
+				w.s = spicker(sl)
+				if not w.s: return
 
-			#reset portrait
-			w.portr.setData('monet_sm.jpg')
-			portr2.setData('monet_sm.jpg')
+		#reset portrait
+		w.portr.setData('monet_sm.jpg')
+		portr2.setData('monet_sm.jpg')
 
-			#reset classes rem
-			spec.setData("")
+		#reset classes rem
+		spec.setData("")
+		w2.spec2.setData("")
 
-			#temp workaround while table is fixed
-			for child in w.frames["Eleventh Frame"].winfo_children():
-				child.destroy()
+		#temp workaround while table is fixed
+		for child in w.frames["Eleventh Frame"].winfo_children():
+			child.destroy()
 
-			w.attinfo.build(headers=w.attinfoh, data=[[]])
-			w.frames["Eleventh Frame"].addWidget(w.attinfo, (0, 0))
-			w.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
+		w.attinfo.build(headers=w.attinfoh, data=[[]])
+		w.frames["Eleventh Frame"].addWidget(w.attinfo, (0, 0))
+		w.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
 
-			w.attinfo.editwidget=False
-			w.attinfo.canvas.config(width=500, height=555)
-			#
+		w.attinfo.editwidget=False
+		w.attinfo.canvas.config(width=500, height=555)
+		#
 
-			#temp workaround while table is fixed
-			for child in w2.frames["Third Frame"].winfo_children():
-				child.destroy()
+		#temp workaround while table is fixed
+		for child in w2.frames["Third Frame"].winfo_children():
+			child.destroy()
 
-			w2.attinfo.build(headers=w2.attinfoh, data=[[]])
-			w2.frames["Third Frame"].addWidget(w2.attinfo, (0, 0))
-			w2.frames["Third Frame"].grid(rowspan=100, sticky=W)
+		w2.attinfo.build(headers=w2.attinfoh, data=[[]])
+		w2.frames["Third Frame"].addWidget(w2.attinfo, (0, 0))
+		w2.frames["Third Frame"].grid(rowspan=100, sticky=W)
 
-			w2.attinfo.editwidget=False
-			w2.attinfo.canvas.config(width=500, height=500)
-			#
-			dp = d.studentList[w.s].datapoints
+		w2.attinfo.editwidget=False
+		w2.attinfo.canvas.config(width=500, height=500)
+		#
+		dp = d.studentList[w.s].datapoints
 
-			w.populate(dp)
-			w2.populate(dp)
+		w.populate(dp)
+		w2.populate(dp)
 
-			#if amount owed is larger than amount paid, color amount owed in red
-			if dp['tpa'] < dp['tpo']: tpo.entry.config(bg='red')
-			else: tpo.entry.config(bg='white')
+		w.tdp = dict(w.collect(d.studentList[w.s].datapoints))
 
-			sby.entry.delete(0, END)
+		#if amount owed is larger than amount paid, color amount owed in red
+		if dp['tpa'] < dp['tpo']: tpo.entry.config(bg='red')
+		else: tpo.entry.config(bg='white')
 
-			if cs(d.studentList[w.s].datapoints['firstName'], w.lang): ss()
-		except:
-			nos(w.lang)
-			pass
+		sby.entry.delete(0, END)
+
+		w2.spec2.show()
+		w2.spec2.setData(w.lang['Classes remaining for this student'] + ': ' + str(d.studentList[w.s].datapoints['cRemaining']))
+		w2.spec2.label.config(fg='#0000B8', font=('Verdana', 15))
+
+		#try:
+		#	if datetime.now().date() > d.studentList[w.s].datapoints['expire']:
+		#		spec.show()
+		#		spec.setData(w.lang['Membership Expired'])
+		#		spec.label.config(fg='red', font=('Verdana', 15))
+		#except:
+		#	pass
+
+		if d.studentList[w.s].datapoints['cRemaining'] == 0:
+			spec.show()
+			spec.setData(w.lang['Classes remaining for this student'] + ': ' + str(d.studentList[w.s].datapoints['cRemaining']))
+			spec.label.config(fg='red', font=('Verdana', 15))				
+			noc(w.lang)
+			sby.b.set(sby.rads[0][1])
+			return
+
+		if cs(d.studentList[w.s].datapoints['firstName'], w.lang): ss()
+		#except:
+		#	nos(w.lang)
+		#	pass
 
 
-	def ss():
-		d.scanStudent(w.s, xtra=w.lang['Auto'] if sby.getData()[0] == 'bCode' else w.lang['Manual'])
+	def ss(mode=False):
+		d.scanStudent(w.s, xtra=w.lang['Scan'] if sby.getData()[0] == 'bCode' and not mode else w.lang['Manual'])
 		d.saveData()
 		
 		#show alert if classes remaining is less than 2
@@ -249,14 +276,19 @@ def main(t, lang, d):
 			pass
 
 		#print(expir > datetime.now().date())
-		try:
-			if datetime.now().date() > expir:
-				spec.show()
-				spec.setData(w.lang['Membership Expired'])
-				spec.label.config(fg='red', font=('Verdana', 15))
-		except:
-			pass
+		#try:
+		#	if datetime.now().date() > expir:
+		#		spec.show()
+		#		spec.setData(w.lang['Membership Expired'])
+		#		spec.label.config(fg='red', font=('Verdana', 15))
+		#except:
+		#	pass
 
+		spec.setData(w.lang['Classes remaining for this student'] + ': ' + str(cRem))
+
+		w2.spec2.show()
+		w2.spec2.setData(w.lang['Classes remaining for this student'] + ': ' + str(cRem))
+		w2.spec2.label.config(fg='#0000B8', font=('Verdana', 15))
 
 		#update cRemaining
 		cRemaining.setData(str(cRem))
@@ -272,9 +304,9 @@ def main(t, lang, d):
 		sby.b.set(sby.rads[0][1])
 
 
-	def z():
+	def z(mode=False):
 		try:
-			ss() if cs(d.studentList[w.s].datapoints['firstName'], w.lang) else False
+			ss(mode) if cs(d.studentList[w.s].datapoints['firstName'], w.lang) else False
 		except:
 			print("error-105")
 
@@ -292,6 +324,7 @@ def main(t, lang, d):
 #collect and check in button
 	def collect():
 		try:
+			if not changed(): return
 			s = d.studentList[w.s]
 			if not conS(s.datapoints['firstName'] + ' ' + s.datapoints['lastName'], w.lang): return
 			s.datapoints = dict(list(s.datapoints.items()) + list(w.collect(s.datapoints).items()))
@@ -299,13 +332,22 @@ def main(t, lang, d):
 		except:
 			return
 
+	def changed():
+		s = d.studentList[w.s]
+		ctdp = dict(w.collect(s.datapoints))
+		for key in w.tdp.keys():
+			if ctdp[key] != w.tdp[key]:
+				return True
+		return False
+
 	sstudent = Buttonbox(text='savestudent', lang=w.lang, repr='sstudent')
 	w.frames["Fifth Frame"].addWidget(sstudent, (0, 0))
 	sstudent.config(cmd=collect)
+	sstudent.selfframe.grid(padx=5)
 
 	bcheck = Buttonbox(text='cinstudent', lang=language, repr='bcheck')
 	w.frames["Fifth Frame"].addWidget(bcheck, (0, 1))
-	bcheck.config(cmd=z)
+	bcheck.config(cmd=lambda: z(True))
 
 
 
@@ -349,6 +391,12 @@ def main(t, lang, d):
 
 	w2.frames["First Frame"].addWidget(portr2, (0, 0))
 
+#special
+	w2.spec2 = Labelbox(text='spec', lang=w.lang, repr='spec')
+	w2.frames["Second Frame"].addWidget(w2.spec2, (4, 0))
+	w2.spec2.label.config(font=('Verdana', 15), wraplength=200, justify=LEFT)
+	w2.spec2.label.grid(columnspan=2, sticky=N)
+
 #basic info widgets
 	w2.frames["Second Frame"].addWidget(sinfo, (0, 0))
 	sinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
@@ -368,30 +416,9 @@ def main(t, lang, d):
 	for frame in w.frames.values():
 		for widget in frame.widgets.values():
 			widget.config(lang=w.lang)
+
 	for frame in w2.frames.values():
 		for widget in frame.widgets.values():
 			widget.config(lang=w.lang)
 
 	return t2
-
-
-	
-
-
-
-
-
-	
-
-
-if __name__ == '__main__':
-	t = Window()
-	t.attributes('-fullscreen', False)
-	t.geometry('1000x700')
-
-	main(t.mainFrame, language)
-
-	t.mainloop()
-
-	print('abcd'[:3])
-

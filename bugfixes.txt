@@ -4,4 +4,4 @@ To fix
 	and student barcode does not exist in database
 	save student
 
-2. 
+2. renew, expiration date only if expired, else add

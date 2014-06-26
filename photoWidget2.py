@@ -22,6 +22,7 @@ class Photo(Widget):
 		try:
 			self.path = kwargs['path']
 			self.picture = Image.open(self.path)
+			self.picture = self.picture.resize((200, 200), Image.ANTIALIAS)
 			self.image = ImageTk.PhotoImage(self.picture)
 			self.label.config(image=self.image)
 		except:
