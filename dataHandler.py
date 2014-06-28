@@ -108,6 +108,11 @@ class StudentDB:
    
         #cell modifier code for import
         self.fcell = {1: lambda y: str(y), 2: lambda y: int(y), 3: lambda y: (datetime.strptime('1/1/1900', "%m/%d/%Y") + timedelta(days=y-2)).strftime("%m/%d/%Y")}
+        self.timeslot = {(time(9, 15, 0), time(10, 44, 0)): '09:30 AM',
+            (time(10, 44, 1), time(12, 14, 0)): '11:00 AM',
+            (time(12, 45, 0), time(14, 14, 0)): '01:00 PM',
+            (time(14, 14, 1), time(15, 44, 0)): '02:30 PM',
+            (time(15, 44, 1), time(17, 14, 0)): '04:00 PM',}
         self.setLast()
         
     
@@ -152,12 +157,16 @@ class StudentDB:
 
     def findTimeSlot(self, time):
         #find the time slot for the student according to scan in time
+        for timeslot in self.timeslot:
+            if time.time() > timeslot[0] and time.time() < timeslot[1]:
+                return self.timeslot[timeslot]
+
         h, m, p = '{:%I}'.format(time), '{:%M}'.format(time), '{:%p}'.format(time)
         m = int(m)
 
         if m > 40:
             m = '00'
-            h = str(int(h) + 1)
+            h = '{:%I}'.format(time + timedelta(hours=1))
         elif m > 10:
             m = '30'
         else:
@@ -187,6 +196,7 @@ class StudentDB:
             cdt = datetime.now()
 
             timeslot = self.findTimeSlot(cdt)
+            if not timeslot: return
             time = '{:%I:%M %p}'.format(cdt)
             date = '{:%m/%d/%Y}'.format(cdt)
 
@@ -194,6 +204,8 @@ class StudentDB:
             if xtra: data.append(xtra)
 
             s = self.studentList[barcode].datapoints
+            s['attinfo'] = list(s['attinfo'])
+            s['attinfo'][0] = ['Date', 'Check-In Time', 'Class Time']
             s['attinfo'][1].append(data)
             s['cRemaining'] -= 1
             if s['cRemaining'] < 0: s['cRemaining'] = 0

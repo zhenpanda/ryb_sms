@@ -140,42 +140,38 @@ def main():
 
 	w.p.label.grid(rowspan=100, sticky=E)
 
-	
-	bsbmm.idlebg = '#AEC2FF'
-	bsbmm.idlefg = 'black'
-	bsbmm.fg = 'black'
+	w.mmbuttoncol = '#E3E9F9'
+	w.mmbuttonfg = 'black'
+
+	bsbmm.idlebg = w.mmbuttoncol
+	bsbmm.fg = w.mmbuttonfg
 	bsbmm.hoverfg = 'white'
-	bsbmm.button.config(bg=bsbmm.idlebg, fg=bsbmm.idlefg)
+	bsbmm.button.config(bg=bsbmm.idlebg, fg=bsbmm.fg)
 
-	bsadd.idlebg = '#AEC2FF'
-	bsadd.idlefg = 'black'
-	bsadd.fg = 'black'
+	bsadd.idlebg = w.mmbuttoncol
+	bsadd.fg = w.mmbuttonfg
 	bsadd.hoverfg = 'white'
-	bsadd.button.config(bg=bsadd.idlebg, fg=bsadd.idlefg)
+	bsadd.button.config(bg=bsadd.idlebg, fg=bsadd.fg)
 
-	bsscan.idlebg = '#AEC2FF'
-	bsscan.idlefg = 'black'
-	bsscan.fg = 'black'
+	bsscan.idlebg = w.mmbuttoncol
+	bsscan.fg = w.mmbuttonfg
 	bsscan.hoverfg = 'white'
-	bsscan.button.config(bg=bsscan.idlebg, fg=bsscan.idlefg)
+	bsscan.button.config(bg=bsscan.idlebg, fg=bsscan.fg)
 
-	bssdb.idlebg = '#AEC2FF'
-	bssdb.idlefg = 'black'
-	bssdb.fg = 'black'
+	bssdb.idlebg = w.mmbuttoncol
+	bssdb.fg = w.mmbuttonfg
 	bssdb.hoverfg = 'white'
-	bssdb.button.config(bg=bssdb.idlebg, fg=bssdb.idlefg)
+	bssdb.button.config(bg=bssdb.idlebg, fg=bssdb.fg)
 
-	bclang.idlebg = '#AEC2FF'
-	bclang.idlefg = 'black'
-	bclang.fg = 'black'
+	bclang.idlebg = w.mmbuttoncol
+	bclang.fg = w.mmbuttonfg
 	bclang.hoverfg = 'white'
-	bclang.button.config(bg=bclang.idlebg, fg=bclang.idlefg)
+	bclang.button.config(bg=bclang.idlebg, fg=bclang.fg)
 
-	bsexit.idlebg = '#AEC2FF'
-	bsexit.idlefg = 'black'
-	bsexit.fg = 'black'
+	bsexit.idlebg = w.mmbuttoncol
+	bsexit.fg = w.mmbuttonfg
 	bsexit.hoverfg = 'white'
-	bsexit.button.config(bg=bsexit.idlebg, fg=bsexit.idlefg)
+	bsexit.button.config(bg=bsexit.idlebg, fg=bsexit.fg)
 
 
 

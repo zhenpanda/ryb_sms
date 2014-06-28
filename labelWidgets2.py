@@ -258,7 +258,6 @@ class Picker(Textbox):
 				rad.config(text=self.lang[self.rads[i][0]])
 				i += 1
 		except:
-			print('error translating', self.repr)
 			pass
 
 
@@ -460,11 +459,13 @@ class Buttonbox(Textbox):
 		except:
 			print("widget could not be loaded")
 
+		#7D9DFF
+
 		self.width = 30
 		self.idlebg = '#7D9DFF'
 		self.hoverbg = '#405DB2'
-		self.idleborder = '#CBD8FF'
-		self.hoverborder = '#6C91FF'
+		self.idleborder = '#5C7DBD'
+		self.hoverborder = '#5C7DBD'
 		self.fg = 'white'
 		self.hoverfg = 'white'
 
@@ -531,8 +532,9 @@ class Buttonbox(Textbox):
 		except:
 			print("widget could not be placed")
 
-		self.selfframe = Frame(self.parent, bg=self.idleborder, bd=2)
-		self.button = Label(self.selfframe, text=self.lang[self.text], width=self.width, bg=self.idlebg, fg=self.fg, \
+		self.selfframe = Frame(self.parent, bg=self.idleborder, bd=1)
+		#self.innerf = Frame(self.selfframe, bg='black', bd=2)
+		self.button = Label(self.innerf, text=self.lang[self.text], width=self.width, bg=self.idlebg, fg=self.fg, \
 			font=('Verdana', 11), pady=5)
 
 		self.button.bind('<Enter>', self.enter)

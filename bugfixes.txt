@@ -5,3 +5,9 @@ To fix
 	save student
 
 2. renew, expiration date only if expired, else add
+
+
+
+
+UI Improvement ideas:
+1. for buttons have babyblue bg and dark blue border. White text.

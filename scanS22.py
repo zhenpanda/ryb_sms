@@ -151,113 +151,113 @@ def main(t, lang, d):
 	w.tdp = dict()
 
 	def s():
-		#try:
-		w.s = sby.getData()[1]
+		try:
+			w.s = sby.getData()[1]
 
-		w.tdp = dict()
+			w.tdp = dict()
 
-		print(sby.getData())
+			print(sby.getData())
 
 
-		if sby.getData()[0] != 'bCode':
-			sty = sby.getData()[0]
-			sdp = sby.getData()[1]
+			if sby.getData()[0] != 'bCode':
+				sty = sby.getData()[0]
+				sdp = sby.getData()[1]
 
-			sl = []
+				sl = []
 
-			for s in d.studentList:
-				dp = False
-				if sty == 'phoneNumber':
-					if d.studentList[s].datapoints['hPhone'] == sdp or \
-						d.studentList[s].datapoints['cPhone'] == sdp or \
-						d.studentList[s].datapoints['cPhone2'] == sdp:
+				for s in d.studentList:
+					dp = False
+					if sty == 'phoneNumber':
+						if d.studentList[s].datapoints['hPhone'] == sdp or \
+							d.studentList[s].datapoints['cPhone'] == sdp or \
+							d.studentList[s].datapoints['cPhone2'] == sdp:
+							dp = d.studentList[s].datapoints
+
+					elif d.studentList[s].datapoints[sty] == sdp:
 						dp = d.studentList[s].datapoints
-
-				elif d.studentList[s].datapoints[sty] == sdp:
-					dp = d.studentList[s].datapoints
-				
-				if dp:
-					sl.append([dp['bCode'], dp['firstName'], dp['lastName'], dp['chineseName']])
+					
+					if dp:
+						sl.append([dp['bCode'], dp['firstName'], dp['lastName'], dp['chineseName']])
 
 
-			if len(sl) == 0:
-				nos(w.lang)
+				if len(sl) == 0:
+					nos(w.lang)
+					return
+
+				w.s = sl[0][0]
+				if len(sl) > 1:
+					sl.sort()
+					w.s = spicker(sl)
+					if not w.s: return
+
+			#reset portrait
+			w.portr.setData('monet_sm.jpg')
+			portr2.setData('monet_sm.jpg')
+
+			#reset classes rem
+			spec.setData("")
+			w2.spec2.setData("")
+
+			#temp workaround while table is fixed
+			for child in w.frames["Eleventh Frame"].winfo_children():
+				child.destroy()
+
+			w.attinfo.build(headers=w.attinfoh, data=[[]])
+			w.frames["Eleventh Frame"].addWidget(w.attinfo, (0, 0))
+			w.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
+
+			w.attinfo.editwidget=False
+			w.attinfo.canvas.config(width=500, height=555)
+			#
+
+			#temp workaround while table is fixed
+			for child in w2.frames["Third Frame"].winfo_children():
+				child.destroy()
+
+			w2.attinfo.build(headers=w2.attinfoh, data=[[]])
+			w2.frames["Third Frame"].addWidget(w2.attinfo, (0, 0))
+			w2.frames["Third Frame"].grid(rowspan=100, sticky=W)
+
+			w2.attinfo.editwidget=False
+			w2.attinfo.canvas.config(width=500, height=500)
+			#
+			dp = d.studentList[w.s].datapoints
+
+			w.populate(dp)
+			w2.populate(dp)
+
+			w.tdp = dict(w.collect(d.studentList[w.s].datapoints))
+
+			#if amount owed is larger than amount paid, color amount owed in red
+			if dp['tpa'] < dp['tpo']: tpo.entry.config(bg='red')
+			else: tpo.entry.config(bg='white')
+
+			sby.entry.delete(0, END)
+
+			w2.spec2.show()
+			w2.spec2.setData(w.lang['Classes remaining for this student'] + ': ' + str(d.studentList[w.s].datapoints['cRemaining']))
+			w2.spec2.label.config(fg='#0000B8', font=('Verdana', 15))
+
+			#try:
+			#	if datetime.now().date() > d.studentList[w.s].datapoints['expire']:
+			#		spec.show()
+			#		spec.setData(w.lang['Membership Expired'])
+			#		spec.label.config(fg='red', font=('Verdana', 15))
+			#except:
+			#	pass
+
+			if d.studentList[w.s].datapoints['cRemaining'] == 0:
+				spec.show()
+				spec.setData(w.lang['Classes remaining for this student'] + ': ' + str(d.studentList[w.s].datapoints['cRemaining']))
+				spec.label.config(fg='red', font=('Verdana', 15))				
+				noc(w.lang)
+				sby.b.set(sby.rads[0][1])
 				return
 
-			w.s = sl[0][0]
-			if len(sl) > 1:
-				sl.sort()
-				w.s = spicker(sl)
-				if not w.s: return
-
-		#reset portrait
-		w.portr.setData('monet_sm.jpg')
-		portr2.setData('monet_sm.jpg')
-
-		#reset classes rem
-		spec.setData("")
-		w2.spec2.setData("")
-
-		#temp workaround while table is fixed
-		for child in w.frames["Eleventh Frame"].winfo_children():
-			child.destroy()
-
-		w.attinfo.build(headers=w.attinfoh, data=[[]])
-		w.frames["Eleventh Frame"].addWidget(w.attinfo, (0, 0))
-		w.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
-
-		w.attinfo.editwidget=False
-		w.attinfo.canvas.config(width=500, height=555)
-		#
-
-		#temp workaround while table is fixed
-		for child in w2.frames["Third Frame"].winfo_children():
-			child.destroy()
-
-		w2.attinfo.build(headers=w2.attinfoh, data=[[]])
-		w2.frames["Third Frame"].addWidget(w2.attinfo, (0, 0))
-		w2.frames["Third Frame"].grid(rowspan=100, sticky=W)
-
-		w2.attinfo.editwidget=False
-		w2.attinfo.canvas.config(width=500, height=500)
-		#
-		dp = d.studentList[w.s].datapoints
-
-		w.populate(dp)
-		w2.populate(dp)
-
-		w.tdp = dict(w.collect(d.studentList[w.s].datapoints))
-
-		#if amount owed is larger than amount paid, color amount owed in red
-		if dp['tpa'] < dp['tpo']: tpo.entry.config(bg='red')
-		else: tpo.entry.config(bg='white')
-
-		sby.entry.delete(0, END)
-
-		w2.spec2.show()
-		w2.spec2.setData(w.lang['Classes remaining for this student'] + ': ' + str(d.studentList[w.s].datapoints['cRemaining']))
-		w2.spec2.label.config(fg='#0000B8', font=('Verdana', 15))
-
-		#try:
-		#	if datetime.now().date() > d.studentList[w.s].datapoints['expire']:
-		#		spec.show()
-		#		spec.setData(w.lang['Membership Expired'])
-		#		spec.label.config(fg='red', font=('Verdana', 15))
-		#except:
-		#	pass
-
-		if d.studentList[w.s].datapoints['cRemaining'] == 0:
-			spec.show()
-			spec.setData(w.lang['Classes remaining for this student'] + ': ' + str(d.studentList[w.s].datapoints['cRemaining']))
-			spec.label.config(fg='red', font=('Verdana', 15))				
-			noc(w.lang)
-			sby.b.set(sby.rads[0][1])
-			return
-
-		if cs(d.studentList[w.s].datapoints['firstName'], w.lang): ss()
-		#except:
-		#	nos(w.lang)
-		#	pass
+			if cs(d.studentList[w.s].datapoints['firstName'], w.lang): ss()
+		except:
+			nos(w.lang)
+			pass
 
 
 	def ss(mode=False):
@@ -272,6 +272,7 @@ def main(t, lang, d):
 			spec.setData(w.lang['Classes remaining for this student'] + ': ' + str(cRem))
 			spec.label.config(fg='red', font=('Verdana', 15))
 		else:
+			spec.setData("")
 			#hide, show will work better once window size is set
 			pass
 
@@ -284,7 +285,7 @@ def main(t, lang, d):
 		#except:
 		#	pass
 
-		spec.setData(w.lang['Classes remaining for this student'] + ': ' + str(cRem))
+		#spec.setData(w.lang['Classes remaining for this student'] + ': ' + str(cRem))
 
 		w2.spec2.show()
 		w2.spec2.setData(w.lang['Classes remaining for this student'] + ': ' + str(cRem))

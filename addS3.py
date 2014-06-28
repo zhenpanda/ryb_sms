@@ -40,9 +40,12 @@ def main(t, lang, d, sM):
 #debugging
 	#w.frames["First Frame"].config(bg='lightgrey')
 
+	w.sectioncolor = "#3B5C8D"
+	#3B5C8D
+
 #student info widgets
 	w.frames["First Frame"].addWidget(sinfo, (0, 0))
-	sinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'), text=w.lang['Student information'])
+	sinfo.label.config(bg=w.sectioncolor, fg='white', font=('Jumbo', '11', 'bold'), text=w.lang['Student information'])
 	sinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	w.frames["First Frame"].addWidget(firstName, (1, 0))
 	w.frames["First Frame"].addWidget(lastName, (2, 0))
@@ -54,7 +57,7 @@ def main(t, lang, d, sM):
 
 #address widgets
 	w.frames["Second Frame"].addWidget(ainfo, (0, 0))
-	ainfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
+	ainfo.label.config(bg=w.sectioncolor, fg='white', font=('Jumbo', '11', 'bold'))
 	ainfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	w.frames["Second Frame"].addWidget(addr, (3, 0))
 	w.frames["Second Frame"].addWidget(city, (4, 0))
@@ -64,7 +67,7 @@ def main(t, lang, d, sM):
 
 #contact widgets
 	w.frames["Third Frame"].addWidget(cinfo, (0, 0))
-	cinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
+	cinfo.label.config(bg=w.sectioncolor, fg='white', font=('Jumbo', '11', 'bold'))
 	cinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	w.frames["Third Frame"].addWidget(pup, (1, 0))
 	w.frames["Third Frame"].addWidget(hPhone, (2, 0))
@@ -73,7 +76,7 @@ def main(t, lang, d, sM):
 
 #database info widgets
 	w.frames["Fourth Frame"].addWidget(pinfo, (0, 0))
-	pinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
+	pinfo.label.config(bg=w.sectioncolor, fg='white', font=('Jumbo', '11', 'bold'))
 	pinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	w.frames["Fourth Frame"].addWidget(bCode, (1, 0))
 	w.frames["Fourth Frame"].addWidget(sid, (2, 0))
@@ -183,9 +186,3 @@ def main(t, lang, d, sM):
 			widget.config(lang=w.lang)
 
 	w.frames['Title Frame'].grid_forget()
-
-
-if __name__ == '__main__':
-	t = Tk()
-	main(t, language)
-	t.mainloop()
