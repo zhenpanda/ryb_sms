@@ -79,7 +79,10 @@ class AppWindow(Frame):
 		for frame in self.frames.values():
 			for widget in frame.widgets.values():
 				if widget.repr in info:
-					widget.setData(info[widget.repr])
+					try:
+						widget.setData(info[widget.repr])
+					except:
+						continue
 
 	def dw(self):
 		self.destroy()
@@ -93,17 +96,6 @@ class Window(Tk):
 		if top: Toplevel.__init__(self, *args, **kwargs)
 		else: Tk.__init__(self, *args, **kwargs)
 
-		#self.protocol('WM_DELETE_WINDOW', self.dw)
-
-		#self.attributes('-fullscreen', True)
-		#root options
-		#self.option_add("*Font", "size=11")
-		#self.option_add("*Background", "")
-
-		#self.title(title)
-		#self.geometry(geometry)
-		#self.attributes('-alpha', 0.9)
-		#self.config(bg="black")#, bd=25)
 		self.attributes('-fullscreen', True)
 
 		self.pic = Image.open('bigbl.jpg')

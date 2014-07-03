@@ -3,6 +3,7 @@ import keeper
 import pickle
 import xlrd
 import xlsxwriter
+import shutil
 
 #sched feature to add: log all changes
 
@@ -148,7 +149,6 @@ class StudentDB:
         attinfo = self.studentList[barcode].datapoints['attinfo'][1]
 
         for att in attinfo:
-            print(att[0])
             if att[0] == today: checkedInToday += 1
 
         if checkedInToday > 0: return checkedInToday
@@ -308,13 +308,15 @@ class StudentDB:
                 worksheet.write(r, c, student.datapoints[dp])
                 c += 1
 
-            #print(student.datapoints['attinfo'])
             if len(student.datapoints['attinfo']) == 2 and student.datapoints['attinfo'][1] == []:
                 r += 1
                 continue
             
             for att in student.datapoints['attinfo'][1]:
-                worksheet.write(r, c, att[0] + ' ' + att[2])
+                if len(att) >= 4:
+                    worksheet.write(r, c, att[0] + ' ' + att[1] + ' ' + att[2].replace(' ', '') + ' ' + att[3])
+                else:
+                    worksheet.write(r, c, att[0] + ' ' + att[2].replace(' ', ''))
                 c += 1
 
             r += 1
@@ -340,8 +342,8 @@ class StudentDB:
             newS = StudentInfo()
             for dp in info:
                 newS.datapoints[repr[info.index(dp)]] = dp
-            newS.datapoints['attinfo'][0] = ['Date', 'Time', 'Check-In Time']
-            print(newS.datapoints['dob'])
+            newS.datapoints['attinfo'] = list([['Date', 'Time', 'Check-In Time'], []])
+            
             try:
                 newS.datapoints['age'] = self.calcAge(newS.datapoints['dob'])
             except:
@@ -389,12 +391,18 @@ class StudentDB:
             for td in tdata:
                 try:
                     dt = td.split(' ')
-                    date = dt[0]
+                    try:
+                        date = datetime.strftime(datetime.strptime(dt[0], "%m/%d/%y"), "%m/%d/%Y")
+                    except:
+                        date = dt[0]
                     time = dt[1]
                 except:
                     continue
 
-                ftdata.append([date, '', time])
+                if len(dt) >= 4:
+                    ftdata.append([date, dt[1] + ' ' + dt[2], dt[3], dt[4]])
+                else:
+                    ftdata.append([date, '', time])
 
             dp = self.studentList[bCode].datapoints
             
@@ -412,9 +420,8 @@ class StudentDB:
                 else:
                     dp['expire'] = self.calcExpir(datetime.strptime(dp['tpd'], "%m/%d/%Y"), cAward)
             except:
+                dp['expire'] = '12/12/9999'
                 pass
-
-            print(dp['expire'])
 
             ns += 1
             nt += len(ftdata)
@@ -425,47 +432,71 @@ class StudentDB:
         return ns, nt
 
 
-#testing zone
-#Pull settings.
-#settings = Settings()
-
-#file is unused
-#file = settings.config["dbFile"]
-
-#rybDB = StudentDB()
+    def exportdb(self, dst):
+        shutil.copyfile(self.file, dst)
 
 
-#s = StudentInfo()
-#s.datapoints['barcode'] = '1234'
+    def exportreport(self, fpath, sdate):
 
-#print(s.config['dbFile'])
+        if len(self.studentList) == 0: return
 
-#k = keeper.Keeper('keeper.db')
-#k.files['cfilepath'] = 't2.db'
+        #format sdate
+        sdates = [sdate]
 
-#d = StudentDB(file=k.files['cfilepath'], cfile=k.fname)
-#d.loadData()
-#d.addStudent(s.datapoints['barcode'], s)
-#d.scanStudent('1234')
-#d.scanStudent('1234')
+        #iterations
+        sdsplit = sdate.split('/')
+        sdates.append(str(int(sdsplit[0])) + '/' + str(int(sdsplit[1])) + '/' + (sdsplit[2][2:] if len(sdsplit[2]) > 2 else sdsplit[2]))
 
-#print(d.checkDate('1234'))
-#print(d.studentList['1234'].datapoints['attinfo'])
-#print(['05/20/2014', '02:21', '02:30'][0])
+        workbook = xlsxwriter.Workbook(fpath + 'report_' + sdate.replace('/', '.') + '.xlsx')
+        worksheet = workbook.add_worksheet()
 
-#d.importxlsx('sdt1.xls')
-#d.importtimexlsx('at.xls')
+        totalondate = {v: [] for k, v in self.timeslot.items()}
 
-#d.importxlsx('sdt.xls')
+        for student in self.studentList.values():
+            for att in student.datapoints['attinfo'][1]:
+                if att[0] in sdates:
+                    for date in totalondate:
+                        if att[2][:5] in date or att[2][:4] in date:
+                            totalondate[date].append([student.datapoints['bCode'], student.datapoints['firstName'] + ' ' + student.datapoints['lastName']])
 
-#date = datetime.strptime('1/1/1900', "%m/%d/%Y")
-#edate = date + timedelta(days=38779-2)
+        totals = 0
+        for v in totalondate.values():
+            totals += len(v)
 
-#print(edate)
+        worksheet.write(0, 0, 'Total check-ins: ' + str(totals))
 
-#print(d.studentList['FLU-000-002'].datapoints)
-#x = {'1': lambda y: str(y), '2': lambda y: int(y), '3': lambda y: (datetime.strptime('1/1/1900', "%m/%d/%Y") + timedelta(days=y-2)).strftime("%m/%d/%y")}
+        #cleanup
+        for k, v in totalondate.items():
+            l = []
+            for s in v:
+                if s not in l:
+                    l.append(s)
+            totalondate[k] = l
 
-#print(x['3'](41653.0))
-#print(datetime.strftime)
-#print(d.studentList['FLU-000-006'].datapoints['firstName'])
+        #to list
+        totalondate = [(k, v) for k, v in totalondate.items()]
+        totalondate.sort()
+        totalondate = totalondate[3:] + totalondate[:3]
+
+        #format
+        tformat = workbook.add_format({'bold': True})
+        tformat.set_bg_color('#C2FFAD')
+
+        #to excel
+        r, c = 2, 0
+
+        for l in totalondate:
+            worksheet.write(r, c, l[0], tformat)
+            worksheet.write(r, c + 1, str(len(l[1])), tformat)
+            r += 1
+            for t in l[1]:
+                worksheet.write(r, 0, t[0])
+                worksheet.write(r, 1, t[1])
+                r += 1
+
+            worksheet.write(r, c, '')
+            r += 1
+
+        worksheet.set_column(0, 0, 10)
+        worksheet.set_column(0, 1, 30)
+        workbook.close()

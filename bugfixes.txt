@@ -5,7 +5,7 @@ To fix
 	save student
 
 2. renew, expiration date only if expired, else add
-
+3. if db file is deleted while program is running, it will crash
 
 
 

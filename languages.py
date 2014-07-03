@@ -104,7 +104,10 @@ languages = \
 		"Card Printed": "Card Printed",
 		"Already Paid": "Already Paid",
 		"Phone Number": "Phone Number",
-		'RYB Student Management' : 'RYB Student Management'
+		"RYB Student Management" : "RYB Student Management",
+		"print report": "Print Report",
+		"sdate": "Search Date",
+		"Select Folder": "Select Folder"
 		},
 
 	"chinese": {
@@ -209,7 +212,11 @@ languages = \
 		"Card Printed": "已打印卡",
 		"Already Paid": "已支付学费",
 		"Phone Number": "电话号码",
-		'RYB Student Management' : '红黄蓝学生记录软件'
+		"RYB Student Management" : "红黄蓝学生记录软件",
+		"print report": "Print Report",
+		"sdate": "Search Date",
+		"Select Folder": "Select Folder",
+		"filepath": "File Path",
 		}
 		
 }

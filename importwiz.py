@@ -162,7 +162,3 @@ def main(lang, d):
 
 	
 	t.mainloop()
-
-if __name__ == '__main__':
-	print(randrange(0, 10000))
-	main(language)

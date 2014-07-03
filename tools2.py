@@ -25,20 +25,20 @@ def main(t, lang, d):
 
 
 	def ctdb():
-		try:
-			p = filedialog.askopenfile(mode='r').name
-			l = p.split('/')[-1]
-			ext = l[l.rfind('.'):]
-			if ext != '.xls' and ext != '.xlsx':
-				print("invalid file")
-				return
-			else:
-				d.loadData()
-				ns, nt = d.importtimexlsx(p)
-				ctimp(w.lang, ns, nt)
-				#d.saveData()
-		except:
+		#try:
+		p = filedialog.askopenfile(mode='r').name
+		l = p.split('/')[-1]
+		ext = l[l.rfind('.'):]
+		if ext != '.xls' and ext != '.xlsx':
+			print("invalid file")
 			return
+		else:
+			d.loadData()
+			ns, nt = d.importtimexlsx(p)
+			ctimp(w.lang, ns, nt)
+			#d.saveData()
+		#except:
+		#	return
 			#print("error opening file.")
 
 
@@ -50,9 +50,9 @@ def main(t, lang, d):
 	def expf():
 		try:
 			p = filedialog.askdirectory()
-			d.exportxlsx(p + '/student_list_.xlsx')
-			d.exporttxlsx(p + '/student_att_.xlsx')
-			print(p)
+			d.exportxlsx(p + '/student_list.xlsx')
+			d.exporttxlsx(p + '/student_att.xlsx')
+			d.exportdb(p + '/backup_' + str(datetime.now().date()) + '.db')
 		except:
 			return
 

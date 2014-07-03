@@ -25,13 +25,15 @@ def main(t, lang, d):
 			try:
 				f(i)
 			except:
-				print(w.sT.data[p[0]-1][0])
+				pass
+				#print(w.sT.data[p[0]-1][0])
 
 		try:
 			for pos, cell in w.sT.cells.items():
 				cell.config(bind=('<Double-Button-1>', lambda event, pos=pos: fsb(pos)))
 		except:
-			print("cells could not be bound")
+			pass
+			#print("cells could not be bound")
 
 #frame initialization
 	w.newFrame("First Frame", (1, 0))
@@ -140,8 +142,6 @@ def main(t, lang, d):
 		try:
 			w.s = w.sby.getData()[1]
 
-			print(w.sby.getData())
-
 
 			if w.sby.getData()[0] != 'bCode':
 				sty = w.sby.getData()[0]
@@ -174,7 +174,6 @@ def main(t, lang, d):
 					w.s = spicker(sl)
 					if not w.s: return
 
-			print(w.s)
 			editS2.main(w.lang, d=d, top=True, i=w.s)
 		except:
 			nos(w.lang)

@@ -13,7 +13,8 @@ class Textbox(Widget):
 			self.repr = kwargs['repr']
 			self.lang = kwargs['lang']
 		except:
-			print("widget could not be loaded")
+			pass
+			#print("widget could not be loaded")
 
 		self.height = 1
 		self.width = 2
@@ -52,7 +53,8 @@ class Textbox(Widget):
 		try:
 			self.trytoplace(**kwargs)
 		except:
-			print("widget could not be placed")
+			pass
+			#print("widget could not be placed")
 
 		self.label = Label(self.parent, text=self.lang[self.text].strip(), width=15, anchor=E)
 		self.entry = Entry(self.parent, relief=SOLID)
@@ -130,7 +132,8 @@ class Datebox(IntTextbox):
 		try:
 			self.trytoplace(**kwargs)
 		except:
-			print("widget could not be placed")
+			pass
+			#print("widget could not be placed")
 
 		self.selfframe = Frame(self.parent)
 		self.label = Label(self.parent, text=self.text, width=15, anchor=E)
@@ -183,7 +186,7 @@ class MoneyTextbox(IntTextbox):
 			int(S)
 			return True
 		except ValueError:
-			print(self.getData())
+			#print(self.getData())
 			return S == '.' and '.' not in self.entry.get()# or False
 		return False
 
@@ -207,7 +210,8 @@ class Separator(Widget):
 		try:
 			self.repr = kwargs['repr']
 		except:
-			print("widget could not be loaded")
+			pass
+			#print("widget could not be loaded")
 
 		#self.height = 2
 		#self.bd = 1
@@ -230,7 +234,8 @@ class Separator(Widget):
 		try:
 			self.trytoplace(**kwargs)
 		except:
-			print("widget could not be placed")
+			pass
+			#print("widget could not be placed")
 
 
 		self.fr = Frame(self.parent, height=2, bd=1, relief=SUNKEN)
@@ -245,7 +250,8 @@ class Picker(Textbox):
 			self.text = kwargs['text']
 			self.rads = kwargs['rads']
 		except:
-			print("widget could not be loaded")
+			pass
+			#print("widget could not be loaded")
 
 
 	def config(self, **kwargs):
@@ -266,7 +272,8 @@ class Picker(Textbox):
 		try:
 			self.trytoplace(**kwargs)
 		except:
-			print("widget could not be placed")
+			pass
+			#print("widget could not be placed")
 
 		self.selfframe = Frame(self.parent)
 		self.label = Label(self.selfframe, text=self.text)
@@ -333,7 +340,8 @@ class LongTextbox(Textbox):
 		try:
 			self.trytoplace(**kwargs)
 		except:
-			print("widget could not be placed")
+			pass
+			#print("widget could not be placed")
 
 		self.label = Label(self.parent, text=self.lang[self.text])
 		self.sentry = ScrolledText(self.parent, relief=SOLID)
@@ -375,7 +383,7 @@ class Labelbox(Textbox):
 			self.lang = kwargs['lang']
 			self.label.config(text=self.lang[self.text])
 		except:
-			print('error translating', self.repr)
+			#print('error translating', self.repr)
 			pass
 
 
@@ -388,7 +396,8 @@ class Labelbox(Textbox):
 		try:
 			self.trytoplace(**kwargs)
 		except:
-			print("widget could not be placed")
+			pass
+			#print("widget could not be placed")
 
 		self.label = Label(self.parent, text=self.lang[self.text])
 		self.label.grid(row=self.row, column=self.column)
@@ -413,7 +422,8 @@ class Buttonbox2(Textbox):
 			self.repr = kwargs['repr']
 			self.lang = kwargs['lang']
 		except:
-			print("widget could not be loaded")
+			pass
+			#print("widget could not be loaded")
 
 		self.width = 30
 
@@ -442,7 +452,8 @@ class Buttonbox2(Textbox):
 		try:
 			self.trytoplace(**kwargs)
 		except:
-			print("widget could not be placed")
+			pass
+			#print("widget could not be placed")
 
 		self.button = Button(self.parent, text=self.lang[self.text], width=self.width)
 		self.button.bind('<Enter>', self.config(bg='blue'))
@@ -457,14 +468,15 @@ class Buttonbox(Textbox):
 			self.repr = kwargs['repr']
 			self.lang = kwargs['lang']
 		except:
-			print("widget could not be loaded")
+			pass
+			#print("widget could not be loaded")
 
 		#7D9DFF
 
 		self.width = 30
-		self.idlebg = '#7D9DFF'
+		self.idlebg = '#657FCF'
 		self.hoverbg = '#405DB2'
-		self.idleborder = '#5C7DBD'
+		self.idleborder = '#7D9DFF'
 		self.hoverborder = '#5C7DBD'
 		self.fg = 'white'
 		self.hoverfg = 'white'
@@ -485,11 +497,11 @@ class Buttonbox(Textbox):
 			if len(self.args) > 0 and self.args[0] != 'self':
 				self.button.bind('<ButtonRelease-1>', self.cmd)
 				self.button.bind('<Button-1>', self.button.config(bg='#195CBF'))
-				self.button.bind('<Return>', self.cmd)
+				#self.button.bind('<Return>', self.cmd)
 				self.button.bind('<space>', self.cmd)
 			else:
 				self.button.bind('<ButtonRelease-1>', lambda e: self.cmd())
-				self.button.bind('<Return>', lambda e: self.cmd())
+				#self.button.bind('<Return>', lambda e: self.cmd())
 				self.button.bind('<space>', lambda e: self.cmd())
 		except:
 			pass
@@ -530,15 +542,17 @@ class Buttonbox(Textbox):
 		try:
 			self.trytoplace(**kwargs)
 		except:
-			print("widget could not be placed")
+			pass
+			#print("widget could not be placed")
 
 		self.selfframe = Frame(self.parent, bg=self.idleborder, bd=1)
-		#self.innerf = Frame(self.selfframe, bg='black', bd=2)
-		self.button = Label(self.innerf, text=self.lang[self.text], width=self.width, bg=self.idlebg, fg=self.fg, \
+		#self.innerf = Frame(self.selfframe, bg='#708DE6', bd=1)
+		self.button = Label(self.selfframe, text=self.lang[self.text], width=self.width, bg=self.idlebg, fg=self.fg, \
 			font=('Verdana', 11), pady=5)
 
 		self.button.bind('<Enter>', self.enter)
 		self.button.bind('<Leave>', self.leave)
 
 		self.selfframe.grid(row=self.row, column=self.column, pady=2)
+		#self.innerf.pack()
 		self.button.pack()

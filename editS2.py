@@ -10,7 +10,7 @@ def main(lang, d, top=False, i=0):
 	t = Window(top=top)
 	t.attributes('-fullscreen', False)
 	t.geometry('1600x700')
-	#t.resizable(0, 0)
+	t.resizable(0, 0)
 	t.grab_set()
 	t.focus_set()
 
@@ -40,8 +40,6 @@ def main(lang, d, top=False, i=0):
 	w.frames["Eleventh Frame"].grid(sticky=N)
 	w.frames["Eigth Frame"].grid(sticky=N)
 	w.frames["Eleventh Frame"].columnconfigure(0, weight=5, minsize=520)
-	#w.frames["First Frame"].grid(columnspan=5)
-	#w.frames["Sixth Frame"].grid(rowspan=2, sticky=N)
 
 #student info widgets
 	w.frames["First Frame"].addWidget(sinfo, (0, 0))
@@ -101,9 +99,6 @@ def main(lang, d, top=False, i=0):
 	notes.config(height=8, width=32)
 
 
-
-
-
 	baclass = Buttonbox(text='awardclass', lang=w.lang, repr='aclass')
 	baoclass = Buttonbox(text='awardoneclass', lang=w.lang, repr='aoclass')
 	baac = Buttonbox(text='awardaddclass', lang=w.lang, repr='baaclasses')
@@ -128,15 +123,9 @@ def main(lang, d, top=False, i=0):
 	#baclass.config(cmd=lambda: cpicker(w.lang))
 	#baac.config(cmd=cadd)
 
-
-
-
-
-
 	w.frames["Seventh Frame"].addWidget(portr, (0, 0))
 
 	w.attinfo = attinfo
-	#w.attinfo.deleteAll()
 	w.frames["Eleventh Frame"].addWidget(w.attinfo, (0, 0))
 	w.frames["Eleventh Frame"].grid(rowspan=100, sticky=W)
 

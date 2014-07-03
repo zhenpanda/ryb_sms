@@ -5,6 +5,7 @@ from languages import *
 from labelWidgets2 import *
 from photoWidget2 import *
 from preBuilts2 import ret, titlePic
+from tkinter import filedialog
 import addS3
 import scanS22
 import sDb22
@@ -66,10 +67,46 @@ def main():
 		w.frames["First Frame"].grid(row=1)
 		w.frames['Third Frame'].grid_forget()
 
-		#w.frames["Title Frame"].grid(row=0, columnspan=4, sticky=E+W, pady=20)
-
 		w.k.files['cfilepath'] = w.d.file
 		w.k.save()
+
+#print report prompt
+	def printPrompt():
+
+		def out():
+			try:
+				p = filedialog.askdirectory()
+			except:
+				return
+
+			try:
+				w.d.exportreport(p + '/', rdate.getData())
+			except:
+				pass
+
+			pt.destroy()
+
+		pt = Window(top=True)
+		pt.attributes('-fullscreen', False)
+		pt.resizable(0, 0)
+		pt.geometry('400x200+200+200')
+		pt.grab_set()
+		pt.focus_set()
+
+		wpt = AppWindow(pt.mainFrame)
+
+		rdate = Datebox(text=w.lang['sdate'], lang=w.lang, repr='rdate')
+		rbutton = Buttonbox(text='Select Folder', lang=w.lang, repr='rbutton')
+
+		wpt.newFrame("First Frame", (0, 0))
+
+		wpt.frames["First Frame"].addWidget(rdate, (0, 0))
+		wpt.frames["First Frame"].addWidget(rbutton, (1, 0))
+
+		rdate.label.destroy()
+		rbutton.selfframe.grid(columnspan=2, pady=20)
+
+		rbutton.config(cmd=out)
 		
 
 #main window and starting language
@@ -90,15 +127,6 @@ def main():
 	w.newFrame("Second Frame", (2, 0))
 	w.newFrame("Third Frame", (3, 0))
 
-#experimental material
-	#to create background on title frame
-	#current limitation: frame scaling according to window size change
-	#title
-	#titleImg = ImageTk.PhotoImage(titlePic)
-	#w.frames["Title Frame"].grid(columnspan=4, sticky=E+W)
-	#Label(w.frames["Title Frame"], text=w.lang['RYB Student Management'], bg='#3B5C8D', fg='white', \
-		#height=3, font=('Jumbo', '12', 'bold')).pack(fill='both', expand=True)
-
 #hide sub-frames
 	w.frames['Second Frame'].grid_forget()
 	w.frames['Third Frame'].grid_forget()
@@ -111,6 +139,7 @@ def main():
 	bsbmm = Buttonbox(text='Back to Main Menu', lang=w.lang, repr='bsbmm') #Return to Main Menu
 	bsexit = Buttonbox(text='Exit', lang=w.lang, repr='bsexit') #Exit
 	bclang = Buttonbox(text='changelanguage', lang=w.lang, repr='bclang') #Change Language
+	bprint = Buttonbox(text='print report', lang=w.lang, repr='bprint') #Print end of day report
 
 #background image
 	w.p = Photo(repr='splash', path='background_IMG.jpg')
@@ -121,7 +150,8 @@ def main():
 	w.frames["First Frame"].addWidget(bssdb, (2, 0))
 	w.frames["First Frame"].addWidget(bstools, (3, 0))
 	w.frames["Third Frame"].addWidget(bsbmm, (0, 0))
-	w.frames["First Frame"].addWidget(bsexit, (5, 0))
+	w.frames["First Frame"].addWidget(bprint, (5, 0))
+	w.frames["First Frame"].addWidget(bsexit, (6, 0))
 	w.frames["First Frame"].addWidget(bclang, (4, 0))
 	w.frames["First Frame"].addWidget(w.p, (0, 2))
 	Label(w.frames["First Frame"], text='  ').grid(column=1) #separator between buttons and background image
@@ -132,6 +162,7 @@ def main():
 	bssdb.config(cmd=lambda: showWindow(sDb22.main))
 	bstools.config(cmd=lambda: showWindow(tools2.main))
 	bsbmm.config(cmd=lambda: showMain(t.con))
+	bprint.config(cmd=printPrompt)
 	bsexit.config(cmd=t.destroy)
 	bclang.config(cmd=clang)
 	bstools.selfframe.grid_forget()
@@ -173,16 +204,10 @@ def main():
 	bsexit.hoverfg = 'white'
 	bsexit.button.config(bg=bsexit.idlebg, fg=bsexit.fg)
 
-
-
-#experimental button
-	#custom X button
-	#t.exit.bind('<ButtonRelease-1>', lambda e: t.destroy())
-
-	#showWindow(tools2.main)
-	#showMain(False)
-
-	#w.frames['Title Frame'].grid_forget()
+	bprint.idlebg = w.mmbuttoncol
+	bprint.fg = w.mmbuttonfg
+	bprint.hoverfg = 'white'
+	bprint.button.config(bg=bprint.idlebg, fg=bprint.fg)
 
 	t.iconbitmap('RYB_Attendance.ico')
 	t.mainloop()
