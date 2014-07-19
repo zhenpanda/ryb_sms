@@ -22,8 +22,8 @@ def main(t, lang, d):
 #frame initialization
 	w.newFrame("First Frame", (1, 1))
 	w.newFrame("Second Frame", (1, 2))
-	w.newFrame("Third Frame", (2, 1))
-	w.newFrame("Fourth Frame", (2, 2))
+	w.newFrame("Third Frame", (2, 2))
+	w.newFrame("Fourth Frame", (2, 1))
 	w.newFrame("Fifth Frame", (5, 0))
 	w.newFrame("Sixth Frame", (4, 2))
 	w.newFrame("Seventh Frame", (1, 0))
@@ -55,7 +55,7 @@ def main(t, lang, d):
 	w.frames["First Frame"].addWidget(chineseName, (3, 0))
 	w.frames["First Frame"].addWidget(dob, (4, 0))
 	w.frames["First Frame"].addWidget(age, (5, 0))
-	w.frames["First Frame"].addWidget(parentName, (6, 0))
+	w.frames["Second Frame"].addWidget(parentName, (8, 0))
 	w.frames["First Frame"].addWidget(cp, (7, 0))
 
 #address widgets
@@ -81,12 +81,13 @@ def main(t, lang, d):
 	w.frames["Fourth Frame"].addWidget(pinfo, (0, 0))
 	pinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	pinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
+	w.frames["Fourth Frame"].addWidget(bCodeNE, (1, 0))
 
 #payment widgets
-	w.frames["Fourth Frame"].addWidget(tpd, (1, 0))
-	w.frames["Fourth Frame"].addWidget(tpa, (2, 0))
-	w.frames["Fourth Frame"].addWidget(tp, (3, 0))
-	w.frames["Fourth Frame"].addWidget(tpo, (4, 0))
+	w.frames["Fourth Frame"].addWidget(tpd, (2, 0))
+	w.frames["Fourth Frame"].addWidget(tpa, (3, 0))
+	w.frames["Fourth Frame"].addWidget(tp, (4, 0))
+	w.frames["Fourth Frame"].addWidget(tpo, (5, 0))
 
 #class widget
 	w.frames["Fourth Frame"].addWidget(sType, (6, 0))
@@ -95,12 +96,13 @@ def main(t, lang, d):
 	w.frames["Fourth Frame"].addWidget(ctime, (9, 0))
 
 #notes widget
-	w.frames["Ninth Frame"].addWidget(ninfo, (0, 0))
+	w.frames["Third Frame"].addWidget(ninfo, (5, 0))
 	ninfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	ninfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w.frames["Ninth Frame"].addWidget(notes, (1, 0))
+	w.frames["Third Frame"].addWidget(notes, (6, 0))
 	notes.label.grid_forget()
-	notes.config(height=8, width=32)
+	notes.sentry.grid(column=0, columnspan=2)
+	notes.config(height=6, width=32)
 
 #special
 	spec = Labelbox(text='spec', lang=w.lang, repr='spec')
@@ -137,12 +139,13 @@ def main(t, lang, d):
 		tp.setData(0)
 
 	w.ren = Buttonbox(text='Renew classes', lang=w.lang, repr='ren')
-	w.frames["Eigth Frame"].addWidget(w.ren, (1, 0))
+	w.frames["Fourth Frame"].addWidget(w.ren, (10, 1))
 	w.ren.selfframe.grid(sticky=S)
+	w.ren.button.config(width=20)
 	w.ren.config(cmd=renC)
 
 	w.attinfo.editwidget=False
-	w.attinfo.canvas.config(width=500, height=555)
+	w.attinfo.canvas.config(width=500, height=400)
 
 	sby.rads=[('Barcode', 'bCode'), ('First Name', 'firstName'), \
 		('Last Name', 'lastName'), ('Chinese Name', 'chineseName'), \
@@ -207,7 +210,7 @@ def main(t, lang, d):
 			w.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
 
 			w.attinfo.editwidget=False
-			w.attinfo.canvas.config(width=500, height=555)
+			w.attinfo.canvas.config(width=500, height=400)
 			#
 
 			#temp workaround while table is fixed

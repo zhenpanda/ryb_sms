@@ -63,7 +63,8 @@ class Photo(Widget):
 
 
 	def setData(self, data):
-		if data == '': return
+		#le sigh
+		if data == '' or 'N/A': return
 		self.config(path=data)
 
 

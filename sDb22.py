@@ -99,6 +99,9 @@ def main(t, lang, d):
 				l = []
 		sL.append(l)
 
+	#if last page is blank (if num students is multiple of 30)
+	if len(sL[-1]) == 0 and len(sL) != 1: sL.pop()
+
 	w.pNum = 1
 
 		
@@ -111,10 +114,6 @@ def main(t, lang, d):
 		w.frames["Second Frame"].addWidget(w.sT, (2, 0))
 		w.sT.canvas.config(width=700, height=550)
 		sTbind(lambda i: editS2.main(w.lang, top=True, i=i, d=d))
-		
-		#w.sT.setData((stableh, sL[p]))
-		#w.sT.canvas.config(width=700, height=700)
-		#sTbind(lambda i: editS2.main(w.lang, top=True, i=i, d=d))
 
 	def f():
 		if w.pNum == len(sL) - 1: return

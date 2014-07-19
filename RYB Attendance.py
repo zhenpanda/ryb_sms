@@ -75,12 +75,12 @@ def main():
 
 		def out():
 			try:
-				p = filedialog.askdirectory()
+				p = filedialog.asksaveasfilename()
 			except:
 				return
 
 			try:
-				w.d.exportreport(p + '/', rdate.getData())
+				w.d.exportreport(p, rdate.getData())
 			except:
 				pass
 

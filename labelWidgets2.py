@@ -548,7 +548,7 @@ class Buttonbox(Textbox):
 		self.selfframe = Frame(self.parent, bg=self.idleborder, bd=1)
 		#self.innerf = Frame(self.selfframe, bg='#708DE6', bd=1)
 		self.button = Label(self.selfframe, text=self.lang[self.text], width=self.width, bg=self.idlebg, fg=self.fg, \
-			font=('Verdana', 11), pady=5)
+			font=('Verdana', 11), pady=3)
 
 		self.button.bind('<Enter>', self.enter)
 		self.button.bind('<Leave>', self.leave)
@@ -556,3 +556,40 @@ class Buttonbox(Textbox):
 		self.selfframe.grid(row=self.row, column=self.column, pady=2)
 		#self.innerf.pack()
 		self.button.pack()
+
+
+class TextboxNoEdit(Textbox):
+
+	def config(self, **kwargs):
+
+		try:
+			s = StringVar()
+			s.set(kwargs['text'])
+			self.entry.config(state=NORMAL)
+			self.entry.config(textvariable=s)
+			self.entry.config(state=DISABLED)
+		except:
+			pass
+			#print("the widget could not be configured")
+
+		try:
+			self.lang = kwargs['lang']
+			self.label.config(text=self.lang[self.text].strip())
+		except:
+			pass
+
+	def place(self, **kwargs):
+
+		try:
+			self.trytoplace(**kwargs)
+		except:
+			pass
+			#print("widget could not be placed")
+
+		self.label = Label(self.parent, text=self.lang[self.text].strip(), width=15, anchor=E)
+		self.entry = Entry(self.parent, relief=SOLID, state=DISABLED)
+
+		self.label.grid(row=self.row, column=self.column)
+		self.entry.grid(row=self.row, column=self.column+1)
+
+		self.bind()

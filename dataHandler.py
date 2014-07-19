@@ -12,38 +12,38 @@ class StudentInfo:
     def __init__(self):
         self.datapoints = {
             #datapoints to of each student
-            "lastName": '',
-            "firstName": '',
-            "chineseName": '',
-            "schoolLoc": '',
-            "bCode": '',
+            "lastName": 'N/A',
+            "firstName": 'N/A',
+            "chineseName": 'N/A',
+            "schoolLoc": 'N/A',
+            "bCode": 'N/A',
             "sid": 0,
             "dob": '1/1/1900',
             "age": 0,
-            "gender": '',
-            "parentName": '',
+            "gender": 'N/A',
+            "parentName": 'N/A',
             "hPhone": 0,
             "cPhone": 0,
             "cPhone2": 0,
-            "pup": '',
-            "addr": '',
-            "state": '',
-            "city": '',
+            "pup": 'N/A',
+            "addr": 'N/A',
+            "state": 'N/A',
+            "city": 'N/A',
             "zip": 0,
-            "wkdwknd": '',
+            "wkdwknd": 'N/A',
             "tpd": '1/1/1900',
             "tpa": 0,
             "tpo": 0,
             "tp": 0,
-            "email": '',
-            "sType": '',
+            "email": 'N/A',
+            "sType": 'N/A',
             "cAwarded": 0,
             "cRemaining": 0,
-            "findSchool": '',
-            "notes": '',
+            "findSchool": 'N/A',
+            "notes": 'N/A',
             "attinfo": [['Date', 'Check-In Time', 'Class Time'], []],
             "portr": '',
-            "ctime": '',
+            "ctime": 'N/A',
             "expire": 'N/A',
             "cp": "N"
             }
@@ -80,11 +80,12 @@ class StudentInfo:
             "How did you hear about the school?": "findSchool",
             "Notes": "notes",
             "Already Paid": "tp",
-            "Card Printed": "cp"
+            "Card Printed": "cp",
+            "Notes": 'notes'
             }
 
         self.ordereddp = ['bCode', 'sid', 'firstName', 'lastName', 'chineseName', 'parentName', 'pup', 'gender', 'dob', 'addr', 'state', 'city',\
-            'zip', 'cPhone', 'cPhone2', 'hPhone', 'tpd', 'tpa', 'email', 'findSchool', 'cp']
+            'zip', 'cPhone', 'cPhone2', 'hPhone', 'tpd', 'tpa', 'email', 'findSchool', 'cp', 'notes']
 
         self.revdpalias = {}
         for key, value in self.dpalias.items():
@@ -109,11 +110,15 @@ class StudentDB:
    
         #cell modifier code for import
         self.fcell = {1: lambda y: str(y), 2: lambda y: int(y), 3: lambda y: (datetime.strptime('1/1/1900', "%m/%d/%Y") + timedelta(days=y-2)).strftime("%m/%d/%Y")}
+        
+        #time table
         self.timeslot = {(time(9, 15, 0), time(10, 44, 0)): '09:30 AM',
             (time(10, 44, 1), time(12, 14, 0)): '11:00 AM',
             (time(12, 45, 0), time(14, 14, 0)): '01:00 PM',
             (time(14, 14, 1), time(15, 44, 0)): '02:30 PM',
             (time(15, 44, 1), time(17, 14, 0)): '04:00 PM',}
+        
+        #last barcode
         self.setLast()
         
     
@@ -355,7 +360,7 @@ class StudentDB:
                 newS.datapoints['tp'] = 0
 
             #error-zone: set for school code
-            if newS.datapoints['bCode'][:3] != 'FLU': continue
+            if newS.datapoints['bCode'][:3] != 'FLU' and newS.datapoints['bCode'][:3] != 'BRK': continue
             self.addStudent(newS.datapoints['bCode'], newS)
 
         self.saveData()
@@ -447,7 +452,7 @@ class StudentDB:
         sdsplit = sdate.split('/')
         sdates.append(str(int(sdsplit[0])) + '/' + str(int(sdsplit[1])) + '/' + (sdsplit[2][2:] if len(sdsplit[2]) > 2 else sdsplit[2]))
 
-        workbook = xlsxwriter.Workbook(fpath + 'report_' + sdate.replace('/', '.') + '.xlsx')
+        workbook = xlsxwriter.Workbook(fpath + '.xlsx')# + 'report_' + sdate.replace('/', '.') + '.xlsx')
         worksheet = workbook.add_worksheet()
 
         totalondate = {v: [] for k, v in self.timeslot.items()}
@@ -457,7 +462,8 @@ class StudentDB:
                 if att[0] in sdates:
                     for date in totalondate:
                         if att[2][:5] in date or att[2][:4] in date:
-                            totalondate[date].append([student.datapoints['bCode'], student.datapoints['firstName'] + ' ' + student.datapoints['lastName']])
+                            cintime = att[2] if att[1] == '' else att[1]
+                            totalondate[date].append([cintime, student.datapoints['bCode'], student.datapoints['firstName'] + ' ' + student.datapoints['lastName'], student.datapoints['chineseName']])
 
         totals = 0
         for v in totalondate.values():
@@ -488,15 +494,22 @@ class StudentDB:
         for l in totalondate:
             worksheet.write(r, c, l[0], tformat)
             worksheet.write(r, c + 1, str(len(l[1])), tformat)
+            worksheet.write(r, c + 2, '', tformat)
+            worksheet.write(r, c + 3, '', tformat)
+            l[1].sort()
             r += 1
             for t in l[1]:
                 worksheet.write(r, 0, t[0])
                 worksheet.write(r, 1, t[1])
+                worksheet.write(r, 2, t[2])
+                worksheet.write(r, 3, t[3])
                 r += 1
 
             worksheet.write(r, c, '')
             r += 1
 
-        worksheet.set_column(0, 0, 10)
+        worksheet.set_column(0, 0, 5)
         worksheet.set_column(0, 1, 30)
+        worksheet.set_column(0, 2, 30)
+        worksheet.set_column(0, 3, 30)
         workbook.close()
