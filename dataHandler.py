@@ -460,10 +460,10 @@ class StudentDB:
         for student in self.studentList.values():
             for att in student.datapoints['attinfo'][1]:
                 if att[0] in sdates:
-                    for date in totalondate:
-                        if att[2][:5] in date or att[2][:4] in date:
+                    for timeslot in totalondate:
+                        if att[2][:5] in timeslot or att[2][:4] in timeslot:
                             cintime = att[2] if att[1] == '' else att[1]
-                            totalondate[date].append([cintime, student.datapoints['bCode'], student.datapoints['firstName'] + ' ' + student.datapoints['lastName'], student.datapoints['chineseName']])
+                            totalondate[timeslot].append([str(cintime), str(student.datapoints['bCode']), str(student.datapoints['firstName']) + ' ' + str(student.datapoints['lastName']), str(student.datapoints['chineseName'])])
 
         totals = 0
         for v in totalondate.values():

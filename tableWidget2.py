@@ -72,7 +72,7 @@ class Cell(Widget):
 
 
 	def delete(self, **kwargs):
-		print('called')
+		#print('called')
 		#try:
 		self.label.grid_remove()
 		#except:
