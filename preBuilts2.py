@@ -96,6 +96,8 @@ sby = Picker(repr='sby', text=language['Search By'], rads=[(language['Barcode'],
 	(language['Phone Number'], 'phoneNumber'), \
 	(language['Date of Birth'], 'dob')])
 
+pay_by = Picker(repr='pay_by', text='Check Number', rads=[(language['Cash'], 'cash'), (language['Check'], 'check')])
+
 
 #info titles
 sinfo = Labelbox(text='Student information', lang=language, repr='sinfo')

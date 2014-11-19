@@ -107,7 +107,10 @@ languages = \
 		"RYB Student Management" : "RYB Student Management",
 		"print report": "Print Report",
 		"sdate": "Search Date",
-		"Select Folder": "Select Folder"
+		"Select Folder": "Select Folder",
+		"Cash": "Cash",
+		"Check": "Check",
+		"Check Number": "Check Number"
 		},
 
 	"chinese": {
@@ -217,6 +220,9 @@ languages = \
 		"sdate": "Search Date",
 		"Select Folder": "Select Folder",
 		"filepath": "File Path",
+		"Cash": "Cash",
+		"Check": "Check",
+		"Check Number": "Check Number"
 		}
 		
 }

@@ -87,7 +87,9 @@ def main(t, lang, d, sM):
 	w.frames["Fourth Frame"].addWidget(tpd, (6, 0))
 	w.frames["Fourth Frame"].addWidget(tpa, (7, 0))
 	w.frames["Fourth Frame"].addWidget(tp, (8, 0))
-	w.frames["Fourth Frame"].addWidget(tpo, (9, 0))	
+	w.frames["Fourth Frame"].addWidget(tpo, (9, 0))
+	w.frames["Fourth Frame"].addWidget(pay_by, (10, 0))
+	
 
 #class widget
 	w.frames["Sixth Frame"].addWidget(sType, (4, 0))
@@ -104,7 +106,22 @@ def main(t, lang, d, sM):
 	notes.label.grid_forget()
 	notes.config(height=8, width=32)
 
+	pay_by.entry.config(state=DISABLED)
+	def change_pay_by_state(event):
+		pay_by.entry.delete(0, END)
+		if pay_by.entry.cget('state') == DISABLED:
+			pay_by.entry.config(state=NORMAL)
+		elif pay_by.entry.cget('state') == NORMAL:
+			pay_by.entry.config(state=DISABLED)
 
+
+	pay_by.label_entry_frame.pack_forget()
+	pay_by.selfframe.grid(columnspan=2, sticky=E)
+	pay_by.label_entry_frame.pack(side=TOP)
+	pay_by.label.grid(row=0, column=0)
+	pay_by.entry.grid(row=0, column=1)
+	pay_by.brads[0].bind('<Button-1>', change_pay_by_state)
+	pay_by.brads[1].bind('<Button-1>', change_pay_by_state)
 
 
 

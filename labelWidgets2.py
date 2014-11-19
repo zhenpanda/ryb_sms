@@ -276,20 +276,24 @@ class Picker(Textbox):
 			#print("widget could not be placed")
 
 		self.selfframe = Frame(self.parent)
-		self.label = Label(self.selfframe, text=self.text)
-		self.entry = Entry(self.selfframe, relief=SOLID)
+		self.label_entry_frame = Frame(self.selfframe)
+		self.rad_frame = Frame(self.selfframe)
+		self.label = Label(self.label_entry_frame, text=self.text)
+		self.entry = Entry(self.label_entry_frame, relief=SOLID)
 
 		self.b, r = StringVar(), []
 		self.b.set(self.rads[0][1])
 		for rad in self.rads:
-			r.append(Radiobutton(self.selfframe, text=rad[0], variable=self.b, \
+			r.append(Radiobutton(self.rad_frame, text=rad[0], variable=self.b, \
 				value=rad[1], indicatoron=1, offrelief=RIDGE, overrelief=SOLID, bd=1))
 
 		self.brads = r
 
 		self.selfframe.grid()
-		self.label.pack()
-		self.entry.pack()
+		self.label_entry_frame.pack()
+		self.rad_frame.pack()
+		self.label.grid(row=0)
+		self.entry.grid(row=1)
 		for rad in self.brads:
 			rad.pack(side=LEFT, padx=2)
 

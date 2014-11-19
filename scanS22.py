@@ -45,6 +45,7 @@ def main(t, lang, d):
 
 #add widget to search for students
 	w.frames["Tenth Frame"].addWidget(sby, (0, 0))
+	#w.frames[]
 
 #student info widgets
 	w.frames["First Frame"].addWidget(sinfo, (0, 0))
