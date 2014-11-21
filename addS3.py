@@ -164,6 +164,14 @@ def main(t, lang, d, sM):
 		ns = StudentInfo()
 		ns.datapoints = dict(list(ns.datapoints.items()) + list(w.collect(ns.datapoints).items()))
 		#print(ns.datapoints)
+		ns.datapoints['payment_info'] = []
+		payment_info = {
+			'date': datetime.now().date,
+			'payment_type': pay_by.getData()[0],
+			'check_num': None if pay_by.getData()[0] == 'Cash' else pay_by.getData()[1]
+		}
+		ns.datapoints['payment_info'].append(payment_info)
+		print('payment added', payment_info)
 
 		nsbcode = ns.datapoints['bCode']
 

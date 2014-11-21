@@ -145,6 +145,23 @@ def main(t, lang, d):
 	w.ren.button.config(width=20)
 	w.ren.config(cmd=renC)
 
+#add payment
+	def add_payment_():
+		if not hasattr(w, 's') or (w.s not in d.studentList): return
+
+		payment_info = add_payment_prompt(w.lang)
+
+		if payment_info != None: d.studentList[w.s].datapoints['payment_info'].append(payment_info)
+
+
+
+
+	add_payment = Buttonbox(text='Add Payment', lang=w.lang, repr='addpayment')
+	w.frames["Fourth Frame"].addWidget(add_payment, (11, 1))
+	add_payment.button.config(width=20)
+	add_payment.config(cmd=add_payment_)
+
+
 	w.attinfo.editwidget=False
 	w.attinfo.canvas.config(width=500, height=400)
 

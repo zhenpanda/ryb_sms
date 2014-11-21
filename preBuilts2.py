@@ -279,10 +279,12 @@ cm = Photo(repr='cm', path='check_mark_sm.png')
 bok = Buttonbox(text='ok', lang=language, repr='bok')
 byes = Buttonbox(text='yes', lang=language, repr='byes')
 bno = Buttonbox(text='no', lang=language, repr='bno')
+bcancel = Buttonbox(text='Cancel', lang=language, repr='bcancel')
 
 bok.width = 10
 byes.width = 10
 bno.width = 10
+bcancel.width = 10
 
 
 #importexp
@@ -584,6 +586,61 @@ def ctimp(lang, simp, timp):
 	bok.config(cmd=t.dw, lang=lang)
 
 	t.root.wait_window()
+
+def add_payment_prompt(lang):
+
+	def get_return(z):
+		t.z = z
+		t.tpd = tpd.getData()
+		t.pay_by = pay_by.getData()
+		t.dw()
+
+	t = Mbox()
+	t.root.overrideredirect(0)
+
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	payment_amount = Textbox(text='Tuition Pay Amount', lang=lang, repr='paymentamount')
+
+	t.frames["First Frame"].addWidget(tpd, (0, 0))
+	t.frames["First Frame"].addWidget(payment_amount, (1, 0))
+	t.frames["First Frame"].addWidget(pay_by, (2, 0))
+	t.frames["Second Frame"].addWidget(bok, (0, 1))
+	t.frames["Second Frame"].addWidget(bcancel, (0, 0))
+
+	bok.config(cmd=lambda: get_return('return payment'))
+	bcancel.config(cmd=lambda: get_return('cancel'))
+
+
+	pay_by.entry.config(state=DISABLED)
+	def change_pay_by_state(event):
+		pay_by.entry.delete(0, END)
+		if pay_by.entry.cget('state') == DISABLED:
+			pay_by.entry.config(state=NORMAL)
+		elif pay_by.entry.cget('state') == NORMAL:
+			pay_by.entry.config(state=DISABLED)
+
+
+	pay_by.label_entry_frame.pack_forget()
+	pay_by.selfframe.grid(columnspan=2, sticky=E)
+	pay_by.label_entry_frame.pack(side=TOP)
+	pay_by.label.grid(row=0, column=0)
+	pay_by.entry.grid(row=0, column=1)
+	pay_by.brads[0].bind('<Button-1>', change_pay_by_state)
+	pay_by.brads[1].bind('<Button-1>', change_pay_by_state)
+
+	t.root.wait_window()
+
+	if t.z == 'cancel': return
+
+	payment_info = {
+		'date': t.tpd,
+		'payment_type': t.pay_by[0],
+		'check_num': None if t.pay_by[0] == 'Cash' else t.pay_by[1]
+	}
+
+	return payment_info
 
 #renew classes button
 def renew(lang):

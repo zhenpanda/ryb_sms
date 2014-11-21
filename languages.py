@@ -110,7 +110,8 @@ languages = \
 		"Select Folder": "Select Folder",
 		"Cash": "Cash",
 		"Check": "Check",
-		"Check Number": "Check Number"
+		"Check Number": "Check Number",
+		"Add Payment": "Add Payment"
 		},
 
 	"chinese": {
@@ -222,7 +223,8 @@ languages = \
 		"filepath": "File Path",
 		"Cash": "Cash",
 		"Check": "Check",
-		"Check Number": "Check Number"
+		"Check Number": "Check Number",
+		"Add Payment": "Add Payment"
 		}
 		
 }
