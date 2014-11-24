@@ -79,6 +79,8 @@ def main(lang, d, top=False, i=0):
 	w.frames["Fourth Frame"].addWidget(sid, (2, 0))
 	
 #payment widgets
+	tpd = Datebox(text="Tuition Paid Day", lang=language, repr='tpd')
+	tpd.mode = 'nonedit'
 	w.frames["Fourth Frame"].addWidget(tpd, (6, 0))
 	w.frames["Fourth Frame"].addWidget(tpa, (7, 0))
 	w.frames["Fourth Frame"].addWidget(tp, (8, 0))
@@ -186,6 +188,31 @@ def main(lang, d, top=False, i=0):
 
 		t.destroy()
 
+#add payment
+	def add_payment_():
+		if not hasattr(w, 's') or (w.s not in d.studentList): return
+
+		payment_info = add_payment_prompt(w.lang)
+
+		if payment_info != None:
+			d.studentList[w.s].datapoints['payment_info'].append(payment_info)
+		else:
+			return
+
+		print('payment added')
+
+		date = d.studentList[w.s].datapoints['payment_info'][-1]['date'].split('/')
+		month = date[0]
+		day = date[1]
+		year = date[2]
+
+		tpd.config(m=month, d=day, y=year)
+
+	add_payment = Buttonbox(text='Add Payment', lang=w.lang, repr='addpayment')
+	w.frames["Fourth Frame"].addWidget(add_payment, (10, 0))
+	add_payment.selfframe.grid(columnspan=2)
+	add_payment.button.config(width=20)
+	add_payment.config(cmd=add_payment_)
 
 	def changed():
 		ctdp = dict(w.collect(s.datapoints))

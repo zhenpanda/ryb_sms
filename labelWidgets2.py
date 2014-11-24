@@ -56,11 +56,15 @@ class Textbox(Widget):
 			pass
 			#print("widget could not be placed")
 
-		self.label = Label(self.parent, text=self.lang[self.text].strip(), width=15, anchor=E)
-		self.entry = Entry(self.parent, relief=SOLID)
+		self.label_frame = Frame(self.parent)
+		self.entry_frame = Frame(self.parent)
+		self.label = Label(self.label_frame, text=self.lang[self.text].strip(), width=15, anchor=E)
+		self.entry = Entry(self.entry_frame, relief=SOLID)
 
-		self.label.grid(row=self.row, column=self.column)
-		self.entry.grid(row=self.row, column=self.column+1)
+		self.label.pack()
+		self.entry.pack()
+		self.label_frame.grid(row=self.row, column=self.column)
+		self.entry_frame.grid(row=self.row, column=self.column+1)
 
 		self.bind()
 
@@ -108,17 +112,22 @@ class Datebox(IntTextbox):
 
 	def config(self, **kwargs):
 
-		try:
+		if 'm' in kwargs and 'd' in kwargs and 'y' in kwargs:
 			m, d, y = StringVar(), StringVar(), StringVar()
 			m.set(kwargs['m'])
 			d.set(kwargs['d'])
 			y.set(kwargs['y'])
+			if hasattr(self, 'mode') and self.mode == 'nonedit':
+				self.mEntry.config(state=NORMAL)
+				self.dEntry.config(state=NORMAL)
+				self.yEntry.config(state=NORMAL)
 			self.mEntry.config(textvariable=m)
 			self.dEntry.config(textvariable=d)
 			self.yEntry.config(textvariable=y)
-		except:
-			pass
-			#print("the widget could not be configured")
+			if hasattr(self, 'mode') and self.mode == 'nonedit':
+				self.mEntry.config(state=DISABLED)
+				self.dEntry.config(state=DISABLED)
+				self.yEntry.config(state=DISABLED)
 
 		try:
 			self.lang = kwargs['lang']

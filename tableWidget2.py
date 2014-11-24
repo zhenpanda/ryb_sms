@@ -68,13 +68,16 @@ class Cell(Widget):
 		self.label = Label(self.parent, text=self.text, relief=self.relief,\
 			bd=self.bd, bg=self.bgcolor, height=0)
 
+		if 'font' in kwargs:
+			self.label.config(font=kwargs['font'])
+
 		self.label.grid(row=self.pos[0], column=self.pos[1])
 
 
 	def delete(self, **kwargs):
 		#print('called')
 		#try:
-		self.label.grid_remove()
+		self.label.grid_forget()
 		#except:
 		#print("error-76: widget could not be deleted")
 
@@ -91,6 +94,8 @@ class Table(Widget):
 
 		#color last
 		self.clast = False
+		self.font_size = 11
+		self.font_name = 'Verdana'
 
 
 	def config(self, **kwargs):
@@ -251,7 +256,7 @@ class Table(Widget):
 		try:
 			for pos, cell in self.cells.items():
 				if pos not in cross:
-					cell.place(parent=self.innerframe, pos=cell.pos)
+					cell.place(parent=self.innerframe, pos=cell.pos, font=(self.font_name, self.font_size))
 		except:
 			print("error-230: cells could not be placed")
 
@@ -315,7 +320,7 @@ class Table(Widget):
 
 		try:
 			for cell in self.cells.values():
-				cell.place(parent=self.innerframe, pos=cell.pos)
+				cell.place(parent=self.innerframe, pos=cell.pos, font=(self.font_name, self.font_size))
 		except:
 			print("error-279: cells could not be placed")
 

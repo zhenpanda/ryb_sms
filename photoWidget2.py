@@ -15,6 +15,8 @@ class Photo(Widget):
 			print("widget could not be loaded")
 
 		#self.script_dir = os.path.dirname(os.path.abspath(__file__))
+		self.width = 200
+		self.height = 200
 
 
 	def config(self, **kwargs):

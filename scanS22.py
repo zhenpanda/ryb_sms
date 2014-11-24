@@ -85,6 +85,8 @@ def main(t, lang, d):
 	w.frames["Fourth Frame"].addWidget(bCodeNE, (1, 0))
 
 #payment widgets
+	tpd = Datebox(text="Tuition Paid Day", lang=language, repr='tpd')
+	tpd.mode = 'nonedit'
 	w.frames["Fourth Frame"].addWidget(tpd, (2, 0))
 	w.frames["Fourth Frame"].addWidget(tpa, (3, 0))
 	w.frames["Fourth Frame"].addWidget(tp, (4, 0))
@@ -151,7 +153,21 @@ def main(t, lang, d):
 
 		payment_info = add_payment_prompt(w.lang)
 
-		if payment_info != None: d.studentList[w.s].datapoints['payment_info'].append(payment_info)
+		if payment_info != None:
+			d.studentList[w.s].datapoints['payment_info'].append(payment_info)
+		else:
+			return
+
+		print('payment added')
+
+		date = d.studentList[w.s].datapoints['payment_info'][-1]['date'].split('/')
+		month = date[0]
+		day = date[1]
+		year = date[2]
+
+		tpd.config(m=month, d=day, y=year)
+
+
 
 
 
@@ -172,113 +188,122 @@ def main(t, lang, d):
 	w.tdp = dict()
 
 	def s():
-		try:
-			w.s = sby.getData()[1]
+		#try:
+		if sby.getData()[1] == '': return
 
-			w.tdp = dict()
+		w.s = sby.getData()[1]
 
-			print(sby.getData())
+		w.tdp = dict()
+
+		print(sby.getData())
 
 
-			if sby.getData()[0] != 'bCode':
-				sty = sby.getData()[0]
-				sdp = sby.getData()[1]
+		if sby.getData()[0] != 'bCode':
+			sty = sby.getData()[0]
+			sdp = sby.getData()[1]
 
-				sl = []
+			sl = []
 
-				for s in d.studentList:
-					dp = False
-					if sty == 'phoneNumber':
-						if d.studentList[s].datapoints['hPhone'] == sdp or \
-							d.studentList[s].datapoints['cPhone'] == sdp or \
-							d.studentList[s].datapoints['cPhone2'] == sdp:
-							dp = d.studentList[s].datapoints
-
-					elif d.studentList[s].datapoints[sty] == sdp:
+			for s in d.studentList:
+				dp = False
+				if sty == 'phoneNumber':
+					if d.studentList[s].datapoints['hPhone'] == sdp or \
+						d.studentList[s].datapoints['cPhone'] == sdp or \
+						d.studentList[s].datapoints['cPhone2'] == sdp:
 						dp = d.studentList[s].datapoints
-					
-					if dp:
-						sl.append([dp['bCode'], dp['firstName'], dp['lastName'], dp['chineseName']])
 
+				elif d.studentList[s].datapoints[sty] == sdp:
+					dp = d.studentList[s].datapoints
+				
+				if dp:
+					sl.append([dp['bCode'], dp['firstName'], dp['lastName'], dp['chineseName']])
 
-				if len(sl) == 0:
-					nos(w.lang)
-					return
-
-				w.s = sl[0][0]
-				if len(sl) > 1:
-					sl.sort()
-					w.s = spicker(sl)
-					if not w.s: return
-
-			#reset portrait
-			w.portr.setData('monet_sm.jpg')
-			portr2.setData('monet_sm.jpg')
-
-			#reset classes rem
-			spec.setData("")
-			w2.spec2.setData("")
-
-			#temp workaround while table is fixed
-			for child in w.frames["Eleventh Frame"].winfo_children():
-				child.destroy()
-
-			w.attinfo.build(headers=w.attinfoh, data=[[]])
-			w.frames["Eleventh Frame"].addWidget(w.attinfo, (0, 0))
-			w.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
-
-			w.attinfo.editwidget=False
-			w.attinfo.canvas.config(width=500, height=400)
-			#
-
-			#temp workaround while table is fixed
-			for child in w2.frames["Third Frame"].winfo_children():
-				child.destroy()
-
-			w2.attinfo.build(headers=w2.attinfoh, data=[[]])
-			w2.frames["Third Frame"].addWidget(w2.attinfo, (0, 0))
-			w2.frames["Third Frame"].grid(rowspan=100, sticky=W)
-
-			w2.attinfo.editwidget=False
-			w2.attinfo.canvas.config(width=500, height=500)
-			#
-			dp = d.studentList[w.s].datapoints
-
-			w.populate(dp)
-			w2.populate(dp)
-
-			w.tdp = dict(w.collect(d.studentList[w.s].datapoints))
-
-			#if amount owed is larger than amount paid, color amount owed in red
-			if dp['tpa'] < dp['tpo']: tpo.entry.config(bg='red')
-			else: tpo.entry.config(bg='white')
-
-			sby.entry.delete(0, END)
-
-			w2.spec2.show()
-			w2.spec2.setData(w.lang['Classes remaining for this student'] + ': ' + str(d.studentList[w.s].datapoints['cRemaining']))
-			w2.spec2.label.config(fg='#0000B8', font=('Verdana', 15))
-
-			#try:
-			#	if datetime.now().date() > d.studentList[w.s].datapoints['expire']:
-			#		spec.show()
-			#		spec.setData(w.lang['Membership Expired'])
-			#		spec.label.config(fg='red', font=('Verdana', 15))
-			#except:
-			#	pass
-
-			if d.studentList[w.s].datapoints['cRemaining'] == 0:
-				spec.show()
-				spec.setData(w.lang['Classes remaining for this student'] + ': ' + str(d.studentList[w.s].datapoints['cRemaining']))
-				spec.label.config(fg='red', font=('Verdana', 15))				
-				noc(w.lang)
-				sby.b.set(sby.rads[0][1])
+			if len(sl) == 0:
+				nos(w.lang)
 				return
 
-			if cs(d.studentList[w.s].datapoints['firstName'], w.lang): ss()
-		except:
+			w.s = sl[0][0]
+			if len(sl) > 1:
+				sl.sort()
+				w.s = spicker(sl)
+				if not w.s: return
+
+		elif sby.getData()[1] not in d.studentList:
 			nos(w.lang)
-			pass
+			return
+
+		#reset portrait
+		w.portr.setData('monet_sm.jpg')
+		portr2.setData('monet_sm.jpg')
+
+		#reset classes rem
+		spec.setData("")
+		w2.spec2.setData("")
+
+		#temp workaround while table is fixed
+		for child in w.frames["Eleventh Frame"].winfo_children():
+			child.destroy()
+
+		w.attinfo.build(headers=w.attinfoh, data=[[]])
+		w.frames["Eleventh Frame"].addWidget(w.attinfo, (0, 0))
+		w.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
+
+		w.attinfo.editwidget=False
+		w.attinfo.canvas.config(width=500, height=400)
+		#
+
+		#temp workaround while table is fixed
+		for child in w2.frames["Third Frame"].winfo_children():
+			child.destroy()
+
+		w2.attinfo.font_size = int(t2.y_scale * w2.attinfo.font_size)
+		w2.attinfo.build(headers=w2.attinfoh, data=[[]])
+		w2.frames["Third Frame"].addWidget(w2.attinfo, (0, 0))
+		w2.frames["Third Frame"].grid(rowspan=100, sticky=W)
+
+		w2.attinfo.editwidget=False
+		w2.attinfo.canvas.config(width=500, height=500)
+		#
+		dp = d.studentList[w.s].datapoints
+
+		w.populate(dp)
+		w2.populate(dp)
+
+		
+		w2.attinfo.resize()
+
+		w.tdp = dict(w.collect(d.studentList[w.s].datapoints))
+
+		#if amount owed is larger than amount paid, color amount owed in red
+		if dp['tpa'] < dp['tpo']: tpo.entry.config(bg='red')
+		else: tpo.entry.config(bg='white')
+
+		sby.entry.delete(0, END)
+
+		w2.spec2.show()
+		w2.spec2.setData(w.lang['Classes remaining for this student'] + ': ' + str(d.studentList[w.s].datapoints['cRemaining']))
+		w2.spec2.label.config(fg='#0000B8', font=('Verdana', 15))
+
+		#try:
+		#	if datetime.now().date() > d.studentList[w.s].datapoints['expire']:
+		#		spec.show()
+		#		spec.setData(w.lang['Membership Expired'])
+		#		spec.label.config(fg='red', font=('Verdana', 15))
+		#except:
+		#	pass
+
+		if d.studentList[w.s].datapoints['cRemaining'] == 0:
+			spec.show()
+			spec.setData(w.lang['Classes remaining for this student'] + ': ' + str(d.studentList[w.s].datapoints['cRemaining']))
+			spec.label.config(fg='red', font=('Verdana', 15))				
+			noc(w.lang)
+			sby.b.set(sby.rads[0][1])
+			return
+
+		if cs(d.studentList[w.s].datapoints['firstName'], w.lang): ss()
+		#except:
+		#	nos(w.lang)
+		#	pass
 
 
 	def ss(mode=False):
@@ -379,7 +404,9 @@ def main(t, lang, d):
 #t2 window
 	t2 = Window(top=True)
 	t2.attributes('-fullscreen', False)
-	t2.geometry('1200x800')
+	t2.geometry('1000x600')
+	t2.width = 1000
+	t2.height = 600
 
 #remove close button function
 	t2.protocol('WM_DELETE_WINDOW', lambda: False)
@@ -406,12 +433,89 @@ def main(t, lang, d):
 	firstName2 = Textbox(text="First Name", lang=language, repr='firstName')
 	lastName2 = Textbox(text="Last Name", lang=language, repr='lastName')
 	chineseName2 = Textbox(text="Chinese Name", lang=language, repr='chineseName')
-	bCode2 = Textbox(text="Barcode", lang=language, repr='bCode')
-	sid2 = IntTextbox(text="Old Student ID", lang=language, repr='sid')
-	dob2 = Datebox(text="Date of Birth", lang=language, repr='dob')
 	portr2 = Photo(repr='portr', path='monet_sm.jpg')
 
+	Textbox.y_scale = 1.0
+	Textbox.x_scale = 1.0
+	Textbox.font_size = 11
+	Textbox.font_name = 'Verdana'
+
+	Labelbox.y_scale = 1.0
+	Labelbox.x_scale = 1.0
+	Labelbox.font_size = 11
+	Labelbox.font_name = 'Verdana'
+
+	Table.y_scale = 1.0
+	Table.x_scale = 1.0
+	Table.height = 500
+	Table.width = 500
+	Table.font_name = 'Verdana'
+	Table.font_size = 11
+
+	Photo.y_scale = 1.0
+	Photo.x_scale = 1.0
+
+	def resize_textbox(self, x_scale, y_scale):
+
+		if self.y_scale != y_scale:
+			#self.font_size = int(y_scale * self.font_size)
+			self.label.config(font=(self.font_name, int(y_scale * self.font_size)))
+			self.entry.config(font=(self.font_name, int(y_scale * self.font_size)))
+			self.y_scale = y_scale
+
+
+
+
+
+		return
+
+	def resize_labelbox(self, x_scale, y_scale):
+
+		if self.y_scale != y_scale:
+			self.label.config(font=(self.font_name, int(y_scale * self.font_size)))
+
+		return
+
+	def resize_table(self, x_scale, y_scale):
+
+		if self.y_scale != y_scale:
+			self.canvas.config(height=int(self.height * y_scale))
+			for cell in self.cells.values():
+				cell.label.config(font=(self.font_name, int(y_scale * self.font_size)))
+			self.y_scale = y_scale
+
+		if self.x_scale != x_scale:
+			self.canvas.config(width=int(self.width * x_scale))
+			self.x_scale = x_scale
+
+		
+
+		return
+
+	def resize_photo(self, x_scale, y_scale):
+
+		if self.y_scale != y_scale and self.x_scale != x_scale:
+			self.label.config(height=int(self.height * y_scale))
+			self.label.config(width=int(self.width * x_scale))
+			self.x_scale = x_scale
+			self.y_scale = y_scale
+			smaller = self.label.cget('width') if self.label.cget('width') < self.label.cget('height') else self.label.cget('height')
+			self.resized = self.picture.resize((smaller, smaller), Image.ANTIALIAS)
+			self.image = ImageTk.PhotoImage(self.resized)
+			self.label.config(image=self.image)
+
+		return
+
+	Textbox.resize_textbox = resize_textbox
+	Labelbox.resize_labelbox = resize_labelbox
+	Table.resize_table = resize_table
+	Photo.resize_photo = resize_photo
+
 	w2.frames["First Frame"].addWidget(portr2, (0, 0))
+
+	portr2.resized = portr2.picture.resize((200, 200), Image.ANTIALIAS)
+	portr2.image = ImageTk.PhotoImage(portr2.resized)
+	portr2.label.config(image=portr2.image)
 
 #special
 	w2.spec2 = Labelbox(text='spec', lang=w.lang, repr='spec')
@@ -433,6 +537,31 @@ def main(t, lang, d):
 
 	w2.attinfo.editwidget=False
 	w.attinfo.canvas.config(width=500, height=500)
+
+	t2.x_scale = 1.0
+	t2.y_scale = 1.0
+
+	def scale_window(event):
+
+		if t2.width == t2.winfo_width() and t2.height == t2.winfo_height():
+			return
+
+		t2.x_scale = t2.winfo_width() / t2.width
+		t2.y_scale = t2.winfo_height() / t2.height
+
+		firstName2.resize_textbox(t2.x_scale, t2.y_scale)
+		lastName2.resize_textbox(t2.x_scale, t2.y_scale)
+		chineseName2.resize_textbox(t2.x_scale, t2.y_scale)
+		sinfo.resize_labelbox(t2.x_scale, t2.y_scale)
+		portr2.resize_photo(t2.x_scale, t2.y_scale)
+
+		if hasattr(w2.attinfo, 'canvas'):
+			w2.attinfo.resize_table(t2.x_scale, t2.y_scale)
+
+
+		return
+
+	t2.bind('<Configure>', scale_window)
 
 #set starting lang
 	for frame in w.frames.values():
