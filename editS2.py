@@ -127,6 +127,10 @@ def main(lang, d, top=False, i=0):
 
 	w.frames["Seventh Frame"].addWidget(portr, (0, 0))
 
+	portr.resized = portr.picture.resize((200, 200), Image.ANTIALIAS)
+	portr.image = ImageTk.PhotoImage(portr.resized)
+	portr.label.config(image=portr.image)
+
 	w.attinfo = attinfo
 	w.frames["Eleventh Frame"].addWidget(w.attinfo, (0, 0))
 	w.frames["Eleventh Frame"].grid(rowspan=100, sticky=W)

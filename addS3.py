@@ -157,6 +157,11 @@ def main(t, lang, d, sM):
 	w.frames["Seventh Frame"].addWidget(portr, (0, 0))
 	portr.label.config(bg='black')
 
+	portr.resized = portr.picture.resize((200, 200), Image.ANTIALIAS)
+	portr.image = ImageTk.PhotoImage(portr.resized)
+	portr.label.config(image=portr.image)
+
+
 #collect student information
 #and save it into database
 	def collect():
