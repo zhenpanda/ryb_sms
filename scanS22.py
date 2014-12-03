@@ -256,7 +256,7 @@ def main(t, lang, d):
 		for child in w2.frames["Third Frame"].winfo_children():
 			child.destroy()
 
-		w2.attinfo.font_size = int(t2.y_scale * w2.attinfo.font_size)
+		#w2.attinfo.font_size = int(t2.y_scale * w2.attinfo.font_size)
 		w2.attinfo.build(headers=w2.attinfoh, data=[[]])
 		w2.frames["Third Frame"].addWidget(w2.attinfo, (0, 0))
 		w2.frames["Third Frame"].grid(rowspan=100, sticky=W)
@@ -266,7 +266,7 @@ def main(t, lang, d):
 		#
 		dp = d.studentList[w.s].datapoints
 
-		w2.attinfo.deleteAll()
+		#w2.attinfo.deleteAll()
 
 		w.populate(dp)
 		w2.populate(dp)

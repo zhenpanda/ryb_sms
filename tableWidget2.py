@@ -296,8 +296,8 @@ class Table(Widget):
 		for cell in self.cells.values():
 			cell.label.grid_forget()
 
-		self.canvas.delete(ALL)
-		#self.canvas = Canvas(self.container)
+		#self.canvas.delete(ALL)
+		self.canvas = Canvas(self.container)
 		self.cells = {}
 
 
