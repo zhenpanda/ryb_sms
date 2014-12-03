@@ -1,9 +1,13 @@
 from datetime import datetime, time, timedelta
+from Crypto.Cipher import AES
+from Crypto import Random
 import keeper
 import pickle
 import xlrd
 import xlsxwriter
 import shutil
+import math
+import os
 
 #sched feature to add: log all changes
 
@@ -98,12 +102,18 @@ class StudentDB:
 
     def __init__(self, **kwargs):
         self.file = kwargs['file']
-        
-        try:
-            #load data on call from self.file
+        self.pwfile = kwargs['pwfile']
+
+        self.iv = b't\xd4\xbc\xee~\xa2\xc2\xc1\x14T\x91\xcfd\x95/\xfc'
+
+        self.studentList = {}
+
+        if os.path.isfile(self.pwfile) and os.path.isfile(self.file):
+            self.key = open(self.pwfile, 'rb').read()
             self.loadData()
-        except:
+        else:
             #create the file in the directory of self.file when not in databse
+            print('creating file')
             self.studentList = {}
             self.saveData()
             print(self.file + " file not found, new file was created")
@@ -246,11 +256,46 @@ class StudentDB:
 
 
     def saveData(self):
-        pickle.dump(self.studentList, open(self.file, "wb"))
+        if not hasattr(self, 'key'):
+            print('creating key')
+            self.key = b'=5<(M8R_P8CJx);^'
+            f = open(self.pwfile, 'wb')
+            f.write(bytearray(self.key))
+            f.close()
+            print(self.key)
+        cipher = AES.new(self.key, AES.MODE_CFB, self.iv)
+
+        binary_string = pickle.dumps(self.studentList)
+        encrypted = cipher.encrypt(binary_string)
+
+        f = open(self.file, 'wb')
+        f.write(bytearray(encrypted))
+        f.close()
+
+        #print('encrypted', encrypted)
 
 
     def loadData(self):
-        self.studentList = pickle.load(open(self.file, "rb"))
+        #key = b'=5<(M8R_P8CJx);^'
+        cipher = AES.new(self.key, AES.MODE_CFB, self.iv)
+
+        try:
+            f = open(self.file, 'rb')
+            print('opened')
+        except:
+            self.saveData()
+            f = open(self.file, 'rb')
+            print('created')
+        
+        decrypted = cipher.decrypt(f.read())
+        self.studentList = pickle.loads(decrypted)
+
+        #print('student_list', self.studentList)
+
+        #self.studentList = pickle.loads(cipher.decrypt(f.read()))
+
+        #print(self.studentList)
+
         self.setLast()
 
 
@@ -452,7 +497,11 @@ class StudentDB:
         sdsplit = sdate.split('/')
         sdates.append(str(int(sdsplit[0])) + '/' + str(int(sdsplit[1])) + '/' + (sdsplit[2][2:] if len(sdsplit[2]) > 2 else sdsplit[2]))
 
-        workbook = xlsxwriter.Workbook(fpath + '.xlsx')# + 'report_' + sdate.replace('/', '.') + '.xlsx')
+        today = datetime.now()
+        date = today.strftime('%m.%d.%y')
+        time = today.strftime('%I.%M.%p')
+        print(self.school)
+        workbook = xlsxwriter.Workbook(fpath + '/Student Report - ' + self.school + ' ' + date + ' ' + time + '.xlsx')
         worksheet = workbook.add_worksheet()
 
         totalondate = {v: [] for k, v in self.timeslot.items()}
@@ -469,7 +518,8 @@ class StudentDB:
         for v in totalondate.values():
             totals += len(v)
 
-        worksheet.write(0, 0, 'Total check-ins: ' + str(totals))
+        worksheet.write(0, 0, 'Report of: ' + str(sdate))
+        worksheet.write(1, 0, 'Total check-ins: ' + str(totals))
 
         #cleanup
         for k, v in totalondate.items():
@@ -489,7 +539,7 @@ class StudentDB:
         tformat.set_bg_color('#C2FFAD')
 
         #to excel
-        r, c = 2, 0
+        r, c = 3, 0
 
         for l in totalondate:
             worksheet.write(r, c, l[0], tformat)

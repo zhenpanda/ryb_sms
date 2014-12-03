@@ -4,12 +4,13 @@ from dataHandler import *
 from languages import *
 from labelWidgets2 import *
 from photoWidget2 import *
-from preBuilts2 import ret, titlePic
+from preBuilts2 import ret, titlePic, bexp, password_prompt, wrong_password, pw_reset_confirm, print_succesful, database_backup_successful
 from tkinter import filedialog
 import addS3
 import scanS22
 import sDb22
 import tools2
+import preBuilts2
 
 def main():
 
@@ -25,21 +26,47 @@ def main():
 
 
 	t = Window(top=False)
+	t.attributes('-fullscreen', False)
+	t.geometry('1440x900+100+100')
+	t.wm_title("RYB Student Attendance")
 
 #confirm closing of the add student window
 	t.con = False
 
 #show and hide sub-windows
 	def showWindow(f):
+		#try:
+		#w.frames["Title Frame"].grid_forget()
 		w.frames["First Frame"].grid_forget()
+		print(f.__doc__)
 		if (f.__doc__) == 'addS3':
 			t.con = True
 			w.t = f(w.frames["Second Frame"], w.lang, w.d, showMain)
+		elif (f.__doc__) == 'tools2':
+			if w.k.files['resetpw'] == True:
+				new_pw = password_prompt(w.lang, w.k.files['dbpw'])
+				if new_pw == 'cancel' or w.k.hashpw(new_pw[0]) != w.k.files['dbpw']:
+					wrong_password(w.lang)
+					showMain(t.con)
+					return
+				w.k.files['dbpw'] = w.k.hashpw(new_pw[1])
+				w.k.files['resetpw'] = False
+				w.k.save()
+				pw_reset_confirm(w.lang)
+			else:
+				pw_input = password_prompt(w.lang, False)
+				if not w.k.hashpw(pw_input) == w.k.files['dbpw'] or pw_input == 'cancel':
+					wrong_password(w.lang)
+					showMain(t.con)
+					return
+			w.t = f(w.frames["Second Frame"], w.lang, w.d, w.k)
 		else:
 			t.con = False
 			w.t = f(w.frames["Second Frame"], w.lang, w.d)
 		w.frames["Second Frame"].grid()
 		w.frames["Third Frame"].grid()
+		#except:
+		#	print('unknown error', 'error in function showWindow', f.__doc__)
 
 #show and hide main window
 	def showMain(con):
@@ -71,12 +98,13 @@ def main():
 
 		def out():
 			try:
-				p = filedialog.asksaveasfilename()
+				p = filedialog.askdirectory()
 			except:
 				return
 
 			try:
 				w.d.exportreport(p, rdate.getData())
+				print_succesful(w.lang)
 			except:
 				pass
 
@@ -104,6 +132,22 @@ def main():
 
 		rbutton.config(cmd=out)
 		
+	def choose_school(event):
+		
+		school = preBuilts2.choose_school(w.lang)
+		w.k.files['school'] = 'Flushing' if school == 'cancel' else school
+		w.d.school = w.k.files['school']
+		w.k.save()
+
+		return
+		
+	def expf():
+		try:
+			p = filedialog.askdirectory()
+			w.d.exportdb(p + '/backup_' + w.d.school + '_' + str(datetime.now().date()) + '.rybdb')
+			database_backup_successful(w.lang)
+		except:
+			print('database export unsuccessful')
 
 #main window and starting language
 	w = AppWindow(t.mainFrame)
@@ -115,7 +159,14 @@ def main():
 
 #load current database
 	w.k = keeper.Keeper('keeper.db')
-	w.d = StudentDB(file=w.k.files['cfilepath'], cfile=w.k.fname)
+	w.d = StudentDB(file=w.k.files['cfilepath'], pwfile=w.k.files['pwfile'], cfile=w.k.fname)
+
+	if 'school' not in w.k.files:
+		w.k.files['school'] = preBuilts2.choose_school(w.lang)
+		w.d.school = w.k.files['school']
+		w.k.save()
+	else:
+		w.d.school = w.k.files['school']
 
 #frame creation and positions
 	#w.newFrame("Title Frame", (0, 0))
@@ -128,6 +179,7 @@ def main():
 	w.frames['Third Frame'].grid_forget()
 
 #buttons to call sub-windows
+	bchoose_school = Buttonbox(text='Choose School', lang=w.lang, repr='bcschool')
 	bsadd = Buttonbox(text='Add Students', lang=w.lang, repr='bsadd') #Add Student
 	bsscan = Buttonbox(text='Scan Students', lang=w.lang, repr='bsscan') #Scan Student
 	bssdb = Buttonbox(text='Student Database', lang=w.lang, repr='bssdb') #Student Database
@@ -136,23 +188,27 @@ def main():
 	bsexit = Buttonbox(text='Exit', lang=w.lang, repr='bsexit') #Exit
 	bclang = Buttonbox(text='changelanguage', lang=w.lang, repr='bclang') #Change Language
 	bprint = Buttonbox(text='print report', lang=w.lang, repr='bprint') #Print end of day report
+	bexp = Buttonbox(text='expxls', lang=w.lang, repr='bexp')
 
 #background image
 	w.p = Photo(repr='splash', path='background_IMG.jpg')
 
 #place buttons and background image
-	w.frames["First Frame"].addWidget(bsadd, (0, 0))
-	w.frames["First Frame"].addWidget(bsscan, (1, 0))
-	w.frames["First Frame"].addWidget(bssdb, (2, 0))
-	w.frames["First Frame"].addWidget(bstools, (3, 0))
+	#w.frames["First Frame"].addWidget(bchoose_school, (0, 0))
+	w.frames["First Frame"].addWidget(bsadd, (1, 0))
+	w.frames["First Frame"].addWidget(bsscan, (2, 0))
+	w.frames["First Frame"].addWidget(bssdb, (4, 0))
+	w.frames["First Frame"].addWidget(bstools, (5, 0))
+	w.frames["First Frame"].addWidget(bexp, (6, 0))
 	w.frames["Third Frame"].addWidget(bsbmm, (0, 0))
-	w.frames["First Frame"].addWidget(bprint, (5, 0))
-	w.frames["First Frame"].addWidget(bsexit, (6, 0))
-	w.frames["First Frame"].addWidget(bclang, (4, 0))
+	w.frames["First Frame"].addWidget(bclang, (7, 0))
+	w.frames["First Frame"].addWidget(bprint, (8, 0))
+	w.frames["First Frame"].addWidget(bsexit, (9, 0))
 	w.frames["First Frame"].addWidget(w.p, (0, 2))
 	Label(w.frames["First Frame"], text='  ').grid(column=1) #separator between buttons and background image
 
 #set commands for each button
+	#bchoose_school.config(cmd=lambda: choose_school(w.lang))
 	bsadd.config(cmd=lambda: showWindow(addS3.main))
 	bsscan.config(cmd=lambda: showWindow(scanS22.main))
 	bssdb.config(cmd=lambda: showWindow(sDb22.main))
@@ -161,6 +217,7 @@ def main():
 	bprint.config(cmd=printPrompt)
 	bsexit.config(cmd=t.destroy)
 	bclang.config(cmd=clang)
+	bexp.config(cmd=expf)
 	bstools.selfframe.grid_forget()
 	#secret configuration to call Database Management
 	w.p.label.bind('<Control-Alt-Shift-D>', lambda e: showWindow(tools2.main))
@@ -204,6 +261,16 @@ def main():
 	bprint.fg = w.mmbuttonfg
 	bprint.hoverfg = 'white'
 	bprint.button.config(bg=bprint.idlebg, fg=bprint.fg)
+
+	bstools.idlebg = w.mmbuttoncol
+	bstools.fg = w.mmbuttonfg
+	bstools.hoverfg = 'white'
+	bstools.button.config(bg=bstools.idlebg, fg=bstools.fg)
+
+	bexp.idlebg = w.mmbuttoncol
+	bexp.fg = w.mmbuttonfg
+	bexp.hoverfg = 'white'
+	bexp.button.config(bg=bexp.idlebg, fg=bexp.fg)
 
 	t.iconbitmap('RYB_Attendance.ico')
 	t.mainloop()

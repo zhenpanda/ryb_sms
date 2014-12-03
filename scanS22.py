@@ -266,11 +266,16 @@ def main(t, lang, d):
 		#
 		dp = d.studentList[w.s].datapoints
 
+		w2.attinfo.deleteAll()
+
 		w.populate(dp)
 		w2.populate(dp)
 
-		
 		w2.attinfo.resize()
+
+		if hasattr(w2, 'font_size'):
+			for cell in w2.attinfo.cells.values():
+				cell.label.config(font=(w2.attinfo.font_name, w2.font_size))
 
 		w.tdp = dict(w.collect(d.studentList[w.s].datapoints))
 
@@ -340,8 +345,13 @@ def main(t, lang, d):
 		#update cRemaining
 		cRemaining.setData(str(cRem))
 
-		w.frames['Eleventh Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
-		w2.frames['Third Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
+		w2.attinfo.deleteAll()
+
+		w.attinfo.setData(d.studentList[w.s].datapoints['attinfo'])
+		w2.attinfo.setData(d.studentList[w.s].datapoints['attinfo'])
+
+		#for cell in w2.attinfo.cells.values():
+		#	cell.label.config(font=(w2.attinfo.font_name, w2.font_size))
 
 		#auto scroll to last position
 		w.attinfo.canvas.yview_moveto(1.0)
@@ -414,6 +424,7 @@ def main(t, lang, d):
 #set minimum height
 	t2.update_idletasks()
 	t2.after_idle(lambda: t2.minsize(t2.winfo_width(), t2.winfo_height()))
+	t2.titleFrame.pack_forget()
 
 	w2 = AppWindow(t2.mainFrame)
 
@@ -556,6 +567,8 @@ def main(t, lang, d):
 		portr2.resize_photo(t2.x_scale, t2.y_scale)
 
 		if hasattr(w2.attinfo, 'canvas'):
+			w2.font_size = int(t2.y_scale * w2.attinfo.font_size)
+			print(w2.font_size)
 			w2.attinfo.resize_table(t2.x_scale, t2.y_scale)
 
 

@@ -26,13 +26,11 @@ class Cell(Widget):
 			self.label.config(width=kwargs['width'])
 		except:
 			pass
-			#print("the widget could not be config")
 
 		try:
 			self.label.config(text=kwargs['text'])
 		except:
 			pass
-			#print("the widget could not be configured")
 
 		try:
 			self.label.config(bg=kwargs['bgcolor'])
@@ -42,7 +40,6 @@ class Cell(Widget):
 		try:
 			btn = kwargs['bind'][0]
 			cmd = kwargs['bind'][1]
-			#print(btn, cmd)
 			self.label.bind(btn, cmd)
 		except:
 			pass
@@ -75,11 +72,7 @@ class Cell(Widget):
 
 
 	def delete(self, **kwargs):
-		#print('called')
-		#try:
 		self.label.grid_forget()
-		#except:
-		#print("error-76: widget could not be deleted")
 
 
 class Table(Widget):
@@ -122,7 +115,6 @@ class Table(Widget):
 		self.temp.focus_set()
 		self.temp.grab_set()
 		self.temp.bind("<Return>", kill)
-		#print(pos)
 
 
 	def trytoplace(self, **kwargs):
@@ -175,8 +167,6 @@ class Table(Widget):
 		cross = {}
 		deprecated = {}
 
-		#print(newdata, olddata)
-
 		new = {}
 		old = {}
 
@@ -196,60 +186,34 @@ class Table(Widget):
 				c += 1
 			r += 1
 
-		#print(new, old)
-
 		for key, val in old.items():
 			if key in new and new[key] != val:
 				cross[key] = new[key]
 			elif key not in new:
 				deprecated[key] = val
 
-		#print('cross', cross, '\n', 'dep', deprecated)
-
 		return cross, deprecated
 
 
 	def update(self, **kwargs):
 
-		#print('data', list(self.data))
-		#print('cells', dict(self.cells))
-		#print('headers', dict(self.headers))
-		#print(self.headers)
-
 		self.previous = list(self.data)
 		self.previouscells = dict(self.cells)
-		#self.previousheaders = self.headers
 
 		self.build(**kwargs)
-
-		#print(self.previous, self.data)
-
-		#print('data', self.data)
-
 		cross, deprecated = self.intersect(self.data, self.previous)
-		#hcross, hdeprecated = self.intersect(self.headers, self.previousheaders)
-
-		#print(self.previouscells, self.cells)
-
-		#for cell in hdeprecated:
-		#	self.previouscells[(0, cell[0])].delete()
 
 		for cell in deprecated:
-			#print(self.previouscells[cell].text)
-			self.previouscells[cell].delete()
+			self.previouscells[cell].label.grid_forget()
 			del self.previouscells[cell]
 
 		for key, value in cross.items():
 			self.previouscells[key].config(text=self.data[key[0]-1][key[1]-1])
 
-		#for key, value in hcross.items():
-		#	self.previouscells[(0, key[0])].config(text=self.headers[key[0]-1])
-
 		for n in range(len(self.data), len(self.previous)):
-			self.previouscells[(n+1, 0)].delete()
+			self.previouscells[(n+1, 0)].label.grid_forget()
 
 		for pos, cell in self.cells.items():
-			#merge previous cells with new cells
 			if pos in cross:
 				self.cells[pos] = self.previouscells[pos]
 
@@ -263,7 +227,6 @@ class Table(Widget):
 		try:
 			for pos, cell in self.cells.items():
 				cell.config(bind=('<Double-Button-1>', lambda event, pos=pos: self.edit(pos)))
-			#print("bound")
 		except:
 			print("error-237: cells cannot be edited")
 
@@ -274,8 +237,6 @@ class Table(Widget):
 						self.cells[cell].config(bgcolor=self.clast)
 			except:
 				print("error-246: cells could not be colored")
-		
-		#print(self.cells[(len(self.data), 1)].config(bgcolor='blue'))
 
 		self.resize()
 
@@ -289,7 +250,6 @@ class Table(Widget):
 			for cell in self.cells:
 				self.cwids[cell[1]] = 0
 
-			#0 corresponds to the numbers column
 			self.cwids[0] = 4
 		except:
 			print("error-252: cells could not be resized")
@@ -297,7 +257,6 @@ class Table(Widget):
 		for key, value in self.cells.items():
 			self.cwids[key[1]] = max(self.cwids[key[1]], len(value.getData()))
 		
-		#print(self.cwids)
 		for key, value in self.cells.items():
 			value.config(width=self.cwids[key[1]] + 2)
 
@@ -332,23 +291,17 @@ class Table(Widget):
 
 		if len(self.cells) == 1 and (1, 0) in self.cells:
 			self.cells[(1, 0)].label.grid_forget()
-		#try:
-		#	for cell in self.cells.values():
-		#		cell.config(bind=('<Double-Button-1>', self.edit))
-		#	print("bound")
-		#except:
-		#	print("cells cannot be edited")
-
 
 	def deleteAll(self):
 		for cell in self.cells.values():
-			cell.delete()
+			cell.label.grid_forget()
 
+		self.canvas.delete(ALL)
+		#self.canvas = Canvas(self.container)
 		self.cells = {}
 
 
 	def getData(self):
-		#should return table
 		return self.headers, self.data
 
 
