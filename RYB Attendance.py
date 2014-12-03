@@ -35,8 +35,6 @@ def main():
 
 #show and hide sub-windows
 	def showWindow(f):
-		#try:
-		#w.frames["Title Frame"].grid_forget()
 		w.frames["First Frame"].grid_forget()
 		print(f.__doc__)
 		if (f.__doc__) == 'addS3':
@@ -65,8 +63,6 @@ def main():
 			w.t = f(w.frames["Second Frame"], w.lang, w.d)
 		w.frames["Second Frame"].grid()
 		w.frames["Third Frame"].grid()
-		#except:
-		#	print('unknown error', 'error in function showWindow', f.__doc__)
 
 #show and hide main window
 	def showMain(con):

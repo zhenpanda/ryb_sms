@@ -195,8 +195,6 @@ def main(t, lang, d):
 
 		w.tdp = dict()
 
-		print(sby.getData())
-
 
 		if sby.getData()[0] != 'bCode':
 			sty = sby.getData()[0]
@@ -273,9 +271,7 @@ def main(t, lang, d):
 
 		w2.attinfo.resize()
 
-		if hasattr(w2, 'font_size'):
-			for cell in w2.attinfo.cells.values():
-				cell.label.config(font=(w2.attinfo.font_name, w2.font_size))
+		w2.attinfo.resize_table(t2.x_scale, t2.y_scale)
 
 		w.tdp = dict(w.collect(d.studentList[w.s].datapoints))
 
@@ -288,14 +284,6 @@ def main(t, lang, d):
 		w2.spec2.show()
 		w2.spec2.setData(w.lang['Classes remaining for this student'] + ': ' + str(d.studentList[w.s].datapoints['cRemaining']))
 		w2.spec2.label.config(fg='#0000B8', font=('Verdana', 15))
-
-		#try:
-		#	if datetime.now().date() > d.studentList[w.s].datapoints['expire']:
-		#		spec.show()
-		#		spec.setData(w.lang['Membership Expired'])
-		#		spec.label.config(fg='red', font=('Verdana', 15))
-		#except:
-		#	pass
 
 		if d.studentList[w.s].datapoints['cRemaining'] == 0:
 			spec.show()
@@ -326,15 +314,6 @@ def main(t, lang, d):
 			spec.setData("")
 			#hide, show will work better once window size is set
 			pass
-
-		#print(expir > datetime.now().date())
-		#try:
-		#	if datetime.now().date() > expir:
-		#		spec.show()
-		#		spec.setData(w.lang['Membership Expired'])
-		#		spec.label.config(fg='red', font=('Verdana', 15))
-		#except:
-		#	pass
 
 		#spec.setData(w.lang['Classes remaining for this student'] + ': ' + str(cRem))
 
@@ -370,7 +349,7 @@ def main(t, lang, d):
 
 		
 
-		print(sby.getData())
+		
 
 	w.frames["Tenth Frame"].widgets['sby'].entry.bind("<Return>", lambda x: s())
 
@@ -496,7 +475,7 @@ def main(t, lang, d):
 			self.y_scale = y_scale
 
 		if self.x_scale != x_scale:
-			self.canvas.config(width=int(self.width * x_scale))
+			#self.canvas.config(width=int(self.width * x_scale))
 			self.x_scale = x_scale
 
 		
@@ -568,9 +547,9 @@ def main(t, lang, d):
 
 		if hasattr(w2.attinfo, 'canvas'):
 			w2.font_size = int(t2.y_scale * w2.attinfo.font_size)
-			print(w2.font_size)
 			w2.attinfo.resize_table(t2.x_scale, t2.y_scale)
 
+		#t2.width, t2.height = t2.winfo_width(), t2.winfo_height()
 
 		return
 
