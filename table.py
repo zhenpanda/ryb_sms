@@ -2,10 +2,12 @@
 
 
 '''
+from tkinter import *
 
-class Table:
 
-	def init(self, parent, grid_row, grid_column):
+class QuickTable:
+
+	def __init__(self, parent, grid_row, grid_column):
 
 		self.selfframe = Frame(parent)
 		self.selfframe.grid(row=grid_row, column=grid_column)
@@ -53,3 +55,5 @@ class Table:
 		for cell_id, cell in self.cells.items():
 			if cell_id[1] == column_num:
 				cell.config(width=width)
+
+	#def place(self, )

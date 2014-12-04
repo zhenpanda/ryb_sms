@@ -271,6 +271,7 @@ def main(t, lang, d):
 
 		w2.attinfo.resize()
 
+		w2.attinfo.y_scale = 1.0
 		w2.attinfo.resize_table(t2.x_scale, t2.y_scale)
 
 		w.tdp = dict(w.collect(d.studentList[w.s].datapoints))
@@ -328,6 +329,11 @@ def main(t, lang, d):
 
 		w.attinfo.setData(d.studentList[w.s].datapoints['attinfo'])
 		w2.attinfo.setData(d.studentList[w.s].datapoints['attinfo'])
+
+#		
+		w2.attinfo.y_scale = 1.0
+		print('t2_yscale: ', t2.y_scale, 'w2_y_scale', w2.attinfo.y_scale)
+		w2.attinfo.resize_table(t2.x_scale, t2.y_scale)
 
 		#for cell in w2.attinfo.cells.values():
 		#	cell.label.config(font=(w2.attinfo.font_name, w2.font_size))
@@ -462,20 +468,28 @@ def main(t, lang, d):
 	def resize_labelbox(self, x_scale, y_scale):
 
 		if self.y_scale != y_scale:
+			if self.label.winfo_exists() == 0: return
 			self.label.config(font=(self.font_name, int(y_scale * self.font_size)))
 
 		return
 
 	def resize_table(self, x_scale, y_scale):
 
+		print('outerframe', self.outerframe.winfo_width())
+		print('container', self.container.winfo_width())
+		print(self.innerframe.winfo_width())
+		print(self.canvas.winfo_width())
+
 		if self.y_scale != y_scale:
 			self.canvas.config(height=int(self.height * y_scale))
+			self.canvas.config(width=int(self.width * x_scale))
 			for cell in self.cells.values():
 				cell.label.config(font=(self.font_name, int(y_scale * self.font_size)))
 			self.y_scale = y_scale
+			self.x_scale = x_scale
 
 		if self.x_scale != x_scale:
-			#self.canvas.config(width=int(self.width * x_scale))
+			#self.canvas.config(width=int(self.width * x_scale))		
 			self.x_scale = x_scale
 
 		
@@ -546,7 +560,6 @@ def main(t, lang, d):
 		portr2.resize_photo(t2.x_scale, t2.y_scale)
 
 		if hasattr(w2.attinfo, 'canvas'):
-			w2.font_size = int(t2.y_scale * w2.attinfo.font_size)
 			w2.attinfo.resize_table(t2.x_scale, t2.y_scale)
 
 		#t2.width, t2.height = t2.winfo_width(), t2.winfo_height()

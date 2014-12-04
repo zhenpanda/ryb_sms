@@ -125,7 +125,7 @@ class Table(Widget):
 		self.container = Frame(self.parent)
 		self.canvas = Canvas(self.container)
 		self.outerframe = Frame(self.canvas)
-		self.innerframe = Frame(self.outerframe)		
+		self.innerframe = Frame(self.outerframe)
 
 		self.xscrollbar = Scrollbar(self.container, orient="horizontal", command=self.canvas.xview, relief=FLAT)
 		self.yscrollbar = Scrollbar(self.container, orient="vertical", command=self.canvas.yview)
@@ -297,7 +297,7 @@ class Table(Widget):
 			cell.label.grid_forget()
 
 		#self.canvas.delete(ALL)
-		self.canvas = Canvas(self.container)
+		#self.canvas = Canvas(self.container)
 		self.cells = {}
 
 
