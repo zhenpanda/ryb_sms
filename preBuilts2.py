@@ -49,9 +49,9 @@ tpd = Datebox(text="Tuition Paid Day", lang=language, repr='tpd')
 
 
 #money
-tpa = MoneyTextbox(text="Tuition Pay Amount", lang=language, repr='tpa')
-tpo = MoneyTextbox(text="Amount Owed", lang=language, repr='tpo')
-tp = MoneyTextbox(text="Already Paid", lang=language, repr='tp')
+tpa = TextboxNoEdit(text="Tuition Pay Amount", lang=language, repr='tpa')
+tpo = TextboxNoEdit(text="Amount Owed", lang=language, repr='tpo')
+tp = TextboxNoEdit(text="Already Paid", lang=language, repr='tp')
 
 
 #attendance table
@@ -944,7 +944,7 @@ def ctimp(lang, simp, timp):
 
 	t.root.wait_window()
 
-def add_payment_prompt(lang):
+def add_payment_prompt(lang, database, student_id):
 
 	def get_return(z):
 		t.z = z
@@ -959,16 +959,26 @@ def add_payment_prompt(lang):
 	t.newFrame("Second Frame", (1, 0))
 
 	payment_amount = Textbox(text='Tuition Pay Amount', lang=lang, repr='paymentamount')
+	tpa = Textbox(text="Tuition Pay Amount", lang=lang, repr='tpa')
+	tpo = Textbox(text="Amount Owed", lang=lang, repr='tpo')
+	tp = Textbox(text="Already Paid", lang=lang, repr='tp')
 
 	t.frames["First Frame"].addWidget(tpd, (0, 0))
 	t.frames["First Frame"].addWidget(payment_amount, (1, 0))
 	t.frames["First Frame"].addWidget(pay_by, (2, 0))
+	t.frames["First Frame"].addWidget(tpa, (3, 0))
+	t.frames["First Frame"].addWidget(tpo, (4, 0))
+	t.frames["First Frame"].addWidget(tp, (5, 0))
 	t.frames["Second Frame"].addWidget(bok, (0, 1))
 	t.frames["Second Frame"].addWidget(bcancel, (0, 0))
 
 	bok.config(cmd=lambda: get_return('return payment'))
 	bcancel.config(cmd=lambda: get_return('cancel'))
 
+	student = database.studentList[student_id]
+	tpa.setData(student.datapoints['tpa'])
+	tpo.setData(student.datapoints['tpo'])
+	tp.setData(student.datapoints['tp'])
 
 	pay_by.entry.config(state=DISABLED)
 	def change_pay_by_state(event):

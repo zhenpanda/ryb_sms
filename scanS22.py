@@ -151,7 +151,7 @@ def main(t, lang, d):
 	def add_payment_():
 		if not hasattr(w, 's') or (w.s not in d.studentList): return
 
-		payment_info = add_payment_prompt(w.lang)
+		payment_info = add_payment_prompt(w.lang, d, w.s)
 
 		if payment_info != None:
 			d.studentList[w.s].datapoints['payment_info'].append(payment_info)
