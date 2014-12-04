@@ -51,7 +51,6 @@ class Cell(Widget):
 		
 
 	def trytoplace(self, **kwargs):
-
 		self.parent = kwargs['parent']
 			
 
@@ -291,6 +290,7 @@ class Table(Widget):
 
 		if len(self.cells) == 1 and (1, 0) in self.cells:
 			self.cells[(1, 0)].label.grid_forget()
+
 
 	def deleteAll(self):
 		for cell in self.cells.values():
