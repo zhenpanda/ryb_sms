@@ -86,11 +86,17 @@ def main(t, lang, d):
 
 #payment widgets
 	tpd = Datebox(text="Tuition Paid Day", lang=language, repr='tpd')
-	tpd.mode = 'nonedit'
+	tpa = MoneyTextbox(text="Tuition Pay Amount", lang=language, repr='tpa')
+	tpo = MoneyTextbox(text="Amount Owed", lang=language, repr='tpo')
+	tp = MoneyTextbox(text="Already Paid", lang=language, repr='tp')
 	w.frames["Fourth Frame"].addWidget(tpd, (2, 0))
 	w.frames["Fourth Frame"].addWidget(tpa, (3, 0))
 	w.frames["Fourth Frame"].addWidget(tp, (4, 0))
 	w.frames["Fourth Frame"].addWidget(tpo, (5, 0))
+	tpd.mode = 'nonedit'
+	tpa.mode = 'nonedit'
+	tpo.mode = 'nonedit'
+	tp.mode = 'nonedit'
 
 #class widget
 	w.frames["Fourth Frame"].addWidget(sType, (6, 0))
@@ -151,12 +157,14 @@ def main(t, lang, d):
 	def add_payment_():
 		if not hasattr(w, 's') or (w.s not in d.studentList): return
 
-		payment_info = add_payment_prompt(w.lang, d, w.s)
+		payment_data = add_payment_prompt(w.lang, d, w.s)
 
-		if payment_info != None:
-			d.studentList[w.s].datapoints['payment_info'].append(payment_info)
-		else:
-			return
+		if payment_data == None: return
+
+		payment_info = payment_data[0]
+		payment_datapoints = payment_data[1]
+
+		d.studentList[w.s].datapoints['payment_info'].append(payment_info)		
 
 		print('payment added')
 
@@ -166,8 +174,9 @@ def main(t, lang, d):
 		year = date[2]
 
 		tpd.config(m=month, d=day, y=year)
-
-
+		tpa.setData(payment_datapoints['tpa'])
+		tpo.setData(payment_datapoints['tpo'])
+		tp.setData(payment_datapoints['tp'])
 
 
 
@@ -332,7 +341,6 @@ def main(t, lang, d):
 
 #		
 		w2.attinfo.y_scale = 1.0
-		print('t2_yscale: ', t2.y_scale, 'w2_y_scale', w2.attinfo.y_scale)
 		w2.attinfo.resize_table(t2.x_scale, t2.y_scale)
 
 		#for cell in w2.attinfo.cells.values():
@@ -474,11 +482,6 @@ def main(t, lang, d):
 		return
 
 	def resize_table(self, x_scale, y_scale):
-
-		print('outerframe', self.outerframe.winfo_width())
-		print('container', self.container.winfo_width())
-		print(self.innerframe.winfo_width())
-		print(self.canvas.winfo_width())
 
 		if self.y_scale != y_scale:
 			self.canvas.config(height=int(self.height * y_scale))

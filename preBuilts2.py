@@ -49,9 +49,9 @@ tpd = Datebox(text="Tuition Paid Day", lang=language, repr='tpd')
 
 
 #money
-tpa = TextboxNoEdit(text="Tuition Pay Amount", lang=language, repr='tpa')
-tpo = TextboxNoEdit(text="Amount Owed", lang=language, repr='tpo')
-tp = TextboxNoEdit(text="Already Paid", lang=language, repr='tp')
+tpa = MoneyTextbox(text="Tuition Pay Amount", lang=language, repr='tpa')
+tpo = MoneyTextbox(text="Amount Owed", lang=language, repr='tpo')
+tp = MoneyTextbox(text="Already Paid", lang=language, repr='tp')
 
 
 #attendance table
@@ -950,6 +950,9 @@ def add_payment_prompt(lang, database, student_id):
 		t.z = z
 		t.tpd = tpd.getData()
 		t.pay_by = pay_by.getData()
+		t.tpa = tpa.getData()
+		t.tpo = tpo.getData()
+		t.tp = tp.getData()
 		t.dw()
 
 	t = Mbox()
@@ -958,10 +961,10 @@ def add_payment_prompt(lang, database, student_id):
 	t.newFrame("First Frame", (0, 0))
 	t.newFrame("Second Frame", (1, 0))
 
-	payment_amount = Textbox(text='Tuition Pay Amount', lang=lang, repr='paymentamount')
-	tpa = Textbox(text="Tuition Pay Amount", lang=lang, repr='tpa')
-	tpo = Textbox(text="Amount Owed", lang=lang, repr='tpo')
-	tp = Textbox(text="Already Paid", lang=lang, repr='tp')
+	payment_amount = MoneyTextbox(text='Tuition Pay Amount', lang=lang, repr='paymentamount')
+	tpa = MoneyTextbox(text="Tuition Pay Amount", lang=lang, repr='tpa')
+	tpo = MoneyTextbox(text="Amount Owed", lang=lang, repr='tpo')
+	tp = MoneyTextbox(text="Already Paid", lang=lang, repr='tp')
 
 	t.frames["First Frame"].addWidget(tpd, (0, 0))
 	t.frames["First Frame"].addWidget(payment_amount, (1, 0))
@@ -979,6 +982,14 @@ def add_payment_prompt(lang, database, student_id):
 	tpa.setData(student.datapoints['tpa'])
 	tpo.setData(student.datapoints['tpo'])
 	tp.setData(student.datapoints['tp'])
+
+	tpa.vcmd = (tpa.parent.register(tpa.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W', 2)
+	tpo.vcmd = (tpa.parent.register(tpo.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W', 2)
+	tp.vcmd = (tp.parent.register(tp.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W', 2)
+
+	tpa.entry.config(validate="all", validatecommand=tpa.vcmd)
+	tpo.entry.config(validate="all", validatecommand=tpo.vcmd)
+	tp.entry.config(validate="all", validatecommand=tp.vcmd)
 
 	pay_by.entry.config(state=DISABLED)
 	def change_pay_by_state(event):
@@ -1007,7 +1018,13 @@ def add_payment_prompt(lang, database, student_id):
 		'check_num': None if t.pay_by[0] == 'Cash' else t.pay_by[1]
 	}
 
-	return payment_info
+	datapoints = {
+		'tpa': t.tpa,
+		'tpo':	t.tpo,
+		'tp': t.tp
+	}
+
+	return payment_info, datapoints
 
 #renew classes button
 def renew(lang):

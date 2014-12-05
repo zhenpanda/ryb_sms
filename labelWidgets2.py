@@ -187,31 +187,35 @@ class Datebox(IntTextbox):
 		self.config(m=m, d=d, y=y)
 
 
-class MoneyTextbox(IntTextbox):
+class MoneyTextbox(Textbox):
 
-	#helpers
-	def OnValidate(self, d, i, P, s, S, v, V, W):
-		try:
-			int(S)
+	def OnValidate(self, d, i, P, s, S, v, V, W, limit=False):
+		if len(P) < len(s):
 			return True
-		except ValueError:
-			#print(self.getData())
-			return S == '.' and '.' not in self.entry.get()# or False
+		if limit and s.find('.') != -1 and len(P[P.find('.'):]) > int(limit) + 1:
+			return False
+		if S.isdigit():
+			return True
+		if S == '.' and s.find('.') == -1:
+			return True
 		return False
-
-
-	#def config(self, **kwargs):
-		#return
-
 
 	def getData(self):
 		e = self.entry.get()
 		if e == '': return 0.00
-		try:
+		else:
 			return float(e)
-		except:
-			return 0.00
 
+	def setData(self, data):
+		self.vcmd = (self.entry.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W', 2)
+		data_string = StringVar()
+		data_string.set(data)
+		if hasattr(self, 'mode') and self.mode == 'nonedit':
+			self.entry.config(state=NORMAL)
+			self.entry.config(textvariable=data_string)
+			self.entry.config(state=DISABLED)
+		else:
+			self.entry.config(textvariable=data_string)
 
 class Separator(Widget):
 
@@ -220,13 +224,6 @@ class Separator(Widget):
 			self.repr = kwargs['repr']
 		except:
 			pass
-			#print("widget could not be loaded")
-
-		#self.height = 2
-		#self.bd = 1
-		#self.relief = SUNKEN
-		#self.sticky = W+E
-
 
 	def config(self, **kwargs):
 		pass
@@ -244,8 +241,6 @@ class Separator(Widget):
 			self.trytoplace(**kwargs)
 		except:
 			pass
-			#print("widget could not be placed")
-
 
 		self.fr = Frame(self.parent, height=2, bd=1, relief=SUNKEN)
 		self.fr.grid(row=self.row, column=self.column, sticky=W+E, columnspan=100, pady=10)
