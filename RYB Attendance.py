@@ -27,7 +27,7 @@ def main():
 
 	t = Window(top=False)
 	t.attributes('-fullscreen', False)
-	t.geometry('1280x740+100+100')
+	t.geometry('1280x740+1+1')
 	t.wm_title("RYB Student Attendance")
 
 #confirm closing of the add student window
@@ -68,12 +68,12 @@ def main():
 
 #show and hide main window
 	def showMain(con):
-		t.titleFrame.config(height=60)
-		t.wintitle.place(in_=t.titleFrame, anchor="c", relx=.5, rely=.5)
 		if con:
 			if not ret('a', w.lang): return
 
 		w.frames['Second Frame'].grid_forget()
+		t.titleFrame.config(height=60)
+		t.wintitle.place(in_=t.titleFrame, anchor="c", relx=.5, rely=.5)
 		try:
 			#to destroy the extra window in scan student
 			w.t.destroy()

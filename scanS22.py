@@ -27,8 +27,8 @@ def main(t, lang, d):
 	w.newFrame("Fifth Frame", (5, 0))
 	w.newFrame("Sixth Frame", (4, 2))
 	w.newFrame("Seventh Frame", (1, 0))
-	w.newFrame("Eigth Frame", (3, 1))
-	w.newFrame("Ninth Frame", (3, 2))
+	w.newFrame("Eigth Frame", (4, 1))
+	w.newFrame("Ninth Frame", (3, 1))
 	w.newFrame("Tenth Frame", (0, 1))
 	w.newFrame("Eleventh Frame", (1, 3))
 
@@ -148,7 +148,7 @@ def main(t, lang, d):
 		tp.setData(0)
 
 	w.ren = Buttonbox(text='Renew classes', lang=w.lang, repr='ren')
-	w.frames["Fourth Frame"].addWidget(w.ren, (10, 1))
+	w.frames["Ninth Frame"].addWidget(w.ren, (0, 1))
 	w.ren.selfframe.grid(sticky=S)
 	w.ren.button.config(width=20)
 	w.ren.config(cmd=renC)
@@ -182,8 +182,9 @@ def main(t, lang, d):
 
 
 	add_payment = Buttonbox(text='Add Payment', lang=w.lang, repr='addpayment')
-	w.frames["Fourth Frame"].addWidget(add_payment, (11, 1))
+	w.frames["Ninth Frame"].addWidget(add_payment, (0, 0))
 	add_payment.button.config(width=20)
+	add_payment.selfframe.grid(padx=1)
 	add_payment.config(cmd=add_payment_)
 
 

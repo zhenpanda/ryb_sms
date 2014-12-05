@@ -32,6 +32,7 @@ def main(t, lang, d, sM):
 	Label(w.frames["Title Frame"], text='Add students', bg='#3B5C8D', fg='white', \
 		height=3, font=('Jumbo', '12', 'bold')).pack(fill='both', expand=True)
 
+	w.frames["Fourth Frame"].grid(rowspan=2)
 	w.frames["Fifth Frame"].grid(columnspan=5, sticky=S)
 	w.frames["Seventh Frame"].grid(rowspan=2)
 	w.frames["Ninth Frame"].grid(rowspan=2, sticky=E)
