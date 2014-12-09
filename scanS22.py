@@ -128,9 +128,7 @@ def main(t, lang, d):
 
 #renew classes button
 	def renC():
-		try:
-			d.studentList[w.s]
-		except:
+		if w.s not in d.studentList:
 			return
 
 		r = renew(w.lang)
@@ -143,9 +141,11 @@ def main(t, lang, d):
 		w2.spec2.setData("")
 		cRemaining.setData(dp['cRemaining'])
 		cAwarded.setData(dp['cAwarded'])
-		tpa.setData(0)
-		tpo.setData(0)
-		tp.setData(0)
+		#tpa.setData(0)
+		#tpo.setData(0)
+		#tp.setData(0)
+
+		d.saveData()
 
 	w.ren = Buttonbox(text='Renew classes', lang=w.lang, repr='ren')
 	w.frames["Ninth Frame"].addWidget(w.ren, (0, 1))
@@ -177,6 +177,12 @@ def main(t, lang, d):
 		tpa.setData(payment_datapoints['tpa'])
 		tpo.setData(payment_datapoints['tpo'])
 		tp.setData(payment_datapoints['tp'])
+
+		d.studentList[w.s].datapoints['tpa'] = payment_datapoints['tpa']
+		d.studentList[w.s].datapoints['tpo'] = payment_datapoints['tpo']
+		d.studentList[w.s].datapoints['tp'] = payment_datapoints['tp']
+
+		d.saveData()
 
 
 
