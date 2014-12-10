@@ -157,7 +157,9 @@ languages = \
 		"wrong password try again": "You have entered the wrong password, try again!",
 		"Choose Maker File": "Choose Maker File",
 		"Create new Markerfile": "Create new Markerfile",
-		"Database Backup Successful": "Database Backup Successful"
+		"Database Backup Successful": "Database Backup Successful",
+		"Student Information": "Student Information",
+		"Attendance Table": "Attendance Table"
 		},
 
 	"chinese": {
@@ -316,7 +318,9 @@ languages = \
 		"wrong password try again": "You have entered the wrong password, try again!",
 		"Choose Maker File": "Choose Maker File",
 		"Create new Markerfile": "Create new Markerfile",
-		"Database Backup Successful": "Database Backup Successful"
+		"Database Backup Successful": "Database Backup Successful",
+		"Student Information": "Student Information",
+		"Attendance Table": "Attendance Table"
 		}
 		
 }
