@@ -93,6 +93,9 @@ def main():
 		w.k.files['cfilepath'] = w.d.file
 		w.k.save()
 
+		print(w.d.school)
+		w.p.config(path=w.k.files['bg_img'][w.d.school])
+
 #print report prompt
 	def printPrompt():
 
@@ -191,7 +194,7 @@ def main():
 	bexp = Buttonbox(text='expxls', lang=w.lang, repr='bexp')
 
 #background image
-	w.p = Photo(repr='splash', path='background_IMG.jpg')
+	w.p = Photo(repr='splash', path=w.k.files['bg_img'][w.d.school])#'background_IMG.jpg')
 
 #place buttons and background image
 	#w.frames["First Frame"].addWidget(bchoose_school, (0, 0))

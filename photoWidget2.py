@@ -24,12 +24,13 @@ class Photo(Widget):
 		try:
 			self.path = kwargs['path']
 			self.picture = Image.open(self.path)
-			self.picture = self.picture.resize((200, 200), Image.ANTIALIAS)
+			if 'resize_portr' in kwargs:
+				self.picture = self.picture.resize((200, 200), Image.ANTIALIAS)
 			self.image = ImageTk.PhotoImage(self.picture)
 			self.label.config(image=self.image)
 		except:
 			pass
-			#print("the widget could not be configured")
+			print("the widget could not be configured")
 
 		try:
 			self.bgc = kwargs['bg']
@@ -67,7 +68,7 @@ class Photo(Widget):
 	def setData(self, data):
 		#le sigh
 		if data == '' or 'N/A': return
-		self.config(path=data)
+		self.config(path=data, resize_portr=True)
 
 
 	def hide(self):
