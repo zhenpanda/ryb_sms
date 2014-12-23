@@ -159,7 +159,11 @@ languages = \
 		"Create new Markerfile": "Create new Markerfile",
 		"Database Backup Successful": "Database Backup Successful",
 		"Student Information": "Student Information",
-		"Attendance Table": "Attendance Table"
+		"Attendance Table": "Attendance Table",
+		"From date": "From date",
+		"To date": "To date",
+		"Print Payment Info": "Print Payment Info",
+		"Output folder": "Output folder"
 		},
 
 	"chinese": {
@@ -320,7 +324,11 @@ languages = \
 		"Create new Markerfile": "Create new Markerfile",
 		"Database Backup Successful": "Database Backup Successful",
 		"Student Information": "Student Information",
-		"Attendance Table": "Attendance Table"
+		"Attendance Table": "Attendance Table",
+		"From date": "From date",
+		"To date": "To date",
+		"Print Payment Info": "Print Payment Info",
+		"Output folder": "Output folder"
 		}
 		
 }

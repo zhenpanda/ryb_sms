@@ -108,12 +108,12 @@ def main(t, lang, d, sM):
 	notes.config(height=8, width=32)
 
 	pay_by.entry.config(state=DISABLED)
-	def change_pay_by_state(event):
-		pay_by.entry.delete(0, END)
-		if pay_by.entry.cget('state') == DISABLED:
-			pay_by.entry.config(state=NORMAL)
-		elif pay_by.entry.cget('state') == NORMAL:
-			pay_by.entry.config(state=DISABLED)
+	def change_pay_by_state(state):
+		if pay_by.entry.cget('state') == NORMAL and state == NORMAL:
+			return
+		else:
+			pay_by.entry.delete(0, END)
+			pay_by.entry.config(state=state)
 
 
 	pay_by.label_entry_frame.pack_forget()
@@ -121,8 +121,8 @@ def main(t, lang, d, sM):
 	pay_by.label_entry_frame.pack(side=TOP)
 	pay_by.label.grid(row=0, column=0)
 	pay_by.entry.grid(row=0, column=1)
-	pay_by.brads[0].bind('<Button-1>', change_pay_by_state)
-	pay_by.brads[1].bind('<Button-1>', change_pay_by_state)
+	pay_by.brads[0].bind('<Button-1>', lambda event: change_pay_by_state(DISABLED))
+	pay_by.brads[1].bind('<Button-1>', lambda event: change_pay_by_state(NORMAL))
 
 
 
@@ -132,17 +132,17 @@ def main(t, lang, d, sM):
 	bgold = Buttonbox(text='gold60', lang=lang, repr='bgold')
 	bbasic = Buttonbox(text='basic15', lang=lang, repr='bbasic')
 
-	w.frames["Eigth Frame"].addWidget(bgold, (1, 0))
-	w.frames["Eigth Frame"].addWidget(bbasic, (1, 1))
-	w.frames["Eigth Frame"].addWidget(baoclass, (1, 2))
+	w.frames["Fourth Frame"].addWidget(bgold, (11, 0))
+	w.frames["Fourth Frame"].addWidget(bbasic, (11, 0))
+	w.frames["Fourth Frame"].addWidget(baoclass, (11, 0))
 
 	baoclass.config(cmd=caddone, width=12)
 	bgold.config(cmd=lambda: caddx(60), width=12)
 	bbasic.config(cmd=lambda: caddx(15), width=12)
 
-	baoclass.selfframe.grid(padx=2)
-	bgold.selfframe.grid(padx=2)
-	bbasic.selfframe.grid(padx=2)
+	baoclass.selfframe.grid(padx=2, columnspan=3, sticky=W)
+	bgold.selfframe.grid(padx=2, columnspan=3, sticky=N)
+	bbasic.selfframe.grid(padx=2, columnspan=3, sticky=E)
 	
 	
 	#w.frames["Sixth Frame"].addWidget(baclass, (0, 0))
@@ -172,9 +172,12 @@ def main(t, lang, d, sM):
 		#print(ns.datapoints)
 		ns.datapoints['payment_info'] = []
 		payment_info = {
-			'date': datetime.now().date,
+			'date': datetime.now().date(),
 			'payment_type': pay_by.getData()[0],
-			'check_num': None if pay_by.getData()[0] == 'Cash' else pay_by.getData()[1]
+			'check_num': None if pay_by.getData()[0] == 'Cash' else pay_by.getData()[1],
+			'total_amount': float(tpa.getData()),
+			'amount_paid': float(tp.getData()),
+			'amount_owed': float(tpo.getData())
 		}
 		ns.datapoints['payment_info'].append(payment_info)
 		print('payment added', payment_info)

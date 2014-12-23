@@ -8,6 +8,7 @@ import xlsxwriter
 import shutil
 import math
 import os
+import copy
 
 #sched feature to add: log all changes
 
@@ -207,7 +208,23 @@ class StudentDB:
 
     def scanStudent(self, barcode, xtra=False):
         try:
-            #scan the current student in
+
+            if 'payment_info' not in self.studentList[barcode].datapoints or len(self.studentList[barcode].datapoints['payment_info']) == 0:
+                s = self.studentList[barcode].datapoints
+                try:
+                    payment_info = {
+                        'date': datetime.strptime(s['tpd'], "%m/%d/%Y"),
+                        'payment_type': 'Cash',
+                        'check_num': None,
+                        'total_amount': float(s['tpa']),
+                        'amount_paid': float(s['tp']),
+                        'amount_owed': float(s['tpo'])
+                    }
+                except ValueError:
+                    print('default payment entry key or parse error')
+                else:
+                    ns.datapoints['payment_info'].append(payment_info)
+
             cdt = datetime.now()
 
             timeslot = self.findTimeSlot(cdt)
@@ -564,5 +581,90 @@ class StudentDB:
         worksheet.set_column(0, 3, 30)
         workbook.close()
 
-    def print_payment(self, start_date, end_date):
+    def print_payment(self, start_date, end_date, output_folder):
+        start_date = datetime.strptime(start_date, "%m/%d/%Y").date()
+        end_date = datetime.strptime(end_date, "%m/%d/%Y").date()
+        table_ = []
+        total_payment = 0
+
+        print(str(start_date), str(end_date))
+
+        for student in self.studentList.values():
+            for payment in student.datapoints['payment_info']:
+                if payment['date'] >= start_date and payment['date'] <= end_date:
+                    table_.append((
+                        payment['date'],
+                        student.datapoints['bCode'],
+                        student.datapoints['firstName'],
+                        student.datapoints['lastName'],
+                        student.datapoints['chineseName'],
+                        payment['total_amount'],
+                        payment['amount_paid'],
+                        payment['amount_owed'],
+                        payment['payment_type'],
+                        payment['check_num']
+                        ))
+                    total_payment += float(payment['amount_paid'])
+
+        table_.sort()
+
+        workbook = xlsxwriter.Workbook(output_folder + '/Student Report - ' + self.school + ' ' + str(start_date) + ' to ' + str(end_date) + '.xlsx')
+        worksheet = workbook.add_worksheet()
+
+        title_format = workbook.add_format({'bold': True, 'bg_color': '#C2FFAD', 'align': 'center'})
+
+        header_format = workbook.add_format({'bold': True, 'bg_color': '#aad4ff'})
+
+        every_other_format = workbook.add_format({'bg_color': '#DDEEFF'})
+
+        every_format = workbook.add_format({'bg_color': 'white'})
+
+        top_border = workbook.add_format({'top': 1})
+
+        footer_format = workbook.add_format({'bold': True, 'bg_color': '#EBF5FF'})
+
+        worksheet.set_column(0, 9, 15)
+        
+
+        worksheet.merge_range('A1:J1', 'Student Report - ' + self.school + ' ' + str(start_date) + ' to ' + str(end_date), title_format)
+
+        worksheet.write(2, 0, 'Date', header_format)
+        worksheet.write(2, 1, 'Barcode', header_format)
+        worksheet.write(2, 2, 'First Name', header_format)
+        worksheet.write(2, 3, 'Last Name', header_format)
+        worksheet.write(2, 4, 'Chinese Name', header_format)
+        worksheet.write(2, 5, 'Total Amount', header_format)
+        worksheet.write(2, 6, 'Amount Paid', header_format)
+        worksheet.write(2, 7, 'Amount Owed', header_format)
+        worksheet.write(2, 8, 'Payment Type', header_format)
+        worksheet.write(2, 9, 'Check #', header_format)
+
+        r, c = 3, 0
+        color_every = 'odd' if r % 2 == 1 else 'even'
+        starting_row = 2
+        for entry in table_:
+            for data in entry:
+                format_ = None
+                if (color_every == 'odd' and r % 2 == 1 and r != starting_row) or \
+                    (color_every == 'even' and r % 2 == 0 and r != starting_row):
+                    format_ = every_format
+                else:
+                    format_ = every_other_format
+            
+                if c == 0:
+                    worksheet.write(r, c, data.strftime("%m/%d/%Y"), format_)
+                else:
+                    worksheet.write(r, c, data, format_)
+                c += 1
+            c = 0
+            r += 1
+
+        while c < len(table_[0]):
+            worksheet.write(r, c, '', top_border)
+            c += 1
+
+        r += 1
+        worksheet.merge_range('E' + str(r) + ':F' + str(r), 'Total Payments Received', top_border)
+        worksheet.write(r - 1, 6, total_payment, top_border)
+
         return

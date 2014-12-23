@@ -30,7 +30,7 @@ class Photo(Widget):
 			self.label.config(image=self.image)
 		except:
 			pass
-			print("the widget could not be configured")
+			#print("the widget could not be configured")
 
 		try:
 			self.bgc = kwargs['bg']

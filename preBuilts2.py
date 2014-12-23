@@ -5,6 +5,7 @@ from languages import *
 from mbox2 import *
 from tkinter import filedialog
 from Crypto.Cipher import AES
+from datetime import datetime
 import pickle
 
 language = languages["english"]
@@ -961,13 +962,11 @@ def add_payment_prompt(lang, database, student_id):
 	t.newFrame("First Frame", (0, 0))
 	t.newFrame("Second Frame", (1, 0))
 
-	payment_amount = MoneyTextbox(text='Tuition Pay Amount', lang=lang, repr='paymentamount')
 	tpa = MoneyTextbox(text="Tuition Pay Amount", lang=lang, repr='tpa')
 	tpo = MoneyTextbox(text="Amount Owed", lang=lang, repr='tpo')
 	tp = MoneyTextbox(text="Already Paid", lang=lang, repr='tp')
 
 	t.frames["First Frame"].addWidget(tpd, (0, 0))
-	t.frames["First Frame"].addWidget(payment_amount, (1, 0))
 	t.frames["First Frame"].addWidget(pay_by, (2, 0))
 	t.frames["First Frame"].addWidget(tpa, (3, 0))
 	t.frames["First Frame"].addWidget(tpo, (4, 0))
@@ -992,12 +991,12 @@ def add_payment_prompt(lang, database, student_id):
 	tp.entry.config(validate="all", validatecommand=tp.vcmd)
 
 	pay_by.entry.config(state=DISABLED)
-	def change_pay_by_state(event):
-		pay_by.entry.delete(0, END)
-		if pay_by.entry.cget('state') == DISABLED:
-			pay_by.entry.config(state=NORMAL)
-		elif pay_by.entry.cget('state') == NORMAL:
-			pay_by.entry.config(state=DISABLED)
+	def change_pay_by_state(state):
+		if pay_by.entry.cget('state') == NORMAL and state == NORMAL:
+			return
+		else:
+			pay_by.entry.delete(0, END)
+			pay_by.entry.config(state=state)
 
 
 	pay_by.label_entry_frame.pack_forget()
@@ -1005,17 +1004,20 @@ def add_payment_prompt(lang, database, student_id):
 	pay_by.label_entry_frame.pack(side=TOP)
 	pay_by.label.grid(row=0, column=0)
 	pay_by.entry.grid(row=0, column=1)
-	pay_by.brads[0].bind('<Button-1>', change_pay_by_state)
-	pay_by.brads[1].bind('<Button-1>', change_pay_by_state)
+	pay_by.brads[0].bind('<Button-1>', lambda event: change_pay_by_state(DISABLED))
+	pay_by.brads[1].bind('<Button-1>', lambda event: change_pay_by_state(NORMAL))
 
 	t.root.wait_window()
 
 	if t.z == 'cancel': return
 
 	payment_info = {
-		'date': t.tpd,
+		'date': datetime.strptime(t.tpd, "%m/%d/%Y").date(),
 		'payment_type': t.pay_by[0],
-		'check_num': None if t.pay_by[0] == 'Cash' else t.pay_by[1]
+		'check_num': None if t.pay_by[0] == 'Cash' else t.pay_by[1],
+		'total_amount': float(t.tpa),
+		'amount_paid': float(t.tp),
+		'amount_owed': float(t.tpo)
 	}
 
 	datapoints = {
@@ -1025,6 +1027,50 @@ def add_payment_prompt(lang, database, student_id):
 	}
 
 	return payment_info, datapoints
+
+#print payment prompt
+def print_payment_prompt(lang, database):
+
+	def get_return(z):
+		t.z = z
+		t.from_date = from_date.getData()
+		t.to_date = to_date.getData()
+		t.output_folder = output_folder.getData()
+		t.dw()
+
+	t = Mbox()
+	t.root.overrideredirect(0)
+
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	from_date = Datebox(text='From date', lang=lang, repr='fromdate')
+	to_date = Datebox(text='To date', lang=lang, repr='todate')
+	output_folder = Textbox(text='Output folder', lang=lang, repr='outputfolder')
+	brw1 = Buttonbox(text='browse', lang=language, repr='brw1')
+
+	t.frames["First Frame"].addWidget(from_date, (0, 0))
+	t.frames["First Frame"].addWidget(to_date, (1, 0))
+	t.frames["First Frame"].addWidget(output_folder, (2, 0))
+	t.frames["First Frame"].addWidget(brw1, (2, 2))
+
+	t.frames["Second Frame"].addWidget(bok, (0, 1))
+	t.frames["Second Frame"].addWidget(bcancel, (0, 0))
+
+	brw1.button.config(width=7)
+	brw1.config(cmd=lambda: output_folder.setData(filedialog.askdirectory()))
+	bok.config(cmd=lambda: get_return(True))
+	bcancel.config(cmd=lambda: get_return('cancel'))
+
+	#from_date.setData('10/05/2014')
+	#to_date.setData('12/31/2014')
+	#output_folder.setData('C:/users/Bipro/Desktop')
+	
+	t.root.wait_window()
+
+	if t.z == 'cancel': return
+
+	database.print_payment(t.from_date, t.to_date, t.output_folder)
 
 #renew classes button
 def renew(lang):

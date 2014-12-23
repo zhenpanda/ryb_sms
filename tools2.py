@@ -175,6 +175,10 @@ def main(t, lang, d, k):
 
 	#w.frames['Fourth Frame'].addWidget(bsav, (0, 0))
 
+	print_payment_info = Buttonbox(text='Print Payment Info', lang=w.lang, repr='printpaymentinfo')
+
+	w.frames["First Frame"].addWidget(print_payment_info, (7, 0))
+
 	#bsav.config(cmd=ss)
 	bchoose_school.config(cmd=lambda: choose_school_(w.lang))
 	bimp.config(cmd=lambda: importwiz.main(w.lang, d))
@@ -184,6 +188,7 @@ def main(t, lang, d, k):
 	convert_db.config(cmd=lambda: convert_to_encrypted(w.lang, d))
 	create_db.config(cmd=lambda: create_new_db(w.lang, d))
 	reset_db_manager_pw.config(cmd=lambda: reset_dbmanager_pw(w.lang))
+	print_payment_info.config(cmd=lambda: print_payment_prompt(w.lang, d))
 	#create_markerfile.config(cmd=lambda: create_new_markerfile(w.lang))
 	#choose_markerfile.config(cmd=lambda: set_markerfile(curmarkerfile))
 	#bexp.config(cmd=expf)

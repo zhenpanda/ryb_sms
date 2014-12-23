@@ -168,7 +168,7 @@ def main(t, lang, d):
 
 		print('payment added')
 
-		date = d.studentList[w.s].datapoints['payment_info'][-1]['date'].split('/')
+		date = d.studentList[w.s].datapoints['payment_info'][-1]['date'].strftime("%m/%d/%Y").split('/')
 		month = date[0]
 		day = date[1]
 		year = date[2]
@@ -474,10 +474,6 @@ def main(t, lang, d):
 			self.entry.config(font=(self.font_name, int(y_scale * self.font_size)))
 			self.y_scale = y_scale
 
-
-
-
-
 		return
 
 	def resize_labelbox(self, x_scale, y_scale):
@@ -534,8 +530,8 @@ def main(t, lang, d):
 #special
 	w2.spec2 = Labelbox(text='spec', lang=w.lang, repr='spec')
 	w2.frames["Second Frame"].addWidget(w2.spec2, (4, 0))
-	w2.spec2.label.config(font=('Verdana', 15), wraplength=200, justify=LEFT)
-	w2.spec2.label.grid(columnspan=2, sticky=N)
+	w2.spec2.label.config(font=('Verdana', 15), wraplength=1000, justify=LEFT)
+	w2.spec2.label.grid(columnspan=2, sticky=N+E+W)
 
 #basic info widgets
 	w2.frames["Second Frame"].addWidget(sinfo, (0, 0))
@@ -568,6 +564,7 @@ def main(t, lang, d):
 		chineseName2.resize_textbox(t2.x_scale, t2.y_scale)
 		sinfo.resize_labelbox(t2.x_scale, t2.y_scale)
 		portr2.resize_photo(t2.x_scale, t2.y_scale)
+		w2.spec2.resize_labelbox(t2.x_scale, t2.y_scale + 1.0)
 
 		if hasattr(w2.attinfo, 'canvas'):
 			w2.attinfo.resize_table(t2.x_scale, t2.y_scale)

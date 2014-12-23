@@ -233,23 +233,35 @@ def main(lang, d, top=False, i=0):
 
 #add payment
 	def add_payment_():
-		if not hasattr(w, 's') or (w2.s not in d.studentList): return
+		w.s = i
+		if not hasattr(w, 's') or (w.s not in d.studentList): return
 
-		payment_info = add_payment_prompt(w2.lang)
+		payment_data = add_payment_prompt(lang, d, w.s)
 
-		if payment_info != None:
-			d.studentList[w2.s].datapoints['payment_info'].append(payment_info)
-		else:
-			return
+		if payment_data == None: return
+
+		payment_info = payment_data[0]
+		payment_datapoints = payment_data[1]
+
+		d.studentList[w.s].datapoints['payment_info'].append(payment_info)		
 
 		print('payment added')
 
-		date = d.studentList[w2.s].datapoints['payment_info'][-1]['date'].split('/')
+		date = d.studentList[w.s].datapoints['payment_info'][-1]['date'].strftime("%m/%d/%Y").split('/')
 		month = date[0]
 		day = date[1]
 		year = date[2]
 
 		tpd.config(m=month, d=day, y=year)
+		tpa.setData(payment_datapoints['tpa'])
+		tpo.setData(payment_datapoints['tpo'])
+		tp.setData(payment_datapoints['tp'])
+
+		d.studentList[w.s].datapoints['tpa'] = payment_datapoints['tpa']
+		d.studentList[w.s].datapoints['tpo'] = payment_datapoints['tpo']
+		d.studentList[w.s].datapoints['tp'] = payment_datapoints['tp']
+
+		d.saveData()
 
 	add_payment = Buttonbox(text='Add Payment', lang=w2.lang, repr='addpayment')
 	w2.frames["Fourth Frame"].addWidget(add_payment, (10, 0))
