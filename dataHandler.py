@@ -563,3 +563,6 @@ class StudentDB:
         worksheet.set_column(0, 2, 30)
         worksheet.set_column(0, 3, 30)
         workbook.close()
+
+    def print_payment(self, start_date, end_date):
+        return
