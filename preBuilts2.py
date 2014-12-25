@@ -948,32 +948,47 @@ def ctimp(lang, simp, timp):
 def add_payment_prompt(lang, database, student_id):
 
 	def get_return(z):
+		if z != 'cancel':
+			try:
+				datetime.strptime(tpd.getData(), "%m/%d/%Y").date()
+			except ValueError:
+				date_error(lang)
+				return
+
 		t.z = z
 		t.tpd = tpd.getData()
 		t.pay_by = pay_by.getData()
 		t.tpa = tpa.getData()
 		t.tpo = tpo.getData()
 		t.tp = tp.getData()
+		#t.paid_on_date = paid_on_date.getData()
 		t.dw()
 
 	t = Mbox()
 	t.root.overrideredirect(0)
+	t.root.protocol('WM_DELETE_WINDOW', lambda: False)
 
 	t.newFrame("First Frame", (0, 0))
 	t.newFrame("Second Frame", (1, 0))
 
+	#paid_on_date = MoneyTextbox(text="Paying Amount", lang=lang, repr='paidondate')
 	tpa = MoneyTextbox(text="Tuition Pay Amount", lang=lang, repr='tpa')
 	tpo = MoneyTextbox(text="Amount Owed", lang=lang, repr='tpo')
 	tp = MoneyTextbox(text="Already Paid", lang=lang, repr='tp')
+	new_balance = Labelbox(text="New Balance", lang=lang, repr='newbalance')
 
 	t.frames["First Frame"].addWidget(tpd, (0, 0))
+	#t.frames["First Frame"].addWidget(paid_on_date, (1, 0))
 	t.frames["First Frame"].addWidget(pay_by, (2, 0))
-	t.frames["First Frame"].addWidget(tpa, (3, 0))
-	t.frames["First Frame"].addWidget(tpo, (4, 0))
+	t.frames["First Frame"].addWidget(new_balance, (3, 0))
+	t.frames["First Frame"].addWidget(tpa, (4, 0))
 	t.frames["First Frame"].addWidget(tp, (5, 0))
+	t.frames["First Frame"].addWidget(tpo, (6, 0))
 	t.frames["Second Frame"].addWidget(bok, (0, 1))
 	t.frames["Second Frame"].addWidget(bcancel, (0, 0))
 
+	new_balance.label.config(bg='#FFCC66')
+	new_balance.label.grid(columnspan=2, sticky=E+W)
 	bok.config(cmd=lambda: get_return('return payment'))
 	bcancel.config(cmd=lambda: get_return('cancel'))
 
@@ -1017,7 +1032,8 @@ def add_payment_prompt(lang, database, student_id):
 		'check_num': None if t.pay_by[0] == 'Cash' else t.pay_by[1],
 		'total_amount': float(t.tpa),
 		'amount_paid': float(t.tp),
-		'amount_owed': float(t.tpo)
+		'amount_owed': float(t.tpo),
+		#'paid_on_date': float(t.paid_on_date)
 	}
 
 	datapoints = {
@@ -1071,6 +1087,7 @@ def print_payment_prompt(lang, database):
 	if t.z == 'cancel': return
 
 	database.print_payment(t.from_date, t.to_date, t.output_folder)
+	print_succesful(lang)
 
 #renew classes button
 def renew(lang):
@@ -1139,6 +1156,53 @@ def database_backup_successful(lang):
 	t.root.wait_window()
 
 	return t.z
+
+#payment added
+def payment_successful(lang):
+
+	def d(z):
+		t.z = z
+		t.dw()
+
+	t = Mbox()
+	
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	nostext = Labelbox(text='Payment Added Successfully', lang=lang, repr='nostext')
+
+	t.frames["First Frame"].addWidget(ws, (0, 0))
+	t.frames["First Frame"].addWidget(nostext, (1, 0))
+	t.frames["Second Frame"].addWidget(bok, (2, 0))
+	
+	bok.config(cmd=lambda: d(True), lang=lang)
+
+	t.root.wait_window()
+
+	return t.z
+
+#invalid date
+def date_error(lang):
+
+	def d(z):
+		t.z = z
+		t.dw()
+
+	t = Mbox()
+	
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	nostext = Labelbox(text='Invalid Date', lang=lang, repr='invaliddate')
+	breturn = Buttonbox(text='Return', lang=lang, repr='ok_')
+
+	t.frames["First Frame"].addWidget(ws, (0, 0))
+	t.frames["First Frame"].addWidget(nostext, (1, 0))
+	t.frames["Second Frame"].addWidget(breturn, (2, 0))
+	
+	breturn.config(cmd=lambda: d(True), lang=lang)
+
+	t.root.wait_window()
 
 #clang
 def clang():

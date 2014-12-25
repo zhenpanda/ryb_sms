@@ -177,7 +177,8 @@ def main(t, lang, d, sM):
 			'check_num': None if pay_by.getData()[0] == 'Cash' else pay_by.getData()[1],
 			'total_amount': float(tpa.getData()),
 			'amount_paid': float(tp.getData()),
-			'amount_owed': float(tpo.getData())
+			'amount_owed': float(tpo.getData()),
+			#'paid_on_date': float(tp.getData())
 		}
 		ns.datapoints['payment_info'].append(payment_info)
 		print('payment added', payment_info)

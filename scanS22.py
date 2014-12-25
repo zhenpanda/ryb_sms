@@ -165,6 +165,7 @@ def main(t, lang, d):
 		payment_datapoints = payment_data[1]
 
 		d.studentList[w.s].datapoints['payment_info'].append(payment_info)		
+		payment_successful(w.lang)
 
 		print('payment added')
 

@@ -218,7 +218,8 @@ class StudentDB:
                         'check_num': None,
                         'total_amount': float(s['tpa']),
                         'amount_paid': float(s['tp']),
-                        'amount_owed': float(s['tpo'])
+                        'amount_owed': float(s['tpo']),
+                        #'paid_on_date': float(s['tp'])
                     }
                 except ValueError:
                     print('default payment entry key or parse error')
@@ -599,6 +600,7 @@ class StudentDB:
                         student.datapoints['lastName'],
                         student.datapoints['chineseName'],
                         payment['total_amount'],
+                        #payment['paid_on_date'],
                         payment['amount_paid'],
                         payment['amount_owed'],
                         payment['payment_type'],
@@ -634,6 +636,7 @@ class StudentDB:
         worksheet.write(2, 3, 'Last Name', header_format)
         worksheet.write(2, 4, 'Chinese Name', header_format)
         worksheet.write(2, 5, 'Total Amount', header_format)
+        #worksheet.write(2, 6, 'Paid on Date', header_format)
         worksheet.write(2, 6, 'Amount Paid', header_format)
         worksheet.write(2, 7, 'Amount Owed', header_format)
         worksheet.write(2, 8, 'Payment Type', header_format)

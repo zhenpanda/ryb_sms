@@ -163,7 +163,12 @@ languages = \
 		"From date": "From date",
 		"To date": "To date",
 		"Print Payment Info": "Print Payment Info",
-		"Output folder": "Output folder"
+		"Output folder": "Output folder",
+		"Payment Added Successfully": "Payment Added Successfully",
+		"Invalid Date": "Invalid Date",
+		"Return": "Return",
+		"Paying Amount": "Paying Amount",
+		"New Balance": "New Balance"
 		},
 
 	"chinese": {
@@ -328,7 +333,12 @@ languages = \
 		"From date": "From date",
 		"To date": "To date",
 		"Print Payment Info": "Print Payment Info",
-		"Output folder": "Output folder"
+		"Output folder": "Output folder",
+		"Payment Added Successfully": "Payment Added Successfully",
+		"Invalid Date": "Invalid Date",
+		"Return": "Return",
+		"Paying Amount": "Paying Amount",
+		"New Balance": "New Balance"
 		}
 		
 }
