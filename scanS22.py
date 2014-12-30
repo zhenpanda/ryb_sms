@@ -15,7 +15,7 @@ def main(t, lang, d):
 
 #attendance table
 	w.attinfo = Table(repr='attinfo', edit=True)
-	w.attinfoh = [language['Date'], language['Check-In Time'], language['Class Time']]
+	w.attinfoh = [lang['Date'], lang['Check-In Time'], lang['Class Time']]
 	w.attinfo.build(headers=w.attinfoh, data=[[]])
 	w.attinfo.clast = '#FF99FF'
 
@@ -291,6 +291,16 @@ def main(t, lang, d):
 		w2.attinfo.y_scale = 1.0
 		w2.attinfo.resize_table(t2.x_scale, t2.y_scale)
 
+		for cell_id, cell_val in w.attinfo.cells.items():
+			if cell_id[0] == 0:
+				cur_text = cell_val.label.cget('text')
+				cell_val.label.config(text=lang[cur_text])
+
+		for cell_id, cell_val in w2.attinfo.cells.items():
+			if cell_id[0] == 0:
+				cur_text = cell_val.label.cget('text')
+				cell_val.label.config(text=lang[cur_text])
+
 		w.tdp = dict(w.collect(d.studentList[w.s].datapoints))
 
 		#if amount owed is larger than amount paid, color amount owed in red
@@ -346,6 +356,16 @@ def main(t, lang, d):
 
 		w.attinfo.setData(d.studentList[w.s].datapoints['attinfo'])
 		w2.attinfo.setData(d.studentList[w.s].datapoints['attinfo'])
+
+		for cell_id, cell_val in w.attinfo.cells.items():
+			if cell_id[0] == 0:
+				cur_text = cell_val.label.cget('text')
+				cell_val.label.config(text=lang[cur_text])
+
+		for cell_id, cell_val in w2.attinfo.cells.items():
+			if cell_id[0] == 0:
+				cur_text = cell_val.label.cget('text')
+				cell_val.label.config(text=lang[cur_text])
 
 #		
 		w2.attinfo.y_scale = 1.0
@@ -433,7 +453,7 @@ def main(t, lang, d):
 
 #attendance table
 	w2.attinfo = Table(repr='attinfo', edit=True)
-	w2.attinfoh = [language['Date'], language['Check-In Time'], language['Class Time']]
+	w2.attinfoh = [lang['Date'], lang['Check-In Time'], lang['Class Time']]
 	w2.attinfo.build(headers=w2.attinfoh, data=[[]])
 	w2.attinfo.clast = '#FF99FF'
 

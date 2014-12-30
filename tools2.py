@@ -196,6 +196,21 @@ def main(t, lang, d, k):
 	#curdb.config(text=s.config['dbFile'])
 	#exp.config(cmd=importwiz.main)
 
+	w.mmbuttoncol = 'tomato'
+	w.mmbuttonfg = 'black'
+
+	print_payment_info.idlebg = w.mmbuttoncol
+	print_payment_info.fg = w.mmbuttonfg
+	print_payment_info.hoverfg = 'white'
+	print_payment_info.hoverbg = 'crimson'
+	print_payment_info.button.config(bg=print_payment_info.idlebg, fg=print_payment_info.fg)
+
+	bcdb.idlebg = w.mmbuttoncol
+	bcdb.fg = w.mmbuttonfg
+	bcdb.hoverfg = 'white'
+	bcdb.hoverbg = 'crimson'
+	bcdb.button.config(bg=bcdb.idlebg, fg=bcdb.fg)
+
 #set starting lang
 	for frame in w.frames.values():
 		for widget in frame.widgets.values():
