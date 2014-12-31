@@ -724,6 +724,7 @@ def convert_to_encrypted(lang, d):
 			pw_file_textbox.setData(f_path + '/' + pw_file_textbox.getData() + '.rybdb')
 		elif file_ == 'to_enc_file':
 			f_path = filedialog.askopenfile()
+			if f_path == None: return
 			to_encrypt_file_textbox.setData(f_path.name)
 
 		return
@@ -1086,8 +1087,11 @@ def print_payment_prompt(lang, database):
 
 	if t.z == 'cancel': return
 
-	database.print_payment(t.from_date, t.to_date, t.output_folder)
-	print_succesful(lang)
+	try:
+		database.print_payment(t.from_date, t.to_date, t.output_folder)
+		print_succesful(lang)
+	except ValueError:
+		return
 
 #renew classes button
 def renew(lang):

@@ -136,7 +136,6 @@ def main():
 		rbutton.config(cmd=out)
 		
 	def choose_school(event):
-		
 		school = preBuilts2.choose_school(w.lang)
 		w.k.files['school'] = 'Flushing' if school == 'cancel' else school
 		w.d.school = w.k.files['school']
@@ -146,8 +145,11 @@ def main():
 		
 	def expf():
 		try:
-			p = filedialog.askdirectory()
-			w.d.exportdb(p + '/backup_' + w.d.school + '_' + str(datetime.now().date()) + '.rybdb')
+			fpath = filedialog.askdirectory()
+			today = datetime.now()
+			date = today.strftime('%m.%d.%y')
+			time = today.strftime('%I.%M.%p')
+			w.d.exportdb(fpath + '/RYB Student Backup - ' + w.d.school + ' ' + date + ' ' + time + '.rybdb')			
 			database_backup_successful(w.lang)
 		except:
 			print('database export unsuccessful')
