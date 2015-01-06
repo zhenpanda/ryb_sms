@@ -221,10 +221,12 @@ class StudentDB:
                         'amount_owed': float(s['tpo']),
                         #'paid_on_date': float(s['tp'])
                     }
+                    if 'payment_info' not in s:
+                        s['payment_info'] = []
+                    s['payment_info'].append(payment_info)
                 except ValueError:
                     print('default payment entry key or parse error')
-                else:
-                    ns.datapoints['payment_info'].append(payment_info)
+                    
 
             cdt = datetime.now()
 
@@ -423,7 +425,13 @@ class StudentDB:
                 newS.datapoints['tp'] = 0
 
             #error-zone: set for school code
-            if newS.datapoints['bCode'][:3] != 'FLU' and newS.datapoints['bCode'][:3] != 'BRK': continue
+            valid_prefix = [
+                'FLU',
+                'BRK',
+                'ELM',
+                'CHI'
+            ]
+            if newS.datapoints['bCode'][:3] not in valid_prefix: continue
             self.addStudent(newS.datapoints['bCode'], newS)
 
         self.saveData()

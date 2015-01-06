@@ -168,7 +168,8 @@ languages = \
 		"Invalid Date": "Invalid Date",
 		"Return": "Return",
 		"Paying Amount": "Paying Amount",
-		"New Balance": "New Balance"
+		"New Balance": "New Balance",
+		"Password File": "Password File"
 		},
 
 	"chinese": {
@@ -338,7 +339,8 @@ languages = \
 		"Invalid Date": "Invalid Date",
 		"Return": "Return",
 		"Paying Amount": "Paying Amount",
-		"New Balance": "支付余额"
+		"New Balance": "支付余额",
+		"Password File": "Password File"
 		}
 		
 }

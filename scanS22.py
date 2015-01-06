@@ -383,15 +383,10 @@ def main(t, lang, d):
 
 
 	def z(mode=False):
-		try:
-			ss(mode) if cs(d.studentList[w.s].datapoints['firstName'], w.lang) else False
-		except:
-			print("error-105")
-
-
-		
-
-		
+		#try:
+		ss(mode) if cs(d.studentList[w.s].datapoints['firstName'], w.lang) else False
+		#except:
+		#	print("error-105")
 
 	w.frames["Tenth Frame"].widgets['sby'].entry.bind("<Return>", lambda x: s())
 
