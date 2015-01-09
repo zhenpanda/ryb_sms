@@ -88,6 +88,46 @@ def main(t, lang, d, k):
 
 		return
 
+	def print_report_by_date():
+		def out():
+			p = filedialog.askdirectory()
+			if rdate.getData() == '01/01/1900':
+				date_error(w.lang)
+			elif p != None:
+				d.exportreport(p, rdate.getData())
+				print_succesful(w.lang)
+				pt.destroy()
+			else:
+				invalid_path(w.lang)
+				return
+
+		pt = Window(top=True)
+		pt.attributes('-fullscreen', False)
+		pt.resizable(0, 0)
+		pt.geometry('400x200+200+200')
+		pt.grab_set()
+		pt.focus_set()
+		pt.titleFrame.pack_forget()
+
+		wpt = AppWindow(pt.mainFrame)
+
+		rdate = Datebox(text='Date', lang=w.lang, repr='rdate')
+		rbutton = Buttonbox(text='Select Folder', lang=w.lang, repr='rbutton')
+		cancel_button = Buttonbox(text='Cancel', lang=w.lang, repr='cancelbutton')
+
+		wpt.newFrame("First Frame", (0, 0))
+
+		wpt.frames["First Frame"].addWidget(rdate, (0, 0))
+		wpt.frames["First Frame"].addWidget(rbutton, (1, 0))
+		wpt.frames["First Frame"].addWidget(cancel_button, (2, 0))
+
+		rdate.label.config(width=5)
+		rbutton.selfframe.grid(columnspan=2, pady=(20, 0))
+		cancel_button.selfframe.grid(columnspan=2)
+
+		rbutton.config(cmd=out)
+		cancel_button.config(cmd=pt.destroy)
+
 	def reset_dbmanager_pw(lang):
 
 		new_pw = password_prompt(lang, k.files['dbpw'])
@@ -177,8 +217,10 @@ def main(t, lang, d, k):
 	#w.frames['Fourth Frame'].addWidget(bsav, (0, 0))
 
 	print_payment_info = Buttonbox(text='Print Payment Info', lang=w.lang, repr='printpaymentinfo')
+	print_report_button = Buttonbox(text='print report', lang=w.lang, repr='printreport')
 
 	w.frames["First Frame"].addWidget(print_payment_info, (7, 0))
+	w.frames["First Frame"].addWidget(print_report_button, (8, 0))
 
 	#bsav.config(cmd=ss)
 	bchoose_school.config(cmd=lambda: choose_school_(w.lang))
@@ -190,6 +232,7 @@ def main(t, lang, d, k):
 	create_db.config(cmd=lambda: create_new_db(w.lang, d))
 	reset_db_manager_pw.config(cmd=lambda: reset_dbmanager_pw(w.lang))
 	print_payment_info.config(cmd=lambda: print_payment_prompt(w.lang, d))
+	print_report_button.config(cmd=print_report_by_date)
 	#create_markerfile.config(cmd=lambda: create_new_markerfile(w.lang))
 	#choose_markerfile.config(cmd=lambda: set_markerfile(curmarkerfile))
 	#bexp.config(cmd=expf)
