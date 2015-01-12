@@ -706,7 +706,6 @@ def create_new_db(lang, d):
 
 
 def convert_to_encrypted(lang, d):
-
 	def get_return(z):
 		t.z = z
 		t.to_encrypt_file = to_encrypt_file_textbox.getData()
@@ -715,27 +714,19 @@ def convert_to_encrypted(lang, d):
 		t.pw = pw_textbox.getData()
 		t.dw()
 
-	def set_file(file_):
-		if file_ == 'db_file':
-			f_path = filedialog.askdirectory()
-			db_file_textbox.setData(f_path + '/' + db_file_textbox.getData() + '.rybdb')
-		elif file_ == 'pw_file':
-			f_path = filedialog.askdirectory()
-			pw_file_textbox.setData(f_path + '/' + pw_file_textbox.getData() + '.rybdb')
-		elif file_ == 'to_enc_file':
-			f_path = filedialog.askopenfile()
-			if f_path == None: return
-			to_encrypt_file_textbox.setData(f_path.name)
+	def set_file(textbox):
+		out_file = filedialog.asksaveasfilename()
+		if len(out_file) != 0:
+			textbox.setData(out_file + '.rybdb')
 
-		return
-
+	def open_file(textbox):
+		out_file = filedialog.askopenfile()
+		if out_file != None:
+			textbox.setData(out_file.name)
 
 	t = Mbox()
-	#t.root.overrideredirect(0)
-	#t.root.bind("<Destroy>", lambda event: None)
 
 	t.newFrame("First Frame", (0, 0))
-
 
 	to_encrypt_file_textbox = Textbox(text='Unencrypted File', lang={'Unencrypted File': 'Unencrypted File'}, repr='unc_db_file')
 	db_file_textbox = Textbox(text='Encrypt File To', lang={'Encrypt File To': 'Encrypt File To'}, repr='db_file')
@@ -756,7 +747,6 @@ def convert_to_encrypted(lang, d):
 	t.frames["First Frame"].addWidget(bsav, (4, 1))
 	t.frames["First Frame"].addWidget(bcancel, (5, 1))
 
-
 	db_file_textbox.label.config(width=12)
 	pw_file_textbox.label.config(width=12)
 	to_encrypt_file_textbox.config(width=12)
@@ -766,13 +756,11 @@ def convert_to_encrypted(lang, d):
 	brw3.button.config(width=7)
 	bsav.button.config(width=22)
 
-	brw1.config(cmd=lambda: set_file('db_file'))
-	brw2.config(cmd=lambda: set_file('pw_file'))
-	brw3.config(cmd=lambda: set_file('to_enc_file'))
+	brw1.config(cmd=lambda: set_file(db_file_textbox))
+	brw2.config(cmd=lambda: set_file(pw_file_textbox))
+	brw3.config(cmd=lambda: open_file(to_encrypt_file_textbox))
 	bsav.config(cmd=lambda: get_return('success'))
 	bcancel.config(cmd=lambda: get_return('cancel'), lang=lang)
-
-
 
 	t.root.wait_window()
 
@@ -792,8 +780,6 @@ def convert_to_encrypted(lang, d):
 	f = open(t.pw_file, 'wb')
 	f.write(bytearray(str.encode(t.pw)))
 	f.close()
-
-	print(t.z)
 
 def password_prompt(lang, reset_pw):
 

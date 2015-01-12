@@ -271,7 +271,24 @@ class StudentDB:
         except:
             pass
 
-        #increment the last barcode
+        s = self.studentList[barcode].datapoints
+        try:
+            payment_info = {
+                'date': datetime.strptime(s['tpd'], "%m/%d/%Y"),
+                'payment_type': 'Cash',
+                'check_num': None,
+                'total_amount': float(s['tpa']),
+                'amount_paid': float(s['tp']),
+                'amount_owed': float(s['tpo']),
+                #'paid_on_date': float(s['tp'])
+            }
+            if 'payment_info' not in s:
+                s['payment_info'] = []
+            s['payment_info'].append(payment_info)
+        except ValueError:
+            s['payment_info'] = [['01/01/1900', 'Cash', None, 0.0, 0.0, 0.0]]
+            print('default payment entry key or parse error')
+
         self.last += 1
 
 
@@ -599,8 +616,28 @@ class StudentDB:
         print(str(start_date), str(end_date))
 
         for student in self.studentList.values():
+            if 'payment_info' not in student.datapoints:
+                student.datapoints['payment_info'] = []
+                try:
+                    student.datapoints['payment_info'].append({
+                        'date': datetime.strptime(student.datapoints['tpd'], "%m/%d/%Y"),
+                        'payment_type': 'Cash',
+                        'check_num': None,
+                        'total_amount': float(student.datapoints['tpa']),
+                        'amount_paid': float(student.datapoints['tp']),
+                        'amount_owed': float(student.datapoints['tpo']),
+                    })
+                except ValueError:
+                    student.datapoints['payment_info'].append({
+                        'date': datetime.strptime('01/01/1900', "%m/%d/%Y"),
+                        'payment_type': 'Cash',
+                        'check_num': None,
+                        'total_amount': 0.0,
+                        'amount_paid': 0.0, 
+                        'amount_owed': 0.0})
+                self.saveData()
             for payment in student.datapoints['payment_info']:
-                if payment['date'] >= start_date and payment['date'] <= end_date:
+                if payment['date'].date() >= start_date and payment['date'].date() <= end_date:
                     table_.append((
                         payment['date'],
                         student.datapoints['bCode'],
