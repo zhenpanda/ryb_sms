@@ -17,7 +17,17 @@ base = None
 if sys.platform == "win32":
     base = "Win32GUI"
 
-includefiles = ['check_mark_sm.png', 'halt_sm.png', 'monet_sm.jpg', 'rybCONFIG.db', 'ws_sm.png', 'background_IMG.jpg', 'bigblu.jpg', 'smallblu.jpg', 'bigbl.jpg', 'RYB_Attendance.ico', 'images/']
+includefiles = ['check_mark_sm.png',
+				'halt_sm.png',
+				'monet_sm.jpg',
+				'rybCONFIG.db',
+				'ws_sm.png',
+				'background_IMG.jpg',
+				'bigblu.jpg',
+				'smallblu.jpg',
+				'bigbl.jpg',
+				'RYB_Attendance.ico',
+				'images/']
 
 build_exe_options = {'include_files':includefiles, 'create_shared_zip': False}
 
