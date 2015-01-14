@@ -312,7 +312,7 @@ languages = \
 		"Elmhurst": "Elmhurst",
 		"Flushing": "Flushing",
 		"Choose School": "选择学校",
-		"Print Successful": "工资做出",
+		"Print Successful": "Print Successful",
 		"Early Check-in": "Early Check-in",
 		"max hours": "Maximum Hours",
 		"Choose PW File": "选择密数据库",
