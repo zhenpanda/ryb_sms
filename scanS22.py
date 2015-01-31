@@ -354,8 +354,8 @@ def main(t, lang, d):
 
 		w2.attinfo.deleteAll()
 
-		w.attinfo.setData(d.studentList[w.s].datapoints['attinfo'])
-		w2.attinfo.setData(d.studentList[w.s].datapoints['attinfo'])
+		w.attinfo.setData(d.studentList[w.s].datapoints['attinfo'][1])
+		w2.attinfo.setData(d.studentList[w.s].datapoints['attinfo'][1])
 
 		for cell_id, cell_val in w.attinfo.cells.items():
 			if cell_id[0] == 0:
