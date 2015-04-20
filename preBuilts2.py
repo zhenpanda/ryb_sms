@@ -1067,7 +1067,7 @@ def print_payment_prompt(lang, database):
 
 	#from_date.setData('10/05/2014')
 	#to_date.setData('12/31/2014')
-	#output_folder.setData('C:/users/Bipro/Desktop')
+	#output_folder.setData('C:/users/Bipro/Desktop/test')
 	
 	t.root.wait_window()
 
@@ -1193,6 +1193,24 @@ def date_error(lang):
 	breturn.config(cmd=lambda: d(True), lang=lang)
 
 	t.root.wait_window()
+
+
+def already_running_(lang):
+	message_box = Mbox(stand_alone=True)
+	
+	message_box.newFrame("First Frame", (0, 0))
+	message_box.newFrame("Second Frame", (1, 0))
+
+	message = Label(message_box.frames["First Frame"], text='Another instance of this program is running. Please close all instances of this program and try running again.')
+	ok_button = Buttonbox(text='ok', lang=lang, repr='ok_button')
+	
+	message.grid()
+	message_box.frames["Second Frame"].addWidget(ok_button, (2, 0))
+	
+	message.config(wraplength=200, justify=LEFT)
+	ok_button.config(cmd=message_box.dw, width=15)
+
+	message_box.root.wait_window()
 
 #clang
 def clang():

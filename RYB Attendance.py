@@ -4,7 +4,7 @@ from dataHandler import *
 from languages import *
 from labelWidgets2 import *
 from photoWidget2 import *
-from preBuilts2 import ret, titlePic, bexp, password_prompt, wrong_password, pw_reset_confirm, print_succesful, database_backup_successful
+from preBuilts2 import ret, titlePic, bexp, password_prompt, wrong_password, pw_reset_confirm, print_succesful, database_backup_successful, already_running_
 from tkinter import filedialog
 import addS3
 import scanS22
@@ -126,7 +126,7 @@ def main():
 
 #main window and starting language
 	w = AppWindow(t.mainFrame)
-	w.lang = languages['chinese']
+	w.lang = languages['english']
 
 #title
 	t.wintitle.config(text=w.lang['RYB Student Management'])
@@ -250,6 +250,17 @@ def main():
 	t.iconbitmap('RYB_Attendance.ico')
 	t.mainloop()
 
+import subprocess
+cmd = 'WMIC PROCESS get Caption'
+proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
 
-if __name__ == '__main__':
+num_instances = 0
+
+for line in proc.stdout:
+	if b'RYB Student Attendance.exe' in line:
+		num_instances += 1
+
+if num_instances > 1:
+	already_running_(languages['english'])
+else:
 	main()

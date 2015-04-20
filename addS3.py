@@ -1,14 +1,11 @@
 from uiHandler22 import *
 from dataHandler import *
 from preBuilts2 import *
+import tkinter.ttk as ttk
 
 
 def main(t, lang, d, sM):
 	'''addS3'''
-
-	#title
-	#t.wintitle.config(text=w.lang['RYB Student Management'])
-
 	d.loadData()
 
 	w = AppWindow(t)
@@ -16,95 +13,90 @@ def main(t, lang, d, sM):
 	w.lang = lang
 
 #frame initialization
-	w.newFrame("Title Frame", (0, 0))
-	w.newFrame("First Frame", (1, 1))
-	w.newFrame("Second Frame", (1, 2))
-	w.newFrame("Third Frame", (2, 1))
-	w.newFrame("Fourth Frame", (2, 2))
-	w.newFrame("Fifth Frame", (5, 0))
-	w.newFrame("Sixth Frame", (4, 2))
-	w.newFrame("Seventh Frame", (1, 0))
-	w.newFrame("Eigth Frame", (3, 2))
-	w.newFrame("Ninth Frame", (3, 1))
+	w.newFrame("Portrait frame", (0, 0))
+	w.newFrame("First column", (0, 1))
+	w.newFrame("Second column", (0, 2))
+	#w.newFrame("First column", (2, 1))
+	#w.newFrame("Second column", (0, 2))
+	#w.newFrame("Second column", (1, 2))
+	#w.newFrame("Second column", (2, 2))
+	w.newFrame("Button frame", (3, 0))
 
 #title
-	w.frames["Title Frame"].grid(columnspan=4, sticky=E+W)
-	Label(w.frames["Title Frame"], text='Add students', bg='#3B5C8D', fg='white', \
-		height=3, font=('Jumbo', '12', 'bold')).pack(fill='both', expand=True)
-
-	w.frames["Fourth Frame"].grid(rowspan=2)
-	w.frames["Fifth Frame"].grid(columnspan=5, sticky=S)
-	w.frames["Seventh Frame"].grid(rowspan=2)
-	w.frames["Ninth Frame"].grid(rowspan=2, sticky=E)
-	#w.frames["Sixth Frame"].grid(rowspan=2, sticky=N)
+	w.frames["Portrait frame"].grid(rowspan=5, sticky=N)
+	w.frames["Button frame"].grid(columnspan=5, sticky=S)
+	#w.frames["Second column"].grid(rowspan=2)
+	#w.frames["First column"].grid(rowspan=2, sticky=E)
+	#w.frames["Second column"].grid(rowspan=2, sticky=N)
 
 #debugging
-	#w.frames["First Frame"].config(bg='lightgrey')
+	#w.frames["First column"].config(bg='lightgrey')
 
 	w.sectioncolor = "#3B5C8D"
 	#3B5C8D
 
 #student info widgets
-	w.frames["First Frame"].addWidget(sinfo, (0, 0))
+	w.frames["First column"].addWidget(sinfo, (0, 0))
 	sinfo.label.config(bg=w.sectioncolor, fg='white', font=('Jumbo', '11', 'bold'), text=w.lang['Student information'])
 	sinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w.frames["First Frame"].addWidget(firstName, (1, 0))
-	w.frames["First Frame"].addWidget(lastName, (2, 0))
-	w.frames["First Frame"].addWidget(chineseName, (3, 0))
-	w.frames["First Frame"].addWidget(dob, (4, 0))
-	w.frames["First Frame"].addWidget(age, (5, 0))
-	w.frames["First Frame"].addWidget(parentName, (6, 0))
-	w.frames["First Frame"].addWidget(cp, (7, 0))
+	w.frames["First column"].addWidget(firstName, (1, 0))
+	w.frames["First column"].addWidget(lastName, (2, 0))
+	w.frames["First column"].addWidget(chineseName, (3, 0))
+	w.frames["First column"].addWidget(dob, (4, 0))
+	w.frames["First column"].addWidget(age, (5, 0))
+	w.frames["First column"].addWidget(parentName, (6, 0))
+	w.frames["First column"].addWidget(cp, (7, 0))
 
 #address widgets
-	w.frames["Second Frame"].addWidget(ainfo, (0, 0))
+	w.frames["Second column"].addWidget(ainfo, (0, 0))
 	ainfo.label.config(bg=w.sectioncolor, fg='white', font=('Jumbo', '11', 'bold'))
 	ainfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w.frames["Second Frame"].addWidget(addr, (3, 0))
-	w.frames["Second Frame"].addWidget(city, (4, 0))
-	w.frames["Second Frame"].addWidget(state, (5, 0))
-	w.frames["Second Frame"].addWidget(zip, (6, 0))
-	w.frames["Second Frame"].addWidget(email, (7, 0))
+	w.frames["Second column"].addWidget(addr, (1, 0))
+	w.frames["Second column"].addWidget(city, (2, 0))
+	w.frames["Second column"].addWidget(state, (3, 0))
+	w.frames["Second column"].addWidget(zip, (4, 0))
+	w.frames["Second column"].addWidget(email, (5, 0))
 
 #contact widgets
-	w.frames["Third Frame"].addWidget(cinfo, (0, 0))
+	w.frames["First column"].addWidget(cinfo, (8, 0))
 	cinfo.label.config(bg=w.sectioncolor, fg='white', font=('Jumbo', '11', 'bold'))
 	cinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w.frames["Third Frame"].addWidget(pup, (1, 0))
-	w.frames["Third Frame"].addWidget(hPhone, (2, 0))
-	w.frames["Third Frame"].addWidget(cPhone, (3, 0))
-	w.frames["Third Frame"].addWidget(cPhone2, (4, 0))
+	w.frames["First column"].addWidget(pup, (9, 0))
+	w.frames["First column"].addWidget(hPhone, (10, 0))
+	w.frames["First column"].addWidget(cPhone, (11, 0))
+	w.frames["First column"].addWidget(cPhone2, (12, 0))
 
 #database info widgets
-	w.frames["Fourth Frame"].addWidget(pinfo, (0, 0))
+	w.frames["Second column"].addWidget(pinfo, (6, 0))
 	pinfo.label.config(bg=w.sectioncolor, fg='white', font=('Jumbo', '11', 'bold'))
 	pinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w.frames["Fourth Frame"].addWidget(bCode, (1, 0))
-	w.frames["Fourth Frame"].addWidget(sid, (2, 0))
+	w.frames["Second column"].addWidget(bCode, (7, 0))
+	w.frames["Second column"].addWidget(sid, (8, 0))
 
 	bCode.setData(d.formatCode())
 
 #payment widgets
-	w.frames["Fourth Frame"].addWidget(tpd, (6, 0))
-	w.frames["Fourth Frame"].addWidget(tpa, (7, 0))
-	w.frames["Fourth Frame"].addWidget(tp, (8, 0))
-	w.frames["Fourth Frame"].addWidget(tpo, (9, 0))
-	w.frames["Fourth Frame"].addWidget(pay_by, (10, 0))
+	w.frames["Second column"].addWidget(tpd, (9, 0))
+	w.frames["Second column"].addWidget(tpa, (10, 0))
+	w.frames["Second column"].addWidget(tp, (11, 0))
+	w.frames["Second column"].addWidget(tpo, (12, 0))
+	w.frames["Second column"].addWidget(pay_by, (13, 0))
 	
 
 #class widget
-	w.frames["Sixth Frame"].addWidget(sType, (4, 0))
-	w.frames["Sixth Frame"].addWidget(cAwarded, (5, 0))
-	w.frames["Sixth Frame"].addWidget(cRemaining, (6, 0))
-	w.frames["Sixth Frame"].widgets['cRemaining'].hide()
-	w.frames["Sixth Frame"].addWidget(ctime, (7, 0))
+	w.frames["Second column"].addWidget(sType, (16, 0))
+	w.frames["Second column"].addWidget(cAwarded, (17, 0))
+	w.frames["Second column"].addWidget(cRemaining, (18, 0))
+	w.frames["Second column"].widgets['cRemaining'].hide()
+	#w.frames["Second column"].addWidget(ctime, (7, 0))
 
 #notes widget
-	w.frames["Ninth Frame"].addWidget(ninfo, (0, 0))
+	w.frames["First column"].addWidget(ninfo, (13, 0))
 	ninfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	ninfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w.frames["Ninth Frame"].addWidget(notes, (1, 0))
+	w.frames["First column"].addWidget(notes, (14, 0))
 	notes.label.grid_forget()
+	notes.sentry.grid(row=14, column=0, columnspan=2)
 	notes.config(height=8, width=32)
 
 	pay_by.entry.config(state=DISABLED)
@@ -114,6 +106,13 @@ def main(t, lang, d, sM):
 		else:
 			pay_by.entry.delete(0, END)
 			pay_by.entry.config(state=state)
+
+	def add_class_():
+		if class_assoc[w.class_stringvar.get()] == 1:
+			caddone()
+		else:
+			caddx(class_assoc[w.class_stringvar.get()])
+		#return
 
 
 	pay_by.label_entry_frame.pack_forget()
@@ -125,37 +124,52 @@ def main(t, lang, d, sM):
 	pay_by.brads[1].bind('<Button-1>', lambda event: change_pay_by_state(NORMAL))
 
 
-
+	#add_class = Buttonbox(text='Add class', lang=w.lang, repr='aclass')
 	baclass = Buttonbox(text='awardclass', lang=w.lang, repr='aclass')
 	baoclass = Buttonbox(text='awardoneclass', lang=w.lang, repr='aoclass')
 	baac = Buttonbox(text='awardaddclass', lang=w.lang, repr='baaclasses')
 	bgold = Buttonbox(text='gold60', lang=lang, repr='bgold')
 	bbasic = Buttonbox(text='basic15', lang=lang, repr='bbasic')
+	add_90_button = Buttonbox(text='twoyear90', lang=lang, repr='add90')
 
-	w.frames["Fourth Frame"].addWidget(bgold, (11, 0))
-	w.frames["Fourth Frame"].addWidget(bbasic, (11, 0))
-	w.frames["Fourth Frame"].addWidget(baoclass, (11, 0))
+	'''
+	w.class_stringvar = StringVar()
+	class_input = ttk.Combobox(
+		w.frames["Second column"],
+		textvariable=w.class_stringvar, width=20, state='readonly')
+	class_input.grid(row=11, column=0, columnspan=2, sticky=W, padx=(2, 0))
 
-	baoclass.config(cmd=caddone, width=12)
-	bgold.config(cmd=lambda: caddx(60), width=12)
-	bbasic.config(cmd=lambda: caddx(15), width=12)
+	if lang['self'] == 'chinese':
+		class_input['values'] = ('添加一课 (+1)', '基本卡 (+15)', '年卡 (+60)', '兩年卡 (+90)')
+		w.class_stringvar.set('添加一课 (+1)')
+	elif lang['self'] == 'english':
+		class_input['values'] = ('Single (+1)', 'Basic (+15)', 'Yearly (+60)', 'Two Year (+90)')
+		w.class_stringvar.set('Single (+1)')
 
-	baoclass.selfframe.grid(padx=2, columnspan=3, sticky=W)
-	bgold.selfframe.grid(padx=2, columnspan=3, sticky=N)
-	bbasic.selfframe.grid(padx=2, columnspan=3, sticky=E)
-	
-	
-	#w.frames["Sixth Frame"].addWidget(baclass, (0, 0))
-	#w.frames["Sixth Frame"].addWidget(baac, (2, 0))
-	#baclass.config(cmd=lambda: cpicker(w.lang))
-	#baac.config(cmd=cadd)
+	class_assoc = {
+		'添加一课 (+1)': 1, '基本卡 (+15)': 15, '年卡 (+60)': 60, '兩年卡 (+90)': 90,
+		'Single (+1)': 1, 'Basic (+15)': 15, 'Yearly (+60)': 60, 'Two Year (+90)': 90
+	}
 
+	w.frames["Second column"].addWidget(add_class, (11, 0))
+	add_class.config(cmd=add_class_, width=12)
+	add_class.selfframe.grid(padx=2, columnspan=2, sticky=E)
+	'''
 
+	w.frames["Second column"].addWidget(baoclass, (14, 0))
+	w.frames["Second column"].addWidget(bbasic, (14, 1))
+	w.frames["Second column"].addWidget(bgold, (15, 0))
+	w.frames["Second column"].addWidget(add_90_button, (15, 1))
 
+	baoclass.config(cmd=caddone, width=15)
+	bgold.config(cmd=lambda: caddx(60), width=15)
+	bbasic.config(cmd=lambda: caddx(15), width=15)
+	add_90_button.config(cmd=lambda: caddx(90), width=15)
 
+	bbasic.selfframe.grid(padx=2, sticky=W)
+	add_90_button.selfframe.grid(padx=2, sticky=W)
 
-
-	w.frames["Seventh Frame"].addWidget(portr, (0, 0))
+	w.frames["Portrait frame"].addWidget(portr, (0, 0))
 	portr.label.config(bg='black')
 
 	portr.resized = portr.picture.resize((200, 200), Image.ANTIALIAS)
@@ -207,11 +221,11 @@ def main(t, lang, d, sM):
 
 #save and add button widgets
 	sadd = Buttonbox(text='addstudent', lang=language, repr='sadd')
-	w.frames["Fifth Frame"].addWidget(sadd, (0, 0))
+	w.frames["Button frame"].addWidget(sadd, (0, 0))
 	sadd.button.config(height=5, font=('Verdana', '12'))
 	sadd.config(cmd=collect)
 
-	w.frames["Seventh Frame"].addWidget(brwp, (1, 0))
+	w.frames["Portrait frame"].addWidget(brwp, (1, 0))
 	brwp.config(cmd=ppicker, width=14)
 
 #set starting lang
@@ -219,5 +233,3 @@ def main(t, lang, d, sM):
 		for widget in frame.widgets.values():
 			#print(widget.repr)
 			widget.config(lang=w.lang)
-
-	w.frames['Title Frame'].grid_forget()

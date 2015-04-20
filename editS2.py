@@ -28,85 +28,74 @@ def main(lang, d, top=False, i=0):
 	w2.s = i
 
 #frame initialization
-	w2.newFrame("First Frame", (1, 1))
-	w2.newFrame("Second Frame", (1, 2))
-	w2.newFrame("Third Frame", (2, 1))
-	w2.newFrame("Fourth Frame", (2, 2))
-	w2.newFrame("Fifth Frame", (5, 0))
-	w2.newFrame("Sixth Frame", (4, 2))
-	w.newFrame("Seventh Frame", (1, 0))
-	w2.newFrame("Eigth Frame", (3, 2))
-	w2.newFrame("Tenth Frame", (0, 1))
-	w2.newFrame("Eleventh Frame", (1, 3))
-	w2.newFrame("Twelfth Frame", (3, 0))
+	w2.newFrame("First column", (1, 1))
+	w2.newFrame("Second column", (1, 2))
+	w2.newFrame("Button frame", (5, 0))
+	w.newFrame("Portrait frame", (1, 0))
 	#w2.newFrame("Ninth Frame", (3, 1))
 
 	w3.newFrame("table_frame", (0, 0))
 
-	w2.frames["Fifth Frame"].grid(columnspan=5, sticky=S)
-	w.frames["Seventh Frame"].grid(rowspan=2)
-	w2.frames["Tenth Frame"].grid(columnspan=5)
-	w2.frames["Eleventh Frame"].grid(sticky=N)
-	w2.frames["Eigth Frame"].grid(sticky=N, columnspan=5)
-	w2.frames["Eleventh Frame"].columnconfigure(0, weight=5, minsize=520)
+	w2.frames["Button frame"].grid(columnspan=5, sticky=S)
+	w.frames["Portrait frame"].grid(rowspan=2)
 	#w2.frames["Ninth Frame"].grid(rowspan=5, sticky=N)
 
 #student info widgets
-	w2.frames["First Frame"].addWidget(sinfo, (0, 0))
+	w2.frames["First column"].addWidget(sinfo, (0, 0))
 	sinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	sinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w2.frames["First Frame"].addWidget(firstName, (1, 0))
-	w2.frames["First Frame"].addWidget(lastName, (2, 0))
-	w2.frames["First Frame"].addWidget(chineseName, (3, 0))
-	w2.frames["First Frame"].addWidget(dob, (4, 0))
-	w2.frames["First Frame"].addWidget(age, (5, 0))
-	w2.frames["First Frame"].addWidget(parentName, (6, 0))
-	w2.frames["First Frame"].addWidget(cp, (7, 0))
+	w2.frames["First column"].addWidget(firstName, (1, 0))
+	w2.frames["First column"].addWidget(lastName, (2, 0))
+	w2.frames["First column"].addWidget(chineseName, (3, 0))
+	w2.frames["First column"].addWidget(dob, (4, 0))
+	w2.frames["First column"].addWidget(age, (5, 0))
+	w2.frames["First column"].addWidget(parentName, (6, 0))
+	w2.frames["First column"].addWidget(cp, (7, 0))
 
 #address widgets
-	w2.frames["Second Frame"].addWidget(ainfo, (0, 0))
+	w2.frames["Second column"].addWidget(ainfo, (0, 0))
 	ainfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	ainfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w2.frames["Second Frame"].addWidget(city, (4, 0))
-	w2.frames["Second Frame"].addWidget(state, (5, 0))
-	w2.frames["Second Frame"].addWidget(zip, (6, 0))
-	w2.frames["Second Frame"].addWidget(email, (7, 0))
+	w2.frames["Second column"].addWidget(city, (4, 0))
+	w2.frames["Second column"].addWidget(state, (5, 0))
+	w2.frames["Second column"].addWidget(zip, (6, 0))
+	w2.frames["Second column"].addWidget(email, (7, 0))
 
 #contact widgets
-	w2.frames["Third Frame"].addWidget(cinfo, (0, 0))
+	w2.frames["First column"].addWidget(cinfo, (8, 0))
 	cinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	cinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w2.frames["Third Frame"].addWidget(pup, (1, 0))
-	w2.frames["Third Frame"].addWidget(hPhone, (2, 0))
-	w2.frames["Third Frame"].addWidget(cPhone, (3, 0))
-	w2.frames["Third Frame"].addWidget(cPhone2, (4, 0))
+	w2.frames["First column"].addWidget(pup, (9, 0))
+	w2.frames["First column"].addWidget(hPhone, (10, 0))
+	w2.frames["First column"].addWidget(cPhone, (11, 0))
+	w2.frames["First column"].addWidget(cPhone2, (12, 0))
 
 #database info widgets
-	w2.frames["Fourth Frame"].addWidget(pinfo, (0, 0))
+	w2.frames["Second column"].addWidget(pinfo, (8, 0))
 	pinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	pinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w2.frames["Fourth Frame"].addWidget(bCode, (1, 0))
-	w2.frames["Fourth Frame"].addWidget(sid, (2, 0))
+	w2.frames["Second column"].addWidget(bCode, (9, 0))
+	w2.frames["Second column"].addWidget(sid, (10, 0))
 	
 #payment widgets
 	tpd = Datebox(text="Tuition Paid Day", lang=language, repr='tpd')
 	tpd.mode = 'nonedit'
-	w2.frames["Fourth Frame"].addWidget(tpd, (6, 0))
-	w2.frames["Fourth Frame"].addWidget(tpa, (7, 0))
-	w2.frames["Fourth Frame"].addWidget(tp, (8, 0))
-	w2.frames["Fourth Frame"].addWidget(tpo, (9, 0))
+	w2.frames["Second column"].addWidget(tpd, (11, 0))
+	w2.frames["Second column"].addWidget(tpa, (12, 0))
+	w2.frames["Second column"].addWidget(tp, (13, 0))
+	w2.frames["Second column"].addWidget(tpo, (14, 0))
 
 #class widget
-	w2.frames["Fourth Frame"].addWidget(sType, (13, 0))
-	w2.frames["Fourth Frame"].addWidget(cAwarded, (14, 0))
-	w2.frames["Fourth Frame"].addWidget(cRemaining, (15, 0))
-	w2.frames["Fourth Frame"].addWidget(ctime, (16, 0))
+	w2.frames["Second column"].addWidget(sType, (19, 0))
+	w2.frames["Second column"].addWidget(cAwarded, (20, 0))
+	w2.frames["Second column"].addWidget(cRemaining, (21, 0))
+	w2.frames["Second column"].addWidget(ctime, (22, 0))
 
 #notes widget
-	w2.frames["Third Frame"].addWidget(ninfo, (5, 0))
+	w2.frames["First column"].addWidget(ninfo, (13, 0))
 	ninfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	ninfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w2.frames["Third Frame"].addWidget(notes, (6, 0))
+	w2.frames["First column"].addWidget(notes, (14, 0))
 	notes.label.grid_forget()
 	notes.sentry.grid(column=0, columnspan=3)
 	notes.config(height=8, width=32)
@@ -117,21 +106,16 @@ def main(lang, d, top=False, i=0):
 	baac = Buttonbox(text='awardaddclass', lang=w2.lang, repr='baaclasses')
 	bgold = Buttonbox(text='gold60', lang=lang, repr='bgold')
 	bbasic = Buttonbox(text='basic15', lang=lang, repr='bbasic')
+	add_90_button = Buttonbox(text='twoyear90', lang=lang, repr='add90')
 
-	w2.frames["Fourth Frame"].addWidget(bgold, (11, 0))
-	w2.frames["Fourth Frame"].addWidget(bbasic, (11, 0))
-	w2.frames["Fourth Frame"].addWidget(baoclass, (11, 0))
-
-	bgold.selfframe.grid(sticky=W, columnspan=2)
-	bbasic.selfframe.grid(sticky=N, columnspan=2)
-	baoclass.selfframe.grid(sticky=E, columnspan=2)
-
+	w2.frames["Second column"].addWidget(baoclass, (15, 0))
+	w2.frames["Second column"].addWidget(bbasic, (15, 1))
+	w2.frames["Second column"].addWidget(bgold, (16, 0))
+	w2.frames["Second column"].addWidget(add_90_button, (16, 1))
 
 	switch_frame_button = Buttonbox(text='Attendance Table', lang=w2.lang, repr='showstudentinfo')
-	#show_table = Buttonbox(text='Attendance Table', lang=w2.lang, repr='showtable')
 
-	w.frames["Seventh Frame"].addWidget(switch_frame_button, (2, 0))
-	#w2.frames["Seventh Frame"].addWidget(show_table, (3, 0))
+	w.frames["Portrait frame"].addWidget(switch_frame_button, (2, 0))
 
 	t.current_shown = 'w2'
 	def switch_frame():
@@ -149,21 +133,15 @@ def main(lang, d, top=False, i=0):
 
 	switch_frame_button.config(cmd=switch_frame)
 
-	baoclass.config(cmd=caddone, width=12)
-	bgold.config(cmd=lambda: caddmorex(60), width=12)
-	bbasic.config(cmd=lambda: caddmorex(15), width=12)
+	baoclass.config(cmd=caddone, width=15)
+	bgold.config(cmd=lambda: caddx(60), width=15)
+	bbasic.config(cmd=lambda: caddx(15), width=15)
+	add_90_button.config(cmd=lambda: caddx(90), width=15)
 
-	baoclass.selfframe.grid(padx=2)
-	bgold.selfframe.grid(padx=2)
-	bbasic.selfframe.grid(padx=2)
-	
-	
-	#w2.frames["Sixth Frame"].addWidget(baclass, (0, 0))
-	#w2.frames["Sixth Frame"].addWidget(baac, (2, 0))
-	#baclass.config(cmd=lambda: cpicker(w2.lang))
-	#baac.config(cmd=cadd)
+	bbasic.selfframe.grid(padx=2, sticky=W)
+	add_90_button.selfframe.grid(padx=2, sticky=W)
 
-	w.frames["Seventh Frame"].addWidget(portr, (0, 0))
+	w.frames["Portrait frame"].addWidget(portr, (0, 0))
 
 	portr.resized = portr.picture.resize((200, 200), Image.ANTIALIAS)
 	portr.image = ImageTk.PhotoImage(portr.resized)
@@ -171,7 +149,6 @@ def main(lang, d, top=False, i=0):
 
 	w2.attinfo = attinfo
 	w3.frames["table_frame"].addWidget(w2.attinfo, (0, 0))
-	#w3.frames["table_frame"].grid(rowspan=100, sticky=W)
 
 #renew classes button
 	def renC():
@@ -189,8 +166,9 @@ def main(lang, d, top=False, i=0):
 		cAwarded.setData(dp['cAwarded'])
 
 	w2.ren = Buttonbox(text='Renew classes', lang=w2.lang, repr='ren')
-	w2.frames["Fourth Frame"].addWidget(w2.ren, (12, 0))
-	w2.ren.selfframe.grid(columnspan=3)
+	w2.frames["Second column"].addWidget(w2.ren, (18, 0))
+	w2.ren.selfframe.grid(sticky=W, columnspan=2)
+	w2.ren.button.config(width=31)
 	w2.ren.config(cmd=renC)
 
 	w2.attinfo.editwidget=False
@@ -271,9 +249,9 @@ def main(lang, d, top=False, i=0):
 		d.saveData()
 
 	add_payment = Buttonbox(text='Add Payment', lang=w2.lang, repr='addpayment')
-	w2.frames["Fourth Frame"].addWidget(add_payment, (10, 0))
-	add_payment.selfframe.grid(columnspan=2)
-	add_payment.button.config(width=20)
+	w2.frames["Second column"].addWidget(add_payment, (17, 0))
+	add_payment.selfframe.grid(sticky=W, columnspan=2)
+	add_payment.button.config(width=31)
 	add_payment.config(cmd=add_payment_)
 
 	def changed():
@@ -293,15 +271,15 @@ def main(lang, d, top=False, i=0):
 
 
 	sstudent = Buttonbox(text='savestudent', lang=w2.lang, repr='sstudent')
-	w2.frames["Fifth Frame"].addWidget(sstudent, (0, 0))
+	w2.frames["Button frame"].addWidget(sstudent, (0, 0))
 	sstudent.config(cmd=collect)
 	sstudent.selfframe.grid(padx=5)
 
 	bclose = Buttonbox(text='close', lang=w2.lang, repr='bclose')
-	w2.frames["Fifth Frame"].addWidget(bclose, (0, 1))
+	w2.frames["Button frame"].addWidget(bclose, (0, 1))
 	bclose.config(cmd=quit)
 
-	w.frames["Seventh Frame"].addWidget(brwp, (1, 0))
+	w.frames["Portrait frame"].addWidget(brwp, (1, 0))
 	brwp.config(cmd=ppicker)
 
 	#set starting lang

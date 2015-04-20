@@ -637,7 +637,12 @@ class StudentDB:
                         'amount_owed': 0.0})
                 self.saveData()
             for payment in student.datapoints['payment_info']:
-                if payment['date'].date() >= start_date and payment['date'].date() <= end_date:
+                if type(payment) == list: continue
+                
+                if type(payment['date']) == datetime:
+                    payment['date'] = datetime.date(payment['date'])
+
+                if payment['date'] >= start_date and payment['date'] <= end_date:
                     table_.append((
                         payment['date'],
                         student.datapoints['bCode'],
@@ -714,5 +719,7 @@ class StudentDB:
         r += 1
         worksheet.merge_range('E' + str(r) + ':F' + str(r), 'Total Payments Received', top_border)
         worksheet.write(r - 1, 6, total_payment, top_border)
+
+        self.saveData()
 
         return

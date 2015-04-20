@@ -2,8 +2,11 @@ from uiHandler22 import *
 
 class Mbox(AppWindow):
 
-	def __init__(self, title=''):
-		self.root = Toplevel(bd=2)
+	def __init__(self, title='', **kwargs):
+		if 'stand_alone' in kwargs:
+			self.root = Tk()
+		else:
+			self.root = Toplevel(bd=2)
 		self.root.resizable(0, 0)
 		self.root.grab_set()
 		self.root.focus_set()

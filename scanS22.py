@@ -128,8 +128,7 @@ def main(t, lang, d):
 
 #renew classes button
 	def renC():
-		if w.s not in d.studentList:
-			return
+		if not hasattr(w, 's') or (w.s not in d.studentList): return
 
 		r = renew(w.lang)
 		if r == 0: return
@@ -354,8 +353,8 @@ def main(t, lang, d):
 
 		w2.attinfo.deleteAll()
 
-		w.attinfo.setData(d.studentList[w.s].datapoints['attinfo'][1])
-		w2.attinfo.setData(d.studentList[w.s].datapoints['attinfo'][1])
+		w.attinfo.setData((w.attinfoh, d.studentList[w.s].datapoints['attinfo'][1]))
+		w2.attinfo.setData((w.attinfoh, d.studentList[w.s].datapoints['attinfo'][1]))
 
 		for cell_id, cell_val in w.attinfo.cells.items():
 			if cell_id[0] == 0:
