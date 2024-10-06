@@ -265,7 +265,7 @@ def ppicker():
 
 
 #title bg
-titlePic = Image.open('smallblu.jpg')
+# titlePic = Image.open('smallblu.jpg')
 #titleImg = ImageTk.PhotoImage(titlePic)
 
 

@@ -1,7 +1,7 @@
 import os.path
 from tkinter import Label
 from widget import Widget
-from PIL import Image, ImageTk
+# from PIL import Image, ImageTk
 
 
 class Photo(Widget):
@@ -20,23 +20,23 @@ class Photo(Widget):
 
 
 	def config(self, **kwargs):
+		return
+		# try:
+		# 	self.path = kwargs['path']
+		# 	# self.picture = Image.open(self.path)
+		# 	if 'resize_portr' in kwargs:
+		# 		self.picture = self.picture.resize((200, 200), Image.ANTIALIAS)
+		# 	self.image = ImageTk.PhotoImage(self.picture)
+		# 	self.label.config(image=self.image)
+		# except:
+		# 	pass
+		# 	#print("the widget could not be configured")
 
-		try:
-			self.path = kwargs['path']
-			self.picture = Image.open(self.path)
-			if 'resize_portr' in kwargs:
-				self.picture = self.picture.resize((200, 200), Image.ANTIALIAS)
-			self.image = ImageTk.PhotoImage(self.picture)
-			self.label.config(image=self.image)
-		except:
-			pass
-			#print("the widget could not be configured")
-
-		try:
-			self.bgc = kwargs['bg']
-			self.label.config(bg=self.bgc)
-		except:
-			pass
+		# try:
+		# 	self.bgc = kwargs['bg']
+		# 	self.label.config(bg=self.bgc)
+		# except:
+		# 	pass
 			#print("the widget background color could not be changed")
 
 
@@ -47,18 +47,18 @@ class Photo(Widget):
 
 
 	def place(self, **kwargs):
+		return
+		# try:
+		# 	self.trytoplace(**kwargs)
+		# except:
+		# 	print("widget could not be placed")
 
-		try:
-			self.trytoplace(**kwargs)
-		except:
-			print("widget could not be placed")
+		# self.picture = Image.open(self.path)
+		# self.image = ImageTk.PhotoImage(self.picture)
 
-		self.picture = Image.open(self.path)
-		self.image = ImageTk.PhotoImage(self.picture)
-
-		self.label = Label(self.parent, image=self.image, bd=1)#, bg='black')
-		self.label.grid(row=self.row, column=self.column, pady=5)
-		self.label.bind('<Button-1>', lambda e: self.label.focus_set())
+		# self.label = Label(self.parent, image=self.image, bd=1)#, bg='black')
+		# self.label.grid(row=self.row, column=self.column, pady=5)
+		# self.label.bind('<Button-1>', lambda e: self.label.focus_set())
 
 
 	def getData(self):

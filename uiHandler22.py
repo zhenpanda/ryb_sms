@@ -1,6 +1,6 @@
 from tkinter import *
 import os.path
-from PIL import Image, ImageTk
+# from PIL import Image, ImageTk
 
 
 
@@ -98,14 +98,14 @@ class Window(Tk):
 
 		self.attributes('-fullscreen', True)
 
-		self.pic = Image.open('bigbl.jpg')
-		self.img = ImageTk.PhotoImage(self.pic)
+		# self.pic = Image.open('bigbl.jpg')
+		# self.img = ImageTk.PhotoImage(self.pic)
 
 
 		self.oframe = Frame(self)
 
 		#bg
-		Label(self.oframe, image=self.img).place(x=-2, y=-5, in_=self.oframe)
+		Label(self.oframe).place(x=-2, y=-5, in_=self.oframe)
 
 		self.mainFrame = Frame(self.oframe)#, bd=1, bg='lightgrey')
 

@@ -4,7 +4,7 @@ from dataHandler import *
 from languages import *
 from labelWidgets2 import *
 from photoWidget2 import *
-from preBuilts2 import ret, titlePic, bexp, password_prompt, wrong_password, pw_reset_confirm, print_succesful, database_backup_successful, already_running_
+from preBuilts2 import ret, bexp, password_prompt, wrong_password, pw_reset_confirm, print_succesful, database_backup_successful, already_running_
 from tkinter import filedialog
 import addS3
 import scanS22
@@ -195,9 +195,9 @@ def main():
 	bexp.config(cmd=expf)
 	bstools.selfframe.grid_forget()
 	#secret configuration to call Database Management
-	w.p.label.bind('<Control-Alt-Shift-D>', lambda e: showWindow(tools2.main))
+	# w.p.label.bind('<Control-Alt-Shift-D>', lambda e: showWindow(tools2.main))
 
-	w.p.label.grid(rowspan=100, sticky=E)
+	# w.p.label.grid(rowspan=100, sticky=E)
 
 	w.mmbuttoncol = '#E3E9F9'
 	w.mmbuttonfg = 'black'

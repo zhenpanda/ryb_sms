@@ -102,8 +102,10 @@ class StudentInfo:
 class StudentDB:
 
     def __init__(self, **kwargs):
-        self.file = kwargs['file']
-        self.pwfile = kwargs['pwfile']
+        # self.file = kwargs['file']
+        self.file = "C:/Users/zhent/OneDrive/Desktop/RYB_Backup/build backend/RYB Student Backup - Test.rybdb"
+        # self.pwfile = kwargs['pwfile']
+        self.pwfile = b'1234567890123456'
 
         self.iv = b't\xd4\xbc\xee~\xa2\xc2\xc1\x14T\x91\xcfd\x95/\xfc'
 
@@ -293,13 +295,14 @@ class StudentDB:
 
 
     def saveData(self):
-        if not hasattr(self, 'key'):
-            print('creating key')
-            self.key = b'=5<(M8R_P8CJx);^'
-            f = open(self.pwfile, 'wb')
-            f.write(bytearray(self.key))
-            f.close()
-            print(self.key)
+        
+        # if not hasattr(self, 'key'):
+        #     print('creating key')
+        #     self.key = b'1234567890123456'
+        #     f = open(self.pwfile, 'wb')
+        #     f.write(bytearray(self.key))
+        #     f.close()
+        #     print(self.key)
         cipher = AES.new(self.key, AES.MODE_CFB, self.iv)
 
         binary_string = pickle.dumps(self.studentList)
@@ -532,7 +535,7 @@ class StudentDB:
     def exportreport(self, fpath, sdate):
 
         if len(self.studentList) == 0: return
-
+        print(self.studentList)
         #format sdate
         sdates = [sdate]
 
@@ -550,6 +553,18 @@ class StudentDB:
         totalondate = {v: [] for k, v in self.timeslot.items()}
 
         for student in self.studentList.values():
+            # print(student.datapoints['attinfo'][1][0])
+
+            with open("output.txt", "a") as f:
+                try: 
+                    print(student.datapoints['firstName'] + " " + student.datapoints['lastName'], file=f)
+                    for i in student.datapoints['attinfo'][1]:
+                        print(i, file=f)
+                    print("---",file=f)
+                        
+                except:
+                    continue
+
             for att in student.datapoints['attinfo'][1]:
                 if att[0] in sdates:
                     for timeslot in totalondate:

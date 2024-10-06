@@ -29,7 +29,7 @@ includefiles = ['check_mark_sm.png',
 				'RYB_Attendance.ico',
 				'images/']
 
-build_exe_options = {'include_files':includefiles, 'create_shared_zip': False}
+build_exe_options = {'include_files':includefiles}
 
 setup(  name = "rybsms",
         version = "0.1",

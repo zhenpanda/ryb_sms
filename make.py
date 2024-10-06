@@ -1,3 +1,3 @@
 import os
 
-os.system('c:\python34x86\python setup.py build')
+os.system('c:\python34\python setup.py build')
